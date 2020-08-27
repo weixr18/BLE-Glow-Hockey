@@ -81,13 +81,13 @@ CapSense_RAM_STRUCT CapSense_dsRam;
 /*******************************************************************************
 * Declares Widget's De-bounce Counters
 *******************************************************************************/
-static uint8 CapSense_debounceLinearSlider0[1u];
+static uint8 CapSense_debounceDummyWidget[CapSense_DUMMYWIDGET_NUM_SENSORS];
 
 
 /***************************************************************************//**
 * Declares Noise Envelope data structures
 *******************************************************************************/
-static SMARTSENSE_CSD_NOISE_ENVELOPE_STRUCT CapSense_noiseEnvlpLinearSlider0[CapSense_LINEARSLIDER0_NUM_SENSORS];
+static SMARTSENSE_CSD_NOISE_ENVELOPE_STRUCT CapSense_noiseEnvlpDummyWidget[CapSense_DUMMYWIDGET_NUM_SENSORS];
 
 /*******************************************************************************
 * Defines and initializes the Flash Data Structure
@@ -107,20 +107,17 @@ const CapSense_FLASH_STRUCT CapSense_dsFlash =
 {
     /* Flash Widget Initialization Data */
     {
-        { /* LinearSlider0 */
+        { /* DummyWidget */
             &CapSense_ioList[0u],
-            (void *)&CapSense_dsRam.wdgtList.linearslider0,
-            CapSense_dsRam.snsList.linearslider0,
+            (void *)&CapSense_dsRam.wdgtList.dummywidget,
+            CapSense_dsRam.snsList.dummywidget,
             (void *)0u,
-            CapSense_debounceLinearSlider0,
-            CapSense_LINEARSLIDER0_STATIC_CONFIG,
-            CapSense_LINEARSLIDER0_NUM_SENSORS,
-            (uint8)CapSense_WD_LINEAR_SLIDER_E,
-            CapSense_LINEARSLIDER0_NUM_SENSORS,
-            CapSense_LINEARSLIDER0_X_RESOLUTION,
-            CapSense_LINEARSLIDER0_X_CENT_MULT,
-            CapSense_noiseEnvlpLinearSlider0,
-            CapSense_LINEARSLIDER0_IIR_FILTER_COEFF,
+            CapSense_debounceDummyWidget,
+            CapSense_DUMMYWIDGET_STATIC_CONFIG,
+            CapSense_DUMMYWIDGET_NUM_SENSORS,
+            (uint8)CapSense_WD_BUTTON_E,
+            CapSense_DUMMYWIDGET_NUM_SENSORS,
+            CapSense_noiseEnvlpDummyWidget,
         },
     },
 };
@@ -130,25 +127,9 @@ const CapSense_FLASH_STRUCT CapSense_dsFlash =
 */
 const CapSense_FLASH_IO_STRUCT CapSense_ioList[CapSense_TOTAL_ELECTRODES] =
 {
-    { /* 0: LinearSlider0_Sns0 */
+    { /* 0: DummyWidget_Sns0 */
         CapSense_Sns_0_PORT,
         (uint8)CapSense_Sns_0_NUM,
-    },
-    { /* 1: LinearSlider0_Sns1 */
-        CapSense_Sns_1_PORT,
-        (uint8)CapSense_Sns_1_NUM,
-    },
-    { /* 2: LinearSlider0_Sns2 */
-        CapSense_Sns_2_PORT,
-        (uint8)CapSense_Sns_2_NUM,
-    },
-    { /* 3: LinearSlider0_Sns3 */
-        CapSense_Sns_3_PORT,
-        (uint8)CapSense_Sns_3_NUM,
-    },
-    { /* 4: LinearSlider0_Sns4 */
-        CapSense_Sns_4_PORT,
-        (uint8)CapSense_Sns_4_NUM,
     },
 };
 
@@ -160,24 +141,21 @@ const CapSense_FLASH_IO_STRUCT CapSense_ioList[CapSense_TOTAL_ELECTRODES] =
 /* Initialization data for RAM widget list */
 const CapSense_RAM_WD_LIST_STRUCT CapSense_ramWidgetInit =
 {
-    { /* LinearSlider0 */
-        CapSense_LINEARSLIDER0_RESOLUTION,
-        CapSense_LINEARSLIDER0_FINGER_TH,
-        CapSense_LINEARSLIDER0_NOISE_TH,
-        CapSense_LINEARSLIDER0_NNOISE_TH,
-        CapSense_LINEARSLIDER0_HYSTERESIS,
-        CapSense_LINEARSLIDER0_ON_DEBOUNCE,
-        CapSense_LINEARSLIDER0_LOW_BSLN_RST,
+    { /* DummyWidget */
+        CapSense_DUMMYWIDGET_RESOLUTION,
+        CapSense_DUMMYWIDGET_FINGER_TH,
+        CapSense_DUMMYWIDGET_NOISE_TH,
+        CapSense_DUMMYWIDGET_NNOISE_TH,
+        CapSense_DUMMYWIDGET_HYSTERESIS,
+        CapSense_DUMMYWIDGET_ON_DEBOUNCE,
+        CapSense_DUMMYWIDGET_LOW_BSLN_RST,
         {
-            CapSense_LINEARSLIDER0_IDAC_MOD0,
+            CapSense_DUMMYWIDGET_IDAC_MOD0,
         },
-        CapSense_LINEARSLIDER0_SNS_CLK,
-        CapSense_LINEARSLIDER0_SNS_CLK_SOURCE,
-        CapSense_LINEARSLIDER0_FINGER_CAP,
-        CapSense_LINEARSLIDER0_SIGPFC,
-        {
-            CapSense_LINEARSLIDER0_POSITION,
-        },
+        CapSense_DUMMYWIDGET_SNS_CLK,
+        CapSense_DUMMYWIDGET_SNS_CLK_SOURCE,
+        CapSense_DUMMYWIDGET_FINGER_CAP,
+        CapSense_DUMMYWIDGET_SIGPFC,
     },
 };
 
@@ -185,12 +163,8 @@ const CapSense_RAM_WD_LIST_STRUCT CapSense_ramWidgetInit =
 /* IDAC Initialization Data */
 const uint8 CapSense_ramIdacInit[CapSense_TOTAL_SENSORS] =
 {
-    /* LinearSlider0 */
-    CapSense_LINEARSLIDER0_SNS0_IDAC_COMP0,
-    CapSense_LINEARSLIDER0_SNS1_IDAC_COMP0,
-    CapSense_LINEARSLIDER0_SNS2_IDAC_COMP0,
-    CapSense_LINEARSLIDER0_SNS3_IDAC_COMP0,
-    CapSense_LINEARSLIDER0_SNS4_IDAC_COMP0,
+    /* DummyWidget */
+    CapSense_DUMMYWIDGET_SNS0_IDAC_COMP0,
 };
 
 

@@ -34,8 +34,6 @@
   <file name="D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\codegentemp\CapSense_SensingCSD_LL.c" value="SOURCE_C;CortexM0p,CortexM4;;;;CapSense" />
   <file name="D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\codegentemp\CapSense_SensingCSD_LL.h" value="HEADER;;;;;CapSense" />
   <file name="D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\codegentemp\CapSense_RegisterMap.h" value="HEADER;;;;;CapSense" />
-  <file name="D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\codegentemp\CapSense_Centroid_LL.c" value="SOURCE_C;CortexM0p,CortexM4;;;;CapSense" />
-  <file name="D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\codegentemp\CapSense_Centroid_LL.h" value="HEADER;;;;;CapSense" />
   <file name="D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\codegentemp\CapSense_SmartSense_LL.h" value="HEADER;;;;;CapSense" />
   <file name="D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\codegentemp\BLE.h" value="HEADER;;;;;BLE" />
   <file name="D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\codegentemp\BLE.c" value="SOURCE_C;CortexM0p,CortexM4;;;;BLE" />

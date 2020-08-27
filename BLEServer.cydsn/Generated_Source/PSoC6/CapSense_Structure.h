@@ -213,7 +213,7 @@ typedef struct
 } CapSense_RAM_WD_BASE_STRUCT;
 
 /***************************************************************************//**
-* \brief Declares RAM parameters for the Slider
+* \brief Declares RAM parameters for the CSD Button
 *******************************************************************************/
 typedef struct
 {
@@ -288,12 +288,7 @@ typedef struct
      *  The 75% of signal per user-defined finger capacitance
      */
     uint16 sigPFC;
-
-    /**
-     *  Reports the widget position.
-     */
-    uint16 position [CapSense_NUM_CENTROIDS];
-} CapSense_RAM_WD_SLIDER_STRUCT;
+} CapSense_RAM_WD_BUTTON_STRUCT;
 
 
 /***************************************************************************//**
@@ -302,9 +297,9 @@ typedef struct
 typedef struct
 {
     /**
-     *  LinearSlider0 widget RAM structure
+     *  DummyWidget widget RAM structure
      */
-    CapSense_RAM_WD_SLIDER_STRUCT linearslider0;
+    CapSense_RAM_WD_BUTTON_STRUCT dummywidget;
 } CapSense_RAM_WD_LIST_STRUCT;
 
 
@@ -353,9 +348,9 @@ typedef struct
 typedef struct
 {
     /**
-     *  LinearSlider0 sensors RAM structures array
+     *  DummyWidget sensors RAM structures array
      */
-    CapSense_RAM_SNS_STRUCT linearslider0 [CapSense_LINEARSLIDER0_NUM_SENSORS];
+    CapSense_RAM_SNS_STRUCT dummywidget [CapSense_DUMMYWIDGET_NUM_SENSORS];
 } CapSense_RAM_SNS_LIST_STRUCT;
 
 
@@ -597,33 +592,12 @@ typedef struct
     uint8  numCols;
 
     /**
-     *  Sliders: The Linear/Angular resolution.
-     *  Touchpad: The X-Axis resolution.
-     */
-    uint16 xResolution;
-
-    /**
-     *  The pre-calculated X resolution centroid multiplier used for 
-     *  the X-axis position calculation.
-     *  Calculated as follows:
-     *  RADIAL: (WD_X_RESOLUTION * 256) / WD_NUM_COLS;
-     *  LINEAR and TOUCHPAD: (WD_X_RESOLUTION * 256) / (WD_NUM_COLS - CONFIG);
-     *  where CONFIG is 0 or 1 depends on CentroidMultiplerMethod parameter
-     */
-    uint32 xCentroidMultiplier;
-
-    /**
      *  The pointer to the array with the sensor noise envelope data.
      *  Set to the valid value only for the CSD widgets.
      *  For the CSX widgets, this pointer is set to NULL.
      *  The pointed array is not part of the data structure.
      */
     SMARTSENSE_CSD_NOISE_ENVELOPE_STRUCT * ptr2NoiseEnvlp;
-
-    /**
-     *  The position IIR filter coefficient.
-     */
-    uint8  iirFilterCoeff;
 } CapSense_FLASH_WD_STRUCT;
 
 

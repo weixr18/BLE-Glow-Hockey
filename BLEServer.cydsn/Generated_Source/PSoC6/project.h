@@ -146,7 +146,6 @@
 #include "CapSense_Configuration.h"
 #include "CapSense_SensingCSD_LL.h"
 #include "CapSense_RegisterMap.h"
-#include "CapSense_Centroid_LL.h"
 #include "CapSense_SmartSense_LL.h"
 #include "BLE.h"
 #include "BLE_config.h"

@@ -1,5 +1,5 @@
 # BLEServer
-# 2020-08-27 03:38:34Z
+# 2020-08-27 10:20:26Z
 
 dont_use_location p4usbcell -1 -1 0
 dont_use_location USB -1 -1 0
@@ -9,12 +9,8 @@ set_io "CY_CPUSS_SWJ_SWCLK_TCLK(0)" iocell 6 7
 set_io "CY_CPUSS_SWJ_SWDIO_TMS(0)" iocell 6 6
 set_io "\UART:tx(0)\" iocell 5 1
 set_io "\UART:rx(0)\" iocell 5 0
-set_io "\CapSense:Cmod(0)\" iocell 7 7
-set_io "\CapSense:Sns(0)\" iocell 8 3
-set_io "\CapSense:Sns(1)\" iocell 8 4
-set_io "\CapSense:Sns(2)\" iocell 8 5
-set_io "\CapSense:Sns(3)\" iocell 8 6
-set_io "\CapSense:Sns(4)\" iocell 8 7
+set_io "\CapSense:Cmod(0)\" iocell 7 1
+set_io "\CapSense:Sns(0)\" iocell 7 7
 set_location "\CapSense:IDACMod\" CSIDAC7 -1 -1 0
 set_location "\CapSense:IDACComp\" CSIDAC7 -1 -1 1
 set_location "\CapSense:CSD\" CSD -1 -1 0

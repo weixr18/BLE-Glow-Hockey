@@ -19,8 +19,7 @@ QueueHandle_t bleQueueHandle;
 bool isReceivePosition = true;
 bool isStartNotification = false;
 
-static uint32_t *sharedBrightNessVal = NULL;
-
+struct timeval tv;
 static cy_stc_ble_conn_handle_t connectionHandle;
 
 /******************************FUNCTION DECLARATIONS***********************************/
@@ -29,59 +28,13 @@ void SendBleNotification(cy_ble_gatt_db_attr_handle_t charHandle, uint32* value)
 
 /******************************FUNCTION DEFINATIONS***********************************/
 
-// Capsense task (only for debug)
-void CapsenseTask(){
-    uint32_t sliderpos; 
-    uint32_t lastSliderPos = 0;
-     
-    // start the capsense component
-    CapSense_Start();
-    CapSense_ScanAllWidgets();
-    
-    while(1){
-        // if capsense is not scanning 
-        if(!CapSense_IsBusy()){
-            
-            //get the capsense slider pos, the value is between 0 and 100.
-            CapSense_ProcessAllWidgets();
-            sliderpos = CapSense_GetCentroidPos(CapSense_LINEARSLIDER0_WDGT_ID);
-            
-            if(sliderpos != CapSense_SLIDER_NO_TOUCH && sliderpos != lastSliderPos)
-            {                
-                
-                uint32 val = sliderpos ;
-                printf("Slider value: %u\r\n", val);
-                
-                // Send Message To BLE Queue to test if sending data is valid
-                /*
-                isBleNeedUpdate = true;
-                xQueueSend(bleQueueHandle, &val, portMAX_DELAY);
-                */
-                
-                lastSliderPos = sliderpos;
-            }
-            /*
-            else{
-                uint32 val = 120 ;
-                xQueueSend(bleQueueHandle, &val, portMAX_DELAY);
-            }
-            */
-            
-            // update the capsense baselines and scan the sensors again
-            CapSense_UpdateAllBaselines();
-            CapSense_ScanAllWidgets();
-        }
-        else{
-            taskYIELD();
-        }
-    }
-}
-
 // Game task
 void GlowHockeyTask(){
     
     uint8 USER_INDEX_MASK = 1;
     uint16 USER_POSITION_MASK = 0x0FFF;
+    uint16 STD_SCREEN_WIDTH = 1080;
+    uint16 STD_SCREEN_HEIGHT = 1920;
 
     uint16 ballx;
     uint16 bally;
@@ -105,6 +58,7 @@ void GlowHockeyTask(){
     for(;;){
             
         if(isReceivePosition){
+
             xQueueReceive(bleQueueHandle, &receivedPosition, portMAX_DELAY);
             isReceivePosition = false;
             
@@ -114,7 +68,7 @@ void GlowHockeyTask(){
                 // player 0
                 player0x = ((uint16) receivedPosition) & USER_POSITION_MASK;
                 player0y = ((uint16)(receivedPosition >> 12)) & USER_POSITION_MASK;
-                printf("User 0 : (%u, %u)\r\n", player0x, player0y);
+                //printf("User 0 : (%u, %u)\r\n", player0x, player0y);
                 
             }
             else{
@@ -150,8 +104,6 @@ void GlowHockeyTask(){
                 // player 1
 
             }
-
-            
         }
         else{
             taskYIELD();
@@ -170,11 +122,10 @@ void bleTask()
     isReceivePosition = false;
     bleQueueHandle = xQueueCreate(1, sizeof(brightVal));
  
-    printf("Starting BLE Task.\r\n");
     cy_en_ble_api_result_t apiResult;
     apiResult = Cy_BLE_Start(StackEventHandler);
     if(apiResult == CY_BLE_SUCCESS){
-        printf("BLE Start success.\r\n");
+        printf("Core 4 BLE Start success.\r\n");
     }
  
     for(;;){
@@ -201,7 +152,6 @@ void StackEventHandler(uint32 event, void *param){
             );
             break;
         }
- 
         case CY_BLE_EVT_TIMEOUT:
         break;
  
@@ -266,12 +216,8 @@ void StackEventHandler(uint32 event, void *param){
                     Cy_BLE_GATTS_ErrorRsp(&errParam);
                 }
             }
-            else{
-                 
-            }
-            
-            
-            printf("GATTS_WRITE_REQ value:%u \r\n", *((int32*) (writeReqPara->handleValPair.value.val)));
+                    
+            //printf("GATTS_WRITE_REQ value:%u \r\n", *((int32*) (writeReqPara->handleValPair.value.val)));
             val = *((int32*) (writeReqPara->handleValPair.value.val));
             isReceivePosition = true;
             xQueueSend(bleQueueHandle, &val, portMAX_DELAY);
@@ -328,12 +274,13 @@ int main(void)
     /**************Components Startups***************/
     Cy_IPC_Sema_Init(CY_IPC_CHAN_SEMA, (uint32_t)NULL, (uint32_t*)NULL);
     UART_Start();
+    CapSense_Start();
+    //CapSense_ScanAllWidgets();
     
     /*******************Task creates**********************/
     
-    xTaskCreate(CapsenseTask, "capsense task", configMINIMAL_STACK_SIZE * 15, 0, 3, 0);
     xTaskCreate(bleTask, "ble task", configMINIMAL_STACK_SIZE * 20, 0, 3, 0);
-    xTaskCreate(GlowHockeyTask, "Game task", configMINIMAL_STACK_SIZE * 20, 0, 3, 0);
+    xTaskCreate(GlowHockeyTask, "Game task", configMINIMAL_STACK_SIZE * 7, 0, 3, 0);
     
     vTaskStartScheduler();
 
@@ -341,6 +288,7 @@ int main(void)
     {
         /* Place your application code here. */
     }
+   
 }
 
 /* [] END OF FILE */

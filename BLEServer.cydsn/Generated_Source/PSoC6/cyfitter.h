@@ -39,7 +39,7 @@
 #define CapSense_CSD__CMOD_PAD 1u
 #define CapSense_CSD__CSH_TANK_PAD 2u
 #define CapSense_CSD__CSHIELD_PAD 4u
-#define CapSense_CSD__DEDICATED_IO0 CapSense_CSD__CSHIELD_PAD
+#define CapSense_CSD__DEDICATED_IO0 CapSense_CSD__CMOD_PAD
 #define CapSense_CSD__HW CSD0
 #define CapSense_CSD__IDX 0
 #define CapSense_CSD__VREF_EXT_PAD 8u
