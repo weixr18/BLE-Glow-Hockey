@@ -153,8 +153,6 @@ public class DeviceScanActivity extends Activity {
             startScanning();
         }
 
-
-
     }
 
     @Override
@@ -258,19 +256,19 @@ public class DeviceScanActivity extends Activity {
 
                     final Intent intent = new Intent(
                             DeviceScanActivity.this,
-                            DeviceControlActivity.class);
-                    intent.putExtra(DeviceControlActivity.EXTRAS_DEVICE_NAME, ((BluetoothDevice) device).getName());
-                    intent.putExtra(DeviceControlActivity.EXTRAS_DEVICE_ADDRESS, ((BluetoothDevice) device).getAddress());
+                            GameActivity.class);
+                    intent.putExtra(GameActivity.EXTRAS_DEVICE_NAME, ((BluetoothDevice) device).getName());
+                    intent.putExtra(GameActivity.EXTRAS_DEVICE_ADDRESS, ((BluetoothDevice) device).getAddress());
                     if (mScanning) {
                         mBLEScanner.stopScan(mScanCallback);
                         mScanning = false;
                     }
                     startActivity(intent);
                 }
-
             }
         };
     }
+
 
     /**
      * 位置权限申请
@@ -319,8 +317,6 @@ public class DeviceScanActivity extends Activity {
             }
         }
     }
-
-
 
 
     /**

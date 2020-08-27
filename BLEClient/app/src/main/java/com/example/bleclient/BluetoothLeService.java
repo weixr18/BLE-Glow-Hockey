@@ -144,7 +144,7 @@ public class BluetoothLeService extends Service {
             final int position = characteristic.getIntValue(format, 0);
             int x = position & 0x0fff;
             int y = (position >> 12) & 0x0fff;
-            Log.d(TAG, String.format("Received position: (%d, %d)", x, y));
+            //Log.d(TAG, String.format("Received position: (%d, %d)", x, y));
 
             intent.putExtra(EXTRA_DATA, String.valueOf(position));
             sendBroadcast(intent);
