@@ -19,10 +19,12 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
         
-         <activity android:name=".DeviceControlActivity"/>
+        <activity android:name=".DeviceControlActivity"/>
+        <activity android:name=".GameActivity"/>
         <service android:name=".BluetoothLeService" android:enabled="true"/>
         
     </application>

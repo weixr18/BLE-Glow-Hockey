@@ -16,6 +16,7 @@
 
 package com.example.bleclient;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 
@@ -41,6 +42,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -137,9 +142,33 @@ public class DeviceScanActivity extends Activity {
         }
         mScanSettings = builder.build();
 
-        /**
-         * 开始扫描
-         */
+        if( ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED){
+            Log.d(TAG, "Permission not granted.");
+            requestPermission();
+        }
+        else{
+            startScanning();
+        }
+
+
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        startScanning();
+    }
+
+
+    /**
+     * 开始扫描
+     */
+    private void startScanning(){
+
         if (!mScanning){
             mScanning = true;
             if (mBLEScanner == null){
@@ -162,7 +191,6 @@ public class DeviceScanActivity extends Activity {
                 }
             },SCAN_TIME);
         }
-
     }
 
 
@@ -244,6 +272,56 @@ public class DeviceScanActivity extends Activity {
         };
     }
 
+    /**
+     * 位置权限申请
+     * */
+
+    private void requestPermission() {
+
+        Log.i(TAG,"requestPermission");
+
+        // Here, thisActivity is the current activity
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_CONTACTS)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            Log.i(TAG,"checkSelfPermission");
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+                Log.i(TAG,"shouldShowRequestPermissionRationale");
+                // Show an expanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+
+                ActivityCompat.requestPermissions(
+                        this,
+                        new String[]{
+                                Manifest.permission.ACCESS_FINE_LOCATION,
+                                Manifest.permission.ACCESS_COARSE_LOCATION
+                        },
+                        1);
+
+            } else {
+                Log.i(TAG,"requestPermissions");
+                // No explanation needed, we can request the permission.
+                ActivityCompat.requestPermissions(
+                        this,
+                        new String[]{
+                                Manifest.permission.ACCESS_FINE_LOCATION,
+                                Manifest.permission.ACCESS_COARSE_LOCATION
+                        },
+                        1);
+
+                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
+        }
+    }
+
+
+
 
     /**
      * 列表适配器
@@ -295,6 +373,11 @@ public class DeviceScanActivity extends Activity {
 
             return view;
         }
+
+
+        /**
+         * Unimportant methods
+         */
 
         public void addDevice(BluetoothDevice device) {
             if(!mDeviceList.contains(device)) {
