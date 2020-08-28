@@ -87,8 +87,8 @@ public class GameActivity extends Activity {
     private int scoreB = 0;
 
     // player & Ball parameters
-    private int playerCircleAPositionX;
-    private int playerCircleAPositionY;
+    private int playerPositionX;
+    private int playerPositionY;
     private int ballPositionX;
     private int ballPositionY;
 
@@ -177,9 +177,7 @@ public class GameActivity extends Activity {
 
         // 绑定蓝牙服务
         Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
-        bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);// Get Services
-
-
+        bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
 
         // UI 初始化
         this.UIInitialize();
@@ -319,6 +317,9 @@ public class GameActivity extends Activity {
                         }
                         else if(gattCharacteristic.getUuid().toString().equals(UUID_C_BALL_POSITION)){
                             mGH_Ball_Position_Characteristic = gattCharacteristic;
+                            // set notification enable True
+                            mBluetoothLeService.setCharacteristicNotification(
+                                    mGH_Ball_Position_Characteristic, true);
                         }
                         else if(gattCharacteristic.getUuid().toString().equals(UUID_C_PLAYER_POSITION_W)){
                             mGH_Player_Position_W_Characteristic = gattCharacteristic;
@@ -332,11 +333,31 @@ public class GameActivity extends Activity {
 
             // data available
             else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
-                String data = intent.getStringExtra(BluetoothLeService.EXTRA_DATA);
-                int position = Integer.valueOf(data);
-                int x = position & 0x0fff;
-                int y = (position >> 12) & 0x0fff;
-                Log.d(TAG, String.format("DATA_AVAILABLE : (%d, %d)", x, y));
+
+                String uuid = intent.getStringExtra(BluetoothLeService.EXTRA_UUID);
+                if(uuid == null){
+                    Log.d(TAG, "UUID is null!!");
+                }
+                else if(uuid.equals(UUID_C_PLAYER_POSITION_N)){
+
+                    int ballPosition = intent.getIntExtra(BluetoothLeService.BALL_POSITION, 0);
+                    int playerPosition = intent.getIntExtra(BluetoothLeService.PLAYER_POSITION, 0);
+
+                    int stdBallPositionX = ballPosition & 0x0fff;
+                    int stdBallPositionY = (ballPosition >> 12) & 0x0fff;
+                    ballPositionX = stdBallPositionX * tableWidth / STD_SCREEN_WIDTH ;
+                    ballPositionY = stdBallPositionY * tableHeight / STD_SCREEN_HEIGHT;
+                    //Log.d(TAG, String.format("BALL_POSITION : (%d, %d)", ballPositionX, ballPositionY));
+
+                    //playerPositionX = playerPosition & 0x0fff;
+                    //playerPositionY =  (playerPosition >> 12) & 0x0fff;
+                    //Log.d(TAG, String.format("PLAYER_POSITION : (%d, %d)", playerPositionX, playerPositionY));
+
+                    //Log.d(TAG, "FRAME REFRESH");
+                }
+                else{
+                    Log.d(TAG, "Receive unknown characteristic.");
+                }
 
             }
         }
@@ -375,8 +396,8 @@ public class GameActivity extends Activity {
 
         playerCircleSize = (int) (tableWidth * playerCircleSize_RATE);
         playerInnerCircleSize = (int) (tableWidth * playerInnerCircleSize_RATE);
-        playerCircleAPositionX = (int) (tableWidth * PLAYER_A_INITIAL_RATE_X);
-        playerCircleAPositionY = (int) (tableHeight * PLAYER_A_INITIAL_RATE_Y);
+        playerPositionX = (int) (tableWidth * PLAYER_A_INITIAL_RATE_X);
+        playerPositionY = (int) (tableHeight * PLAYER_A_INITIAL_RATE_Y);
         //playerCircleASpeedX = 0;
         //playerCircleASpeedY = 0;
 
@@ -422,37 +443,26 @@ public class GameActivity extends Activity {
                  * player A position
                  */
                 if (x - gamePaddingLeft < playerCircleSize) {
-                    playerCircleAPositionX = gamePaddingLeft + playerCircleSize;
+                    playerPositionX = gamePaddingLeft + playerCircleSize;
                 } else if (x + gamePaddingRight > tableWidth - playerCircleSize) {
-                    playerCircleAPositionX = tableWidth - playerCircleSize - gamePaddingRight;
+                    playerPositionX = tableWidth - playerCircleSize - gamePaddingRight;
                 } else {
-                    playerCircleAPositionX = (int) x;
+                    playerPositionX = (int) x;
                 }
 
                 if (y < tableHeight * 0.5 + playerCircleSize) {
-                    playerCircleAPositionY = (int) (tableHeight * 0.5 + playerCircleSize);
+                    playerPositionY = (int) (tableHeight * 0.5 + playerCircleSize);
                 } else if (y + gamePaddingBottom > tableHeight - playerCircleSize) {
-                    playerCircleAPositionY = tableHeight - playerCircleSize - gamePaddingBottom;
+                    playerPositionY = tableHeight - playerCircleSize - gamePaddingBottom;
                 } else {
-                    playerCircleAPositionY = (int) y;
+                    playerPositionY = (int) y;
                 }
+
 
                 /**
                  * send to server
                  */
-                if(mGH_Player_Position_W_Characteristic != null){
-                    Calendar calendar = Calendar.getInstance();
-                    int sendx = (int)(playerCircleAPositionX * STD_SCREEN_WIDTH / tableWidth);
-                    int sendy = (int)(playerCircleAPositionY * STD_SCREEN_HEIGHT / tableHeight);
-                    int position = 0;
-                    position |= sendx;
-                    position |= (sendy << 12);
 
-                    //Log.d(TAG, String.format("sent value:(%d, %d)", sendx, sendy));
-                    mGH_Player_Position_W_Characteristic.setValue(position,
-                            BluetoothGattCharacteristic.FORMAT_UINT32,0);
-                    mBluetoothLeService.writeCharacteristic(mGH_Player_Position_W_Characteristic);
-                }
                 return true;
             }
             return true;
@@ -502,15 +512,15 @@ public class GameActivity extends Activity {
                 //画玩家
                 paint.setColor(Color.rgb(124,249,102));
                 canvas.drawCircle(
-                        playerCircleAPositionX,
-                        playerCircleAPositionY,
+                        playerPositionX,
+                        playerPositionY,
                         playerCircleSize,
                         paint
                 );
                 paint.setColor(Color.BLACK);
                 canvas.drawCircle(
-                        playerCircleAPositionX,
-                        playerCircleAPositionY,
+                        playerPositionX,
+                        playerPositionY,
                         playerInnerCircleSize,
                         paint
                 );
@@ -553,111 +563,22 @@ public class GameActivity extends Activity {
             @Override
             public void run() {
                 if(!isOver) {
-                    /*
 
-                    // 小球边框碰撞事件
-                    if (ballPositionX - gamePaddingLeft <= ballSize) {
-                        ballSpeedX = Math.abs(ballSpeedX);
-                    } else if (ballPositionX + gamePaddingRight >= tableWidth - ballSize) {
-                        ballSpeedX = -Math.abs(ballSpeedX);
-                    }
-
-                    if (ballPositionY - gamePaddingTop <= ballSize) {
-                        // 己方得分
-                        if (ballPositionX > doorSideLeft && ballPositionX < doorSideRight) {
-                            scoreA += 1;
-                            Log.d(TAG, String.format("You Scored! current score : %d -- %d", scoreA, scoreB));
-                            if (scoreA >= 7) {
-                                isOver = true;
-                            } else {
-                                isStart = false;
-                                ballPositionX = (int) (tableWidth * BALL_INITIAL_RATE_X);
-                                ballPositionY = (int) (tableHeight * BALL_INITIAL_RATE_Y);
-                                ballSpeedX = 0;
-                                ballSpeedY = 0;
-                                playerCircleAPositionX = (int) (tableWidth * PLAYER_A_INITIAL_RATE_X);
-                                playerCircleAPositionY = (int) (tableHeight * PLAYER_A_INITIAL_RATE_Y);
-                                return;
-                            }
-                        }
-                        ballSpeedY = Math.abs(ballSpeedY);
-                    } else if (ballPositionY + gamePaddingBottom >= tableHeight - ballSize) {
-
-                        //对方得分
-                        if (ballPositionX > doorSideLeft && ballPositionX < doorSideRight) {
-                            scoreB += 1;
-                            Log.d(TAG, String.format("Your rival Scored! current score : %d -- %d", scoreA, scoreB));
-                            if (scoreB >= 7) {
-                                isOver = true;
-                            } else {
-                                isStart = false;
-                                ballPositionX = (int) (tableWidth * BALL_INITIAL_RATE_X);
-                                ballPositionY = (int) (tableHeight * BALL_INITIAL_RATE_Y);
-                                ballSpeedX = 0;
-                                ballSpeedY = 0;
-                                playerCircleAPositionX = (int) (tableWidth * PLAYER_A_INITIAL_RATE_X);
-                                playerCircleAPositionY = (int) (tableHeight * PLAYER_A_INITIAL_RATE_Y);
-                                return;
-                            }
-                        }
-                        ballSpeedY = -Math.abs(ballSpeedY);
-                    }
-
-
-                    // 小球和玩家碰撞事件
-                    double ball_playerA_dis = Math.sqrt(
-                            Math.pow(ballPositionX - playerCircleAPositionX, 2)
-                                    + Math.pow(ballPositionY - playerCircleAPositionY, 2)
-                    );
-                    if (ball_playerA_dis < ballSize + playerCircleSize) {
-
-                        Log.d(TAG, "Bounce!!");
-                        if (!isStart) {
-                            isStart = true;
-                        }
-
-                        ballSpeedX += (int) (2 * PLAYER_CIRCLE_MASS * (playerCircleASpeedX - ballSpeedX)
-                                / (PLAYER_CIRCLE_MASS + BALL_MASS) * BOUNCE_DECAY_RATE);
-                        ballSpeedX += (int) (ballPositionX - playerCircleAPositionX) * BOUNCE_ACCELERATE_RATE *
-                                (ballSize + playerCircleSize - ball_playerA_dis) / (ballSize + playerCircleSize);
-
-                        ballSpeedY += (int) (2 * PLAYER_CIRCLE_MASS * (playerCircleASpeedY - ballSpeedY)
-                                / (PLAYER_CIRCLE_MASS + BALL_MASS) * BOUNCE_DECAY_RATE);
-                        ballSpeedY += (int) (ballPositionY - playerCircleAPositionY) * BOUNCE_ACCELERATE_RATE *
-                                (ballSize + playerCircleSize - ball_playerA_dis) / (ballSize + playerCircleSize);
-                    }
-
-                    // 防止speed过大
-                    if (ballSpeedX > ballSize * BALL_SPEED_MAX_RATE) {
-                        ballSpeedX = (int) (ballSize * BALL_SPEED_MAX_RATE);
-                    } else if (ballSpeedX < -ballSize * BALL_SPEED_MAX_RATE) {
-                        ballSpeedX = -(int) (ballSize * BALL_SPEED_MAX_RATE);
-                    }
-
-                    if (ballSpeedY > ballSize * BALL_SPEED_MAX_RATE) {
-                        ballSpeedY = (int) (ballSize * BALL_SPEED_MAX_RATE);
-                    } else if (ballSpeedY < -ballSize * BALL_SPEED_MAX_RATE) {
-                        ballSpeedY = -(int) (ballSize * BALL_SPEED_MAX_RATE);
-                    }
-
-                    //防止speed过小
-                    if (isStart) {
-                        if (ballSpeedX >= 0 && ballSpeedX < ballSize * BALL_SPEED_MIN_RATE) {
-                            ballSpeedX = (int) (ballSize * BALL_SPEED_MIN_RATE);
-                        } else if (ballSpeedX < 0 && ballSpeedX > -ballSize * BALL_SPEED_MIN_RATE) {
-                            ballSpeedX = -(int) (ballSize * BALL_SPEED_MIN_RATE);
-                        }
-                        if (ballSpeedY >= 0 && ballSpeedY < ballSize * BALL_SPEED_MIN_RATE) {
-                            ballSpeedY = (int) (ballSize * BALL_SPEED_MIN_RATE);
-                        } else if (ballSpeedY < 0 && ballSpeedY > -ballSize * BALL_SPEED_MIN_RATE) {
-                            ballSpeedY = -(int) (ballSize * BALL_SPEED_MIN_RATE);
-                        }
-                    }
-
-                    ballPositionY += ballSpeedY;
-                    ballPositionX += ballSpeedX;
-
+                    /**
+                     * send to server
                      */
+                    if(mGH_Player_Position_W_Characteristic != null){
+
+                        int sendx = (int)(playerPositionX * STD_SCREEN_WIDTH / tableWidth);
+                        int sendy = (int)(playerPositionY * STD_SCREEN_HEIGHT / tableHeight);
+                        int position = 0;
+                        position |= sendx;
+                        position |= (sendy << 12);
+
+                        mGH_Player_Position_W_Characteristic.setValue(position,
+                                BluetoothGattCharacteristic.FORMAT_UINT32,0);
+                        mBluetoothLeService.writeCharacteristic(mGH_Player_Position_W_Characteristic);
+                    }
 
                     handler.sendEmptyMessage(MSG_WHAT);        //刷新视图
                 }

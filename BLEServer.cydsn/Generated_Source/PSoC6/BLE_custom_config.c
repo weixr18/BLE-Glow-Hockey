@@ -48,7 +48,7 @@ static const cy_stc_ble_customs_t cy_ble_customs[0x01u] = {
                 
                 /* Array of Descriptors handles */
                 {
-                    0x0016u, /* Handle of the Custom Descriptor descriptor */ 
+                    CY_BLE_GATT_INVALID_ATTR_HANDLE_VALUE, 
                 }, 
             },
         }, 

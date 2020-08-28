@@ -59,6 +59,9 @@ public class BluetoothLeService extends Service {
     public final static String ACTION_GATT_SERVICES_DISCOVERED = "com.example.bleclient.ACTION_GATT_SERVICES_DISCOVERED";
     public final static String ACTION_DATA_AVAILABLE           = "com.example.bleclient.ACTION_DATA_AVAILABLE";
     public final static String EXTRA_DATA                      = "com.example.bleclient.EXTRA_DATA";
+    public final static String BALL_POSITION                   = "com.example.bleclient.BALL_POSITION";
+    public final static String PLAYER_POSITION                 = "com.example.bleclient.PLAYER_POSITION";
+    public final static String EXTRA_UUID                      = "com.example.bleclient.UUID";
 
     public final static UUID UUID_HEART_RATE_MEASUREMENT       = UUID.fromString(SampleGattAttributes.HEART_RATE_MEASUREMENT);
     public final static UUID UUID_PLAYER_POSITION_N          = UUID.fromString(SampleGattAttributes.PLAYER_POSITION_N);
@@ -140,13 +143,23 @@ public class BluetoothLeService extends Service {
 
         else if(UUID_PLAYER_POSITION_N.equals(characteristic.getUuid())){
 
-            int format = BluetoothGattCharacteristic.FORMAT_UINT32;
-            final int position = characteristic.getIntValue(format, 0);
-            int x = position & 0x0fff;
-            int y = (position >> 12) & 0x0fff;
-            //Log.d(TAG, String.format("Received position: (%d, %d)", x, y));
+            final byte[] data = characteristic.getValue();
 
-            intent.putExtra(EXTRA_DATA, String.valueOf(position));
+            int int0 = data[0] & 0xff;
+            int int1 = (data[1] & 0xff) << 8;
+            int int2 = (data[2] & 0xff) << 16;
+            int int3 = (data[3] & 0xff) << 24;
+            final int playerPosition = int0 | int1 | int2 | int3;
+
+            int int4 = data[4] & 0xff;
+            int int5 = (data[5] & 0xff) << 8;
+            int int6 = (data[6] & 0xff) << 16;
+            int int7 = (data[7] & 0xff) << 24;
+            final int ballPosition = int4 | int5 | int6 | int7;
+
+            intent.putExtra(BALL_POSITION, ballPosition);
+            intent.putExtra(PLAYER_POSITION, playerPosition);
+            intent.putExtra(EXTRA_UUID, characteristic.getUuid().toString());
             sendBroadcast(intent);
         }
 

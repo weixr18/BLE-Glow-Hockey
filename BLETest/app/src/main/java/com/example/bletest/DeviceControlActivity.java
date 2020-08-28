@@ -36,8 +36,10 @@ import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 import com.example.bletest.R;
 
@@ -67,11 +69,48 @@ public class DeviceControlActivity extends Activity {
     private final String LIST_NAME = "NAME";
     private final String LIST_UUID = "UUID";
 
-    // Code to manage Service lifecycle.
+
+
+    /**
+     * onCreate
+     */
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+
+        super.onCreate(savedInstanceState);
+        // 设置布局
+        setContentView(R.layout.gatt_services_characteristics);
+
+        // 获取设备名称、地址
+        final Intent intent = getIntent();
+        mDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
+        mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
+
+        // 获取UI组件以及设置监听器
+        ((TextView) findViewById(R.id.device_address)).setText(mDeviceAddress);
+        mGattServicesList = (ExpandableListView) findViewById(R.id.gatt_services_list);
+        mGattServicesList.setOnChildClickListener(servicesListClickListner);
+        mConnectionState = (TextView) findViewById(R.id.connection_state);
+        mDataField = (TextView) findViewById(R.id.data_value);
+
+        // 设置ActionBar显示
+        getActionBar().setTitle(mDeviceName);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+
+        // 绑定蓝牙服务
+        Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
+        bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
+    }
+
+    /**
+     * service生命周期管理
+     */
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
 
         @Override
         public void onServiceConnected(ComponentName componentName, IBinder service) {
+            Log.d(TAG, "Service Connected");
+            //在回调中获取service实例
             mBluetoothLeService = ((BluetoothLeService.LocalBinder) service).getService();
             if (!mBluetoothLeService.initialize()) {
                 Log.e(TAG, "Unable to initialize Bluetooth");
@@ -83,42 +122,82 @@ public class DeviceControlActivity extends Activity {
 
         @Override
         public void onServiceDisconnected(ComponentName componentName) {
+            Log.d(TAG, "Service Disconnected");
             mBluetoothLeService = null;
         }
     };
 
-    // Handles various events fired by the Service.
-    // ACTION_GATT_CONNECTED: connected to a GATT server.
-    // ACTION_GATT_DISCONNECTED: disconnected from a GATT server.
-    // ACTION_GATT_SERVICES_DISCOVERED: discovered GATT services.
-    // ACTION_DATA_AVAILABLE: received data from the device.  This can be a result of read
-    //                        or notification operations.
+
+    /**
+     * onResume
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // 注册广播接收器
+        registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
+        if (mBluetoothLeService != null) {
+            final boolean result = mBluetoothLeService.connect(mDeviceAddress);
+            Log.d(TAG, "Connect request result=" + result);
+        }
+    }
+
+    /**
+     * 用于GATT广播接收的intent过滤器
+     */
+    private static IntentFilter makeGattUpdateIntentFilter() {
+        final IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(BluetoothLeService.ACTION_GATT_CONNECTED);
+        intentFilter.addAction(BluetoothLeService.ACTION_GATT_DISCONNECTED);
+        intentFilter.addAction(BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED);
+        intentFilter.addAction(BluetoothLeService.ACTION_DATA_AVAILABLE);
+        return intentFilter;
+    }
+
+
+    /** GATT广播接收器
+     * Handles various events fired by the Service.
+     * ACTION_GATT_CONNECTED: connected to a GATT server.
+     * ACTION_GATT_DISCONNECTED: disconnected from a GATT server.
+     * ACTION_GATT_SERVICES_DISCOVERED: discovered GATT services.
+     * ACTION_DATA_AVAILABLE: received data from the device.  This can be a result of read
+     * or notification operations.
+     */
     private final BroadcastReceiver mGattUpdateReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             final String action = intent.getAction();
             if (BluetoothLeService.ACTION_GATT_CONNECTED.equals(action)) {
+                Log.d(TAG, "GATT_CONNECTED");
                 mConnected = true;
                 updateConnectionState(R.string.connected);
                 invalidateOptionsMenu();
-            } else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
+            }
+            else if (BluetoothLeService.ACTION_GATT_DISCONNECTED.equals(action)) {
+                Log.d(TAG, "GATT_DISCONNECTED");
                 mConnected = false;
                 updateConnectionState(R.string.disconnected);
                 invalidateOptionsMenu();
                 clearUI();
-            } else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
-                // Show all the supported services and characteristics on the user interface.
+            }
+            else if (BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED.equals(action)) {
+                Log.d(TAG, "GATT_SERVICES_DISCOVERED");
                 displayGattServices(mBluetoothLeService.getSupportedGattServices());
-            } else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
-                displayData(intent.getStringExtra(BluetoothLeService.EXTRA_DATA));
+            }
+            else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
+                //Log.d(TAG, "DATA_AVAILABLE");
+                String data = intent.getStringExtra(BluetoothLeService.EXTRA_DATA);
+                displayData(data);
             }
         }
     };
 
-    // If a given GATT characteristic is selected, check for supported features.  This sample
-    // demonstrates 'Read' and 'Notify' features.  See
-    // http://d.android.com/reference/android/bluetooth/BluetoothGatt.html for the complete
-    // list of supported characteristic features.
+    /** GATT Service 列表项点击事件监听器
+     * If a given GATT characteristic is selected, check for supported features.  This sample
+     * demonstrates 'Read' and 'Notify' features.  See
+     * http://d.android.com/reference/android/bluetooth/BluetoothGatt.html for the complete
+     * list of supported characteristic features.
+     */
     private final ExpandableListView.OnChildClickListener servicesListClickListner =
             new ExpandableListView.OnChildClickListener() {
                 @Override
@@ -128,9 +207,11 @@ public class DeviceControlActivity extends Activity {
                         final BluetoothGattCharacteristic characteristic =
                                 mGattCharacteristics.get(groupPosition).get(childPosition);
                         final int charaProp = characteristic.getProperties();
-                        if ((charaProp | BluetoothGattCharacteristic.PROPERTY_READ) > 0) {
-                            // If there is an active notification on a characteristic, clear
-                            // it first so it doesn't update the data field on the user interface.
+                        //Log.d(TAG, "Characteristic property: " + Integer.toBinaryString(charaProp));
+
+                        // 读属性
+                        if ((charaProp & BluetoothGattCharacteristic.PROPERTY_READ) > 0) {
+                            // 如果有通知属性，先将其取消
                             if (mNotifyCharacteristic != null) {
                                 mBluetoothLeService.setCharacteristicNotification(
                                         mNotifyCharacteristic, true);
@@ -138,10 +219,32 @@ public class DeviceControlActivity extends Activity {
                             }
                             mBluetoothLeService.readCharacteristic(characteristic);
                         }
-                        if ((charaProp | BluetoothGattCharacteristic.PROPERTY_NOTIFY) > 0) {
+
+                        // 通知属性
+                        if ((charaProp & BluetoothGattCharacteristic.PROPERTY_NOTIFY) > 0) {
+                            Log.d(TAG, "PROPERTY_NOTIFY");
                             mNotifyCharacteristic = characteristic;
                             mBluetoothLeService.setCharacteristicNotification(
                                     characteristic, true);
+                        }
+
+                        // 写属性
+                        if ((charaProp & BluetoothGattCharacteristic.PROPERTY_WRITE) > 0) {
+
+                            Calendar calendar = Calendar.getInstance();
+                            int x = calendar.get(Calendar.SECOND) * 1024 / 60;
+                            int y = new Random().nextInt(2048);
+                            int position = 0;
+                            position |= x;
+                            position |= (y << 12);
+
+                            Log.d(TAG, String.format("sent value:(%d, %d)", x, y));
+                            characteristic.setValue(
+                                    position,
+                                    BluetoothGattCharacteristic.FORMAT_UINT32,
+                                    0);
+                            mBluetoothLeService.writeCharacteristic(characteristic);
+
                         }
                         return true;
                     }
@@ -149,103 +252,9 @@ public class DeviceControlActivity extends Activity {
                 }
     };
 
-    private void clearUI() {
-        mGattServicesList.setAdapter((SimpleExpandableListAdapter) null);
-        mDataField.setText(R.string.no_data);
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.gatt_services_characteristics);
-
-        final Intent intent = getIntent();
-        mDeviceName = intent.getStringExtra(EXTRAS_DEVICE_NAME);
-        mDeviceAddress = intent.getStringExtra(EXTRAS_DEVICE_ADDRESS);
-
-        // Sets up UI references.
-        ((TextView) findViewById(R.id.device_address)).setText(mDeviceAddress);
-        mGattServicesList = (ExpandableListView) findViewById(R.id.gatt_services_list);
-        mGattServicesList.setOnChildClickListener(servicesListClickListner);
-        mConnectionState = (TextView) findViewById(R.id.connection_state);
-        mDataField = (TextView) findViewById(R.id.data_value);
-
-        getActionBar().setTitle(mDeviceName);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        Intent gattServiceIntent = new Intent(this, BluetoothLeService.class);
-        bindService(gattServiceIntent, mServiceConnection, BIND_AUTO_CREATE);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        registerReceiver(mGattUpdateReceiver, makeGattUpdateIntentFilter());
-        if (mBluetoothLeService != null) {
-            final boolean result = mBluetoothLeService.connect(mDeviceAddress);
-            Log.d(TAG, "Connect request result=" + result);
-        }
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        unregisterReceiver(mGattUpdateReceiver);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        unbindService(mServiceConnection);
-        mBluetoothLeService = null;
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.gatt_services, menu);
-        if (mConnected) {
-            menu.findItem(R.id.menu_connect).setVisible(false);
-            menu.findItem(R.id.menu_disconnect).setVisible(true);
-        } else {
-            menu.findItem(R.id.menu_connect).setVisible(true);
-            menu.findItem(R.id.menu_disconnect).setVisible(false);
-        }
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()) {
-            case R.id.menu_connect:
-                mBluetoothLeService.connect(mDeviceAddress);
-                return true;
-            case R.id.menu_disconnect:
-                mBluetoothLeService.disconnect();
-                return true;
-            case android.R.id.home:
-                onBackPressed();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void updateConnectionState(final int resourceId) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mConnectionState.setText(resourceId);
-            }
-        });
-    }
-
-    private void displayData(String data) {
-        if (data != null) {
-            mDataField.setText(data);
-        }
-    }
-
-    // Demonstrates how to iterate through the supported GATT Services/Characteristics.
-    // In this sample, we populate the data structure that is bound to the ExpandableListView
-    // on the UI.
+    /**
+     * 将GATT服务更新到UI界面
+     */
     private void displayGattServices(List<BluetoothGattService> gattServices) {
         if (gattServices == null) return;
         String uuid = null;
@@ -301,12 +310,83 @@ public class DeviceControlActivity extends Activity {
         mGattServicesList.setAdapter(gattServiceAdapter);
     }
 
-    private static IntentFilter makeGattUpdateIntentFilter() {
-        final IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(BluetoothLeService.ACTION_GATT_CONNECTED);
-        intentFilter.addAction(BluetoothLeService.ACTION_GATT_DISCONNECTED);
-        intentFilter.addAction(BluetoothLeService.ACTION_GATT_SERVICES_DISCOVERED);
-        intentFilter.addAction(BluetoothLeService.ACTION_DATA_AVAILABLE);
-        return intentFilter;
+
+    /**
+     * 更新UI中的连接状态
+     */
+    private void updateConnectionState(final int resourceId) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mConnectionState.setText(resourceId);
+            }
+        });
+    }
+
+    /**
+     * 将数据项更新到UI界面
+     */
+    private void displayData(String data) {
+        if (data != null) {
+            mDataField.setText(data);
+        }
+    }
+
+
+    /**
+     * 更新UI中的菜单栏
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.gatt_services, menu);
+        if (mConnected) {
+            menu.findItem(R.id.menu_connect).setVisible(false);
+            menu.findItem(R.id.menu_disconnect).setVisible(true);
+        } else {
+            menu.findItem(R.id.menu_connect).setVisible(true);
+            menu.findItem(R.id.menu_disconnect).setVisible(false);
+        }
+        return true;
+    }
+
+    /**
+     * 菜单栏点击事件
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.menu_connect:
+                mBluetoothLeService.connect(mDeviceAddress);
+                return true;
+            case R.id.menu_disconnect:
+                mBluetoothLeService.disconnect();
+                return true;
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    /**
+     * 清空界面
+     */
+    private void clearUI() {
+        mGattServicesList.setAdapter((SimpleExpandableListAdapter) null);
+        mDataField.setText(R.string.no_data);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(mGattUpdateReceiver);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unbindService(mServiceConnection);
+        mBluetoothLeService = null;
     }
 }

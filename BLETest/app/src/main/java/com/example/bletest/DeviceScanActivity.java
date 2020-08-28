@@ -81,9 +81,7 @@ public class DeviceScanActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         Log.d(TAG, "Create");
 
-        /**
-         * 窗体及必要组件初始化
-         */
+        // 窗体及必要组件初始化
         super.onCreate(savedInstanceState);
         getActionBar().setTitle(R.string.title_devices);
         setContentView(R.layout.device_scan_activity);
@@ -101,9 +99,7 @@ public class DeviceScanActivity extends Activity {
         mListView.setOnItemClickListener(mItemClickListener);
 
 
-        /**
-         * 检查设备是否支持ble
-         */
+        // 检查设备是否支持ble
         if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)) {
             Toast.makeText(this, R.string.ble_not_supported, Toast.LENGTH_SHORT).show();
             finish();
@@ -122,20 +118,11 @@ public class DeviceScanActivity extends Activity {
             finish();
             return;
         }
-        Log.d(TAG, "mBluetoothAdapter set");
 
-
-
-        /**
-         * 设置扫描回调 mScanCallback
-         */
+        //设置扫描回调 mScanCallback
         mScanCallback = getScanCallback();
-        Log.d(TAG, "mScanCallback set");
 
-
-        /**
-         * 创建 ScanSettings 的 build 对象用于设置扫描参数 mScanSettings
-         */
+        // 创建 ScanSettings 的 build 对象用于设置扫描参数 mScanSettings
         ScanSettings.Builder builder = new ScanSettings.Builder()
                 .setScanMode(SCAN_MODE_LOW_LATENCY);//设置高功耗模式
         //定义回调类型
@@ -149,7 +136,6 @@ public class DeviceScanActivity extends Activity {
             builder.setReportDelay(0L);
         }
         mScanSettings = builder.build();
-        Log.d(TAG, "mScanSettings set");
 
         /**
          * 开始扫描
@@ -347,64 +333,6 @@ public class DeviceScanActivity extends Activity {
         TextView deviceName;
         TextView deviceAddress;
     }
-
-
-
-    /*
-    private BroadcastReceiver getBroadCastReceiver(){
-        return new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                //获取蓝牙广播  本地蓝牙适配器的状态改变时触发
-                String action = intent.getAction();
-                if (action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
-                    //获取蓝牙广播中的蓝牙新状态
-                    int blueNewState = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, 0);
-                    //获取蓝牙广播中的蓝牙旧状态
-                    int blueOldState = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, 0);
-                    switch (blueNewState) {
-                        //正在打开蓝牙
-                        case BluetoothAdapter.STATE_TURNING_ON:
-                            break;
-                        //蓝牙已打开
-                        case BluetoothAdapter.STATE_ON:
-                            break;
-                        //正在关闭蓝牙
-                        case BluetoothAdapter.STATE_TURNING_OFF:
-                            break;
-                        //蓝牙已关闭
-                        case BluetoothAdapter.STATE_OFF:
-                            break;
-                    }
-                }
-            }
-        };
-    }
-     */
-
-    /*
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        Log.d(TAG, "ActivityResult");
-
-        // User chose not to enable Bluetooth.
-        if (requestCode == REQUEST_ENABLE_BT && resultCode == Activity.RESULT_CANCELED) {
-            finish();
-            return;
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    @Override
-    protected void onPause() {
-        Log.d(TAG, "Pause");
-        super.onPause();
-        //scanLeDevice(false);
-        //mLeDeviceListAdapter.clear();
-    }
-
-     */
 
 
 }

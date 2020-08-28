@@ -26,6 +26,12 @@ public class SampleGattAttributes {
     public static String HEART_RATE_MEASUREMENT = "00002a37-0000-1000-8000-00805f9b34fb";
     public static String CLIENT_CHARACTERISTIC_CONFIG = "00002902-0000-1000-8000-00805f9b34fb";
 
+    public static String PLAYER_POSITION_N = "00030711-0000-1000-8000-00805f9b0131";
+    public static String OPPOSITE_POSITION = "00030713-0000-1000-8000-00805f9b0131";
+    public static String BALL_POSITION     = "00030713-0000-1000-8000-00805f9b0131";
+    public static String PLAYER_POSITION_W = "00030714-0000-1000-8000-00805f9b0131";
+
+
     static {
         // Sample Services.
         attributes.put("0000180d-0000-1000-8000-00805f9b34fb", "Heart Rate Service");
