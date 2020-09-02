@@ -1,13 +1,13 @@
-Loading plugins phase: Elapsed time ==> 7s.608ms
+Loading plugins phase: Elapsed time ==> 1s.127ms
 <CYPRESSTAG name="CyDsfit arguments...">
 cydsfit arguments: -.fdsnotice -.fdswarpdepfile=warp_dependencies.txt -.fdselabdepfile=elab_dependencies.txt -.fdsbldfile=generated_files.txt -.fdsreffile=referenced_files.txt -p D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\BLEServer.cyprj -d CY8C6347BZI-BLD53 -s D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\Generated_Source\PSoC6 -- -yv2 -q10 -ygs -o2 -v3 -.fftcfgtype=LE
 </CYPRESSTAG>
 <CYPRESSTAG name="Design elaboration results...">
 </CYPRESSTAG>
-Elaboration phase: Elapsed time ==> 19s.297ms
+Elaboration phase: Elapsed time ==> 9s.129ms
 <CYPRESSTAG name="HDL generation results...">
 </CYPRESSTAG>
-HDL generation phase: Elapsed time ==> 0s.132ms
+HDL generation phase: Elapsed time ==> 0s.057ms
 <CYPRESSTAG name="Synthesis results...">
 
      | | | | | | |
@@ -41,7 +41,7 @@ Options  :    -yv2 -q10 -ygs -o2 -v3 -.fftcfgtype=LE -ya -.fftprj=D:\Codes\_Proj
 ======================================================================
 
 vlogfe V6.3 IR 41:  Verilog parser
-Fri Aug 28 11:07:26 2020
+Wed Sep 02 17:24:11 2020
 
 
 ======================================================================
@@ -51,7 +51,7 @@ Options  :    -yv2 -q10 BLEServer.v
 ======================================================================
 
 vpp V6.3 IR 41:  Verilog Pre-Processor
-Fri Aug 28 11:07:26 2020
+Wed Sep 02 17:24:11 2020
 
 Flattening file 'E:\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\cy_virtualmux_v1_0\cy_virtualmux_v1_0.v'
 Flattening file 'E:\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.cylib\ZeroTerminal\ZeroTerminal.v'
@@ -84,7 +84,7 @@ Options  :    -yv2 -q10 -ygs -o2 -v3 -.fftcfgtype=LE -ya -.fftprj=D:\Codes\_Proj
 ======================================================================
 
 tovif V6.3 IR 41:  High-level synthesis
-Fri Aug 28 11:07:26 2020
+Wed Sep 02 17:24:11 2020
 
 Linking 'E:\Cypress\PSoC Creator\4.2\PSoC Creator\warp\lib\common\std.vhd'.
 Linking 'E:\Cypress\PSoC Creator\4.2\PSoC Creator\warp\lib\common\cypress.vhd'.
@@ -112,7 +112,7 @@ Options  :    -yv2 -q10 -ygs -o2 -v3 -.fftcfgtype=LE -ya -.fftprj=D:\Codes\_Proj
 ======================================================================
 
 topld V6.3 IR 41:  Synthesis and optimization
-Fri Aug 28 11:07:26 2020
+Wed Sep 02 17:24:11 2020
 
 Linking 'E:\Cypress\PSoC Creator\4.2\PSoC Creator\warp\lib\common\std.vhd'.
 Linking 'E:\Cypress\PSoC Creator\4.2\PSoC Creator\warp\lib\common\cypress.vhd'.
@@ -206,14 +206,14 @@ CYPRESS_DIR    : E:\Cypress\PSoC Creator\4.2\PSoC Creator\warp
 Warp Program   : E:\Cypress\PSoC Creator\4.2\PSoC Creator\warp\bin\warp.exe
 Warp Arguments : -yv2 -q10 -ygs -o2 -v3 -.fftcfgtype=LE -ya -.fftprj=D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\BLEServer.cyprj -dcpsoc3 BLEServer.v -verilog
 </CYPRESSTAG>
-Warp synthesis phase: Elapsed time ==> 0s.811ms
+Warp synthesis phase: Elapsed time ==> 0s.618ms
 <CYPRESSTAG name="Fitter results...">
 <CYPRESSTAG name="Fitter startup details...">
-cyp3fit: V4.2.0.641, Family: PSoC3, Started at: Friday, 28 August 2020 11:07:26
+cyp3fit: V4.2.0.641, Family: PSoC3, Started at: Wednesday, 02 September 2020 17:24:11
 Options: -yv2 -q10 -ygs -o2 -v3 -.fftcfgtype=LE -ya -.fftprj=D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\BLEServer.cyprj -d CY8C6347BZI-BLD53 BLEServer.v -verilog
 </CYPRESSTAG>
 <CYPRESSTAG name="Design parsing">
-Design parsing phase: Elapsed time ==> 0s.203ms
+Design parsing phase: Elapsed time ==> 0s.212ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Tech Mapping">
 <CYPRESSTAG name="Initial Mapping" icon="FILE_RPT_TECHM">
@@ -578,8 +578,8 @@ Sample and Hold               :    0 :    1 :    1 :  0.00 %
 SAR ADC                       :    0 :    1 :    1 :  0.00 %
 DieTemp Sensor                :    0 :    1 :    1 :  0.00 %
 </CYPRESSTAG>
-Technology Mapping: Elapsed time ==> 0s.164ms
-Tech Mapping phase: Elapsed time ==> 0s.388ms
+Technology Mapping: Elapsed time ==> 0s.044ms
+Tech Mapping phase: Elapsed time ==> 0s.120ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Analog Placement">
 <CYPRESSTAG name="FFB & IO Pre Placement">
@@ -604,15 +604,15 @@ CPUSS                               : CPUSS_[FFB(CPUSS,0)]
 </CYPRESSTAG>
 </CYPRESSTAG>
 <CYPRESSTAG name="Real Analog Placement">
-Elapsed time ==> 0.3124711s
+Elapsed time ==> 0.2500733s
 </CYPRESSTAG>
-Analog Placement phase: Elapsed time ==> 1s.271ms
+Analog Placement phase: Elapsed time ==> 0s.980ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Analog Routing">
 <CYPRESSTAG name="Analog Routing">
-Route success=True, Iterations=1 Elapsed=0.0258187 secs
+Route success=True, Iterations=1 Elapsed=0.0274363 secs
 </CYPRESSTAG>
-Analog Routing phase: Elapsed time ==> 0s.026ms
+Analog Routing phase: Elapsed time ==> 0s.028ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Analog Code Generation">
 ============ Analog Final Answer Routes ============
@@ -663,26 +663,26 @@ Map of item to net {
 }
 Mux Info {
 }
-Analog Code Generation phase: Elapsed time ==> 0s.098ms
+Analog Code Generation phase: Elapsed time ==> 0s.019ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Digital Placement">
 <CYPRESSTAG name="Detailed placement messages">
 I2659: No Constrained paths were found. The placer will run in non-timing driven mode.
-I2076: Total run-time: 1.0 sec.
+I2076: Total run-time: 0.4 sec.
 
 </CYPRESSTAG>
 <CYPRESSTAG name="PLD Packing">
 <CYPRESSTAG name="PLD Packing Summary">
 No PLDs were packed.
 </CYPRESSTAG>
-PLD Packing: Elapsed time ==> 0s.065ms
+PLD Packing: Elapsed time ==> 0s.000ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Partitioning">
 <CYPRESSTAG name="Initial Partitioning Summary">
 Initial Partitioning Summary not displayed at this verbose level.</CYPRESSTAG>
 <CYPRESSTAG name="Final Partitioning Summary">
 Final Partitioning Summary not displayed at this verbose level.</CYPRESSTAG>
-Partitioning: Elapsed time ==> 0s.104ms
+Partitioning: Elapsed time ==> 0s.013ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Final Placement Summary">
 
@@ -1188,32 +1188,32 @@ Port | Pin | Fixed |      Type |       Drive Mode |                       Name |
 </CYPRESSTAG>
 </CYPRESSTAG>
 Digital component placer commit/Report: Elapsed time ==> 0s.010ms
-Digital Placement phase: Elapsed time ==> 8s.158ms
+Digital Placement phase: Elapsed time ==> 6s.329ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Digital Routing">
 "E:\Cypress\PSoC Creator\4.2\PSoC Creator\bin/sjrouter.exe" --xml-path "E:\Cypress\PSoC Creator\4.2\PSoC Creator\dev\psoc6/0/route_arch-rrg.cydata" --vh2-path "BLEServer_r.vh2" --pcf-path "BLEServer.pco" --des-name "BLEServer" --dsf-path "BLEServer.dsf" --sdc-path "BLEServer.sdc" --lib-path "BLEServer_r.lib"
 Routing successful.
-Digital Routing phase: Elapsed time ==> 1s.155ms
+Digital Routing phase: Elapsed time ==> 0s.821ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Bitstream Generation">
-Bitstream Generation phase: Elapsed time ==> 0s.694ms
+Bitstream Generation phase: Elapsed time ==> 0s.489ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Bitstream Verification">
 Bitstream Verification phase: Elapsed time ==> 0s.000ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Static timing analysis">
 Timing report is in BLEServer_timing.html.
-Static timing analysis phase: Elapsed time ==> 9s.854ms
+Static timing analysis phase: Elapsed time ==> 7s.864ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Data reporting">
 Data reporting phase: Elapsed time ==> 0s.000ms
 </CYPRESSTAG>
 <CYPRESSTAG name="Database update...">
-Design database save phase: Elapsed time ==> 0s.369ms
+Design database save phase: Elapsed time ==> 0s.161ms
 </CYPRESSTAG>
-cydsfit: Elapsed time ==> 22s.397ms
+cydsfit: Elapsed time ==> 17s.065ms
 </CYPRESSTAG>
-Fitter phase: Elapsed time ==> 22s.474ms
-API generation phase: Elapsed time ==> 5s.567ms
-Dependency generation phase: Elapsed time ==> 0s.088ms
+Fitter phase: Elapsed time ==> 17s.066ms
+API generation phase: Elapsed time ==> 3s.744ms
+Dependency generation phase: Elapsed time ==> 0s.022ms
 Cleanup phase: Elapsed time ==> 0s.000ms

@@ -37,11 +37,13 @@
       <Folder BuildType="STRICT" Path="D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn">
         <Files Root="D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn">
           <File BuildType="BUILD" Toolchain="">FreeRTOSConfig.h</File>
+          <File BuildType="BUILD" Toolchain="">game.h</File>
           <File BuildType="BUILD" Toolchain="">main_cm4.c</File>
           <File BuildType="BUILD" Toolchain="ARM GCC Generic">armgcc\startup\startup_psoc63_cm4.S</File>
           <File BuildType="BUILD" Toolchain="ARM IAR Generic">iar\startup\startup_psoc63_cm4.s</File>
           <File BuildType="BUILD" Toolchain="ARM MDK Generic">mdk\startup\startup_psoc63_cm4.s</File>
           <File BuildType="BUILD" Toolchain="">system_psoc63_cm4.c</File>
+          <File BuildType="BUILD" Toolchain="">game.c</File>
           <File BuildType="BUILD" Toolchain="ARM GCC Generic">cy8c6xx7_cm4_dual.ld</File>
           <File BuildType="BUILD" Toolchain="ARM IAR Generic">cy8c6xx7_cm4_dual.icf</File>
           <File BuildType="BUILD" Toolchain="ARM MDK Generic">cy8c6xx7_cm4_dual.scat</File>

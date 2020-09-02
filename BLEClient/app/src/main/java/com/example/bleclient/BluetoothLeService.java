@@ -62,9 +62,11 @@ public class BluetoothLeService extends Service {
     public final static String BALL_POSITION                   = "com.example.bleclient.BALL_POSITION";
     public final static String PLAYER_POSITION                 = "com.example.bleclient.PLAYER_POSITION";
     public final static String EXTRA_UUID                      = "com.example.bleclient.UUID";
+    public final static String PLAYER_ID                       = "com.example.bleclient.PLAYER_ID";
 
     public final static UUID UUID_HEART_RATE_MEASUREMENT       = UUID.fromString(SampleGattAttributes.HEART_RATE_MEASUREMENT);
-    public final static UUID UUID_PLAYER_POSITION_N          = UUID.fromString(SampleGattAttributes.PLAYER_POSITION_N);
+    public final static UUID UUID_PLAYER_POSITION_N            = UUID.fromString(SampleGattAttributes.UUID_C_PLAYER_POSITION_N);
+    public final static UUID UUID_COMMAND_N                    = UUID.fromString(SampleGattAttributes.UUID_C_COMMAND_N);
 
     // Implements callback methods for GATT events that the app cares about.  For example,
     // connection change and services discovered.
@@ -125,23 +127,7 @@ public class BluetoothLeService extends Service {
                                  final BluetoothGattCharacteristic characteristic) {
         final Intent intent = new Intent(action);
 
-        if (UUID_HEART_RATE_MEASUREMENT.equals(characteristic.getUuid())) {
-            int flag = characteristic.getProperties();
-            int format = -1;
-            if ((flag & 0x01) != 0) {
-                format = BluetoothGattCharacteristic.FORMAT_UINT16;
-                Log.d(TAG, "Heart rate format UINT16.");
-            } else {
-                format = BluetoothGattCharacteristic.FORMAT_UINT8;
-                Log.d(TAG, "Heart rate format UINT8.");
-            }
-            final int heartRate = characteristic.getIntValue(format, 1);
-            Log.d(TAG, String.format("Received heart rate: %d", heartRate));
-            intent.putExtra(EXTRA_DATA, String.valueOf(heartRate));
-            sendBroadcast(intent);
-        }
-
-        else if(UUID_PLAYER_POSITION_N.equals(characteristic.getUuid())){
+        if(UUID_PLAYER_POSITION_N.equals(characteristic.getUuid())){
 
             final byte[] data = characteristic.getValue();
 
@@ -162,16 +148,26 @@ public class BluetoothLeService extends Service {
             intent.putExtra(EXTRA_UUID, characteristic.getUuid().toString());
             sendBroadcast(intent);
         }
+        else if(UUID_COMMAND_N.equals(characteristic.getUuid())){
+
+            final byte[] data = characteristic.getValue();
+            int playerID = data[0] & 0xff;
+            intent.putExtra(PLAYER_ID, playerID);
+            intent.putExtra(EXTRA_UUID, characteristic.getUuid().toString());
+            sendBroadcast(intent);
+        }
 
         else {
             // For all other profiles, writes the data formatted in HEX.
             final byte[] data = characteristic.getValue();
-           /* if (data != null && data.length > 0) {
+           /*
+           if (data != null && data.length > 0) {
                 final StringBuilder stringBuilder = new StringBuilder(data.length);
                 for(byte byteChar : data)
                     stringBuilder.append(String.format("%02X ", byteChar));
                 intent.putExtra(EXTRA_DATA, new String(data) + "\n" + stringBuilder.toString());
-            }*/
+            }
+            */
             if (data[0]=='A') {
             	return;
             }
@@ -357,6 +353,7 @@ public class BluetoothLeService extends Service {
             }
         }
 
+        /*
         // This is specific to Heart Rate Measurement.
         if (UUID_HEART_RATE_MEASUREMENT.equals(characteristic.getUuid())) {
             BluetoothGattDescriptor descriptor = characteristic.getDescriptor(
@@ -364,6 +361,8 @@ public class BluetoothLeService extends Service {
             descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
             mBluetoothGatt.writeDescriptor(descriptor);
         }
+
+         */
     }
 
     /**

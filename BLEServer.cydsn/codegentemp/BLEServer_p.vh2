@@ -1,5 +1,5 @@
 -- Project:   BLEServer
--- Generated: 08/28/2020 11:07:33
+-- Generated: 09/02/2020 17:24:18
 -- PSoC Creator  4.2
 
 ENTITY BLEServer IS

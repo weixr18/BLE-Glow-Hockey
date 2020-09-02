@@ -81,6 +81,7 @@ public class GameActivity extends Activity {
     private boolean mConnected = false;
 
     // game states
+    private int playerID;
     private boolean isOver = false;
     private boolean isStart = false;
     private int scoreA = 0;
@@ -292,6 +293,9 @@ public class GameActivity extends Activity {
                     for (BluetoothGattCharacteristic gattCharacteristic : GHCommandCharacteristics) {
                         if(gattCharacteristic.getUuid().toString().equals(UUID_C_COMMAND_N)){
                             mGH_COMMAND_N_Characteristic = gattCharacteristic;
+                            // set notification enable True
+                            mBluetoothLeService.setCharacteristicNotification(
+                                    mGH_COMMAND_N_Characteristic, true);
                         }
                         else if(gattCharacteristic.getUuid().toString().equals(UUID_C_COMMAND_W)){
                             mGH_COMMAND_W_Characteristic = gattCharacteristic;
@@ -307,6 +311,13 @@ public class GameActivity extends Activity {
                             mGHPositionService.getCharacteristics();
                     for (BluetoothGattCharacteristic gattCharacteristic : GHPositionCharacteristics) {
                         if(gattCharacteristic.getUuid().toString().equals(UUID_C_PLAYER_POSITION_N)){
+                            try{
+                                Thread.sleep(100);
+                            }
+                            catch (Exception e){
+                                Log.e(TAG, e.toString());
+                            }
+
                             mGH_Player_Position_N_Characteristic = gattCharacteristic;
                             // set notification enable True
                             mBluetoothLeService.setCharacteristicNotification(
@@ -317,9 +328,6 @@ public class GameActivity extends Activity {
                         }
                         else if(gattCharacteristic.getUuid().toString().equals(UUID_C_BALL_POSITION)){
                             mGH_Ball_Position_Characteristic = gattCharacteristic;
-                            // set notification enable True
-                            mBluetoothLeService.setCharacteristicNotification(
-                                    mGH_Ball_Position_Characteristic, true);
                         }
                         else if(gattCharacteristic.getUuid().toString().equals(UUID_C_PLAYER_POSITION_W)){
                             mGH_Player_Position_W_Characteristic = gattCharacteristic;
@@ -338,7 +346,14 @@ public class GameActivity extends Activity {
                 if(uuid == null){
                     Log.d(TAG, "UUID is null!!");
                 }
+                else if(uuid.equals(UUID_C_COMMAND_N)){
+
+                    playerID = intent.getIntExtra(BluetoothLeService.PLAYER_ID, 0);
+                    Log.d(TAG, String.format("COMMAND_N received :%d", playerID));
+                }
                 else if(uuid.equals(UUID_C_PLAYER_POSITION_N)){
+
+                    Log.d(TAG, "PLAYER_POSITION_N received !!!");
 
                     int ballPosition = intent.getIntExtra(BluetoothLeService.BALL_POSITION, 0);
                     int playerPosition = intent.getIntExtra(BluetoothLeService.PLAYER_POSITION, 0);
@@ -347,6 +362,7 @@ public class GameActivity extends Activity {
                     int stdBallPositionY = (ballPosition >> 12) & 0x0fff;
                     ballPositionX = stdBallPositionX * tableWidth / STD_SCREEN_WIDTH ;
                     ballPositionY = stdBallPositionY * tableHeight / STD_SCREEN_HEIGHT;
+
                     //Log.d(TAG, String.format("BALL_POSITION : (%d, %d)", ballPositionX, ballPositionY));
 
                     //playerPositionX = playerPosition & 0x0fff;
@@ -355,6 +371,8 @@ public class GameActivity extends Activity {
 
                     //Log.d(TAG, "FRAME REFRESH");
                 }
+
+
                 else{
                     Log.d(TAG, "Receive unknown characteristic.");
                 }
@@ -574,6 +592,7 @@ public class GameActivity extends Activity {
                         int position = 0;
                         position |= sendx;
                         position |= (sendy << 12);
+                        position |= (playerID << 24);
 
                         mGH_Player_Position_W_Characteristic.setValue(position,
                                 BluetoothGattCharacteristic.FORMAT_UINT32,0);

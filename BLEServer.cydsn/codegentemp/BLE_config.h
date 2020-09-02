@@ -185,7 +185,7 @@ extern "C" {
  * This parameter displays how many BLE connections (both Central and 
  * Peripheral) are allowed. The valid range is from 1 to 4.
  */
-#define CY_BLE_CONFIG_CONN_COUNT                    (1u)
+#define CY_BLE_CONFIG_CONN_COUNT                    (2u)
 
 /** The number of BLE connections (client). */
 #define CY_BLE_CONFIG_GATTC_COUNT                   (0x00u)
@@ -276,8 +276,8 @@ extern "C" {
 #define CY_BLE_CONFIG_GATT_MTU                      (0x0017u)
 
 /** The GATT Maximum attribute length. */
-#define CY_BLE_CONFIG_GATT_DB_MAX_VALUE_LEN         (0x0008u)
-#define CY_BLE_GATT_DB_INDEX_COUNT                  (0x0015u)
+#define CY_BLE_CONFIG_GATT_DB_MAX_VALUE_LEN         (0x000Au)
+#define CY_BLE_GATT_DB_INDEX_COUNT                  (0x001Bu)
 
 /** The number of characteristics supporting the Reliable Write property. */
 #define CY_BLE_CONFIG_GATT_RELIABLE_CHAR_COUNT      (0x0000u)
@@ -308,7 +308,7 @@ extern "C" {
     #define CY_BLE_CONFIG_L2CAP_PSM_COUNT               (1u)
 #endif  /* CY_BLE_L2CAP_ENABLE != 0u */
 
-#define CY_BLE_CONFIG_GATT_DB_ATT_VAL_COUNT         (0x0Du)
+#define CY_BLE_CONFIG_GATT_DB_ATT_VAL_COUNT         (0x13u)
 
 /** Max Tx payload size. */
 #define CY_BLE_CONFIG_LL_MAX_TX_PAYLOAD_SIZE        (0x1Bu)
@@ -318,7 +318,7 @@ extern "C" {
 
 /** GATT Role. */
 #define CY_BLE_CONFIG_GATT_ROLE                     (0x01u)
-#define CY_BLE_CONFIG_GATT_DB_CCCD_COUNT            (0x04u)
+#define CY_BLE_CONFIG_GATT_DB_CCCD_COUNT            (0x06u)
 
 /** Max unique services in the project. */
 #define CY_BLE_MAX_SRVI                             (0x01u)
@@ -364,7 +364,7 @@ extern "C" {
 
 /* CUSTOM */
 /** The maximum supported count of Custom services for the GATT Server role. */
-#define CY_BLE_CONFIG_CUSTOMS_SERVICE_COUNT         (0x01u)
+#define CY_BLE_CONFIG_CUSTOMS_SERVICE_COUNT         (0x02u)
 
 /** The maximum supported count of Custom services for the GATT Client role. */
 #define CY_BLE_CONFIG_CUSTOMC_SERVICE_COUNT         (0x00u)
@@ -384,6 +384,11 @@ extern "C" {
 #define CY_BLE_GH_POSITION_PLAYER_POSITION_N_CLIENT_CHARACTERISTIC_CONFIGURATION_DESC_INDEX   (0x00u) /* Index of Client Characteristic Configuration descriptor */
 #define CY_BLE_GH_POSITION_PLAYER_POSITION_W_CHAR_INDEX   (0x01u) /* Index of Player Position W characteristic */
 
+#define CY_BLE_GH_COMMAND_SERVICE_INDEX   (0x01u) /* Index of GH Command service in the cy_ble_customs array */
+#define CY_BLE_GH_COMMAND_COMMAND_NOTIFY_CHAR_INDEX   (0x00u) /* Index of Command Notify characteristic */
+#define CY_BLE_GH_COMMAND_COMMAND_NOTIFY_CLIENT_CHARACTERISTIC_CONFIGURATION_DESC_INDEX   (0x00u) /* Index of Client Characteristic Configuration descriptor */
+#define CY_BLE_GH_COMMAND_COMMAND_WRITE_CHAR_INDEX   (0x01u) /* Index of Command Write characteristic */
+
 
 #define CY_BLE_GH_POSITION_SERVICE_HANDLE   (0x0010u) /* Handle of GH Position service */
 #define CY_BLE_GH_POSITION_PLAYER_POSITION_N_DECL_HANDLE   (0x0011u) /* Handle of Player Position N characteristic declaration */
@@ -391,6 +396,13 @@ extern "C" {
 #define CY_BLE_GH_POSITION_PLAYER_POSITION_N_CLIENT_CHARACTERISTIC_CONFIGURATION_DESC_HANDLE   (0x0013u) /* Handle of Client Characteristic Configuration descriptor */
 #define CY_BLE_GH_POSITION_PLAYER_POSITION_W_DECL_HANDLE   (0x0014u) /* Handle of Player Position W characteristic declaration */
 #define CY_BLE_GH_POSITION_PLAYER_POSITION_W_CHAR_HANDLE   (0x0015u) /* Handle of Player Position W characteristic */
+
+#define CY_BLE_GH_COMMAND_SERVICE_HANDLE   (0x0016u) /* Handle of GH Command service */
+#define CY_BLE_GH_COMMAND_COMMAND_NOTIFY_DECL_HANDLE   (0x0017u) /* Handle of Command Notify characteristic declaration */
+#define CY_BLE_GH_COMMAND_COMMAND_NOTIFY_CHAR_HANDLE   (0x0018u) /* Handle of Command Notify characteristic */
+#define CY_BLE_GH_COMMAND_COMMAND_NOTIFY_CLIENT_CHARACTERISTIC_CONFIGURATION_DESC_HANDLE   (0x0019u) /* Handle of Client Characteristic Configuration descriptor */
+#define CY_BLE_GH_COMMAND_COMMAND_WRITE_DECL_HANDLE   (0x001Au) /* Handle of Command Write characteristic declaration */
+#define CY_BLE_GH_COMMAND_COMMAND_WRITE_CHAR_HANDLE   (0x001Bu) /* Handle of Command Write characteristic */
 
 
 

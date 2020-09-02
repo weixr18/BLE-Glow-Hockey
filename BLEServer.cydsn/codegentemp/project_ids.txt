@@ -1,7 +1,7 @@
-D:\Codes\_Hardware\PSoC\PSOC6\Advanced_Experiments\Dual_Core_BLE.cydsn\Dual_Core_BLE.cyprj|0d324f98-5602-41e1-ad57-cef9cd033675
-E:\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\CyAnnotationLibrary.cyprj|ed377461-d09f-4a13-a39b-0ceda16acb32
-C:\Users\YYDPY\Documents\PSoC Creator\4.2\Downloads ( 4.2).cylib\Downloads ( 4.2).cyprj|14af953a-7816-4728-8a7f-4fb8d9c1e239
-E:\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cycomponentlibraryupdates\CyComponentLibraryUpdates.cylib\CyComponentLibraryUpdates.cyprj|ef1dbe01-7c0f-4074-8164-20dce36cc17c
-E:\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CyComponentLibrary.cyprj|b8a0a41e-cc86-485a-b9c4-ca6c8132c6b1
-E:\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\CyPrimitives.cyprj|ceb317d2-adec-4fff-9e31-8ec7114d255b
-D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\BLEServer.cyprj|7ec3790c-ed2a-4c8d-b6a6-bffc56059e1b
+D:\Codes\_Hardware\PSoC\PSOC6\Advanced_Experiments\Dual_Core_BLE.cydsn\Dual_Core_BLE.cyprj|ed4a5d1c-020b-4278-be44-c1ac71ae1308
+E:\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\CyAnnotationLibrary.cyprj|8be65ec3-096e-41ca-9c8c-0fe8b1c5ca49
+C:\Users\YYDPY\Documents\PSoC Creator\4.2\Downloads ( 4.2).cylib\Downloads ( 4.2).cyprj|526d1548-2bea-497f-b43c-41c1e70889bd
+E:\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cycomponentlibraryupdates\CyComponentLibraryUpdates.cylib\CyComponentLibraryUpdates.cyprj|7a8978e7-1863-4c23-8498-e3798d0d312f
+E:\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CyComponentLibrary.cyprj|e559b430-fb56-40c2-a0b1-24bbef350733
+E:\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\CyPrimitives.cyprj|30957380-9112-43d5-959e-1080c2846d96
+D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\BLEServer.cyprj|92dbf5b2-7b3b-46c3-9bb8-c66310461bb9

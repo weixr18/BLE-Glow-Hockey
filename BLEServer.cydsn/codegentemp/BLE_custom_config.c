@@ -25,7 +25,7 @@
 */
 /* This array contains attribute handles for the defined Custom Services and their characteristics and descriptors.
    The array index definitions are located in the BLE_custom.h file. */
-static const cy_stc_ble_customs_t cy_ble_customs[0x01u] = {
+static const cy_stc_ble_customs_t cy_ble_customs[0x02u] = {
 
     /* GH Position service */
     {
@@ -45,6 +45,33 @@ static const cy_stc_ble_customs_t cy_ble_customs[0x01u] = {
             /* Player Position W characteristic */
             {
                 0x0015u, /* Handle of the Player Position W characteristic */ 
+                
+                /* Array of Descriptors handles */
+                {
+                    CY_BLE_GATT_INVALID_ATTR_HANDLE_VALUE, 
+                }, 
+            },
+        }, 
+    },
+
+    /* GH Command service */
+    {
+        0x0016u, /* Handle of the GH Command service */ 
+        {
+
+            /* Command Notify characteristic */
+            {
+                0x0018u, /* Handle of the Command Notify characteristic */ 
+                
+                /* Array of Descriptors handles */
+                {
+                    0x0019u, /* Handle of the Client Characteristic Configuration descriptor */ 
+                }, 
+            },
+
+            /* Command Write characteristic */
+            {
+                0x001Bu, /* Handle of the Command Write characteristic */ 
                 
                 /* Array of Descriptors handles */
                 {
