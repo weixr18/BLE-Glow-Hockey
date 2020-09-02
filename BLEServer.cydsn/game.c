@@ -21,22 +21,21 @@ void GlowHockeyTask(){
     int16 ballSpeedX = 0;
     int16 ballSpeedY = 0;
     
-    uint16 player0X = (int) (tableWidth * PLAYER_A_INITIAL_RATE_X);
-    uint16 player0Y = (int) (tableHeight * PLAYER_A_INITIAL_RATE_Y);
+    uint16 player0X = (int) (tableWidth * PLAYER_0_INITIAL_RATE_X);
+    uint16 player0Y = (int) (tableHeight * PLAYER_0_INITIAL_RATE_Y);
     uint16 player0XLast = player0X;
     uint16 player0YLast = player0Y;
     int16 player0SpeedX = 0;
     int16 player0SpeedY = 0;
     
-    uint16 player1X;
-    uint16 player1Y;
+    uint16 player1X = (int) (tableWidth * PLAYER_1_INITIAL_RATE_X);
+    uint16 player1Y = (int) (tableWidth * PLAYER_1_INITIAL_RATE_Y);
     uint16 player1XLast = player1X;
     uint16 player1YLast = player1Y;
     int16 player1SpeedX = 0;
     int16 player1SpeedY = 0;
     
     uint32 receivedPosition;
-    uint32 sendUserPosition;
     uint32 sendBallPosition;
     uint32 sendOppositePosition;
     uint64 bytesToSend;
@@ -71,9 +70,14 @@ void GlowHockeyTask(){
             }
             else{
                 // player 1
-                player1X = ((uint16) receivedPosition) & USER_POSITION_MASK;
-                player1Y = ((uint16)(receivedPosition >> 12)) & USER_POSITION_MASK;
-                printf("User 1 : (%u, %u)\r\n", player1X, player1Y);
+                player1X = tableWidth - (((uint16) receivedPosition) & USER_POSITION_MASK);
+                player1Y = tableHeight - ((uint16)(receivedPosition >> 12) & USER_POSITION_MASK);
+                //printf("User 1 : (%u, %u)\r\n", player1X, player1Y);
+                
+                player1SpeedX = player1X - player1XLast;
+                player1SpeedY = player1Y - player1YLast;
+                player1XLast = player1X;
+                player1YLast = player1Y;
             }
             
             // game logic
@@ -97,14 +101,16 @@ void GlowHockeyTask(){
                     //    isOver = true;
                     //} else {
                         //isStart = false;
-                    printf("You scored!!\r\n");
+                    printf("Player 0 scored!!\r\n");
                     
                         ballPositionX = (int16) (tableWidth * BALL_INITIAL_RATE_X);
                         ballPositionY = (int16) (tableHeight * BALL_INITIAL_RATE_Y);
                         ballSpeedX = 0;
                         ballSpeedY = 0;
-                        player0X = (int16) (tableWidth * PLAYER_A_INITIAL_RATE_X);
-                        player0Y = (int16) (tableHeight * PLAYER_A_INITIAL_RATE_Y);
+                        player0X = (int16) (tableWidth * PLAYER_0_INITIAL_RATE_X);
+                        player0Y = (int16) (tableHeight * PLAYER_0_INITIAL_RATE_Y);
+                        player1X = (int16) (tableWidth * PLAYER_1_INITIAL_RATE_X);
+                        player1Y = (int16) (tableHeight * PLAYER_1_INITIAL_RATE_Y);
                         
                     //}
                 }
@@ -120,14 +126,16 @@ void GlowHockeyTask(){
                     //    isOver = true;
                     //} else {
                         //isStart = false;
-                    printf("Your rival scored!!\r\n");
+                    printf("Player 1 scored!!\r\n");
                     
                         ballPositionX = (int16) (tableWidth * BALL_INITIAL_RATE_X);
                         ballPositionY = (int16) (tableHeight * BALL_INITIAL_RATE_Y);
                         ballSpeedX = 0;
                         ballSpeedY = 0;
-                        player0X = (int16) (tableWidth * PLAYER_A_INITIAL_RATE_X);
-                        player0Y = (int16) (tableHeight * PLAYER_A_INITIAL_RATE_Y);
+                        player0X = (int16) (tableWidth * PLAYER_0_INITIAL_RATE_X);
+                        player0Y = (int16) (tableHeight * PLAYER_0_INITIAL_RATE_Y);
+                        player1X = (int16) (tableWidth * PLAYER_1_INITIAL_RATE_X);
+                        player1Y = (int16) (tableHeight * PLAYER_1_INITIAL_RATE_Y);
                         
                     //}
                 }
@@ -136,28 +144,54 @@ void GlowHockeyTask(){
 
 
             // 小球和玩家碰撞事件
-            double ball_playerA_dis = sqrt(
-                    pow(ballPositionX - player0X, 2)
-                            + pow(ballPositionY - player0Y, 2)
-            );
-            if (ball_playerA_dis < ballSize + playerCircleSize) {
+            double ball_player0_dis = sqrt(pow(ballPositionX - player0X, 2)
+                                         + pow(ballPositionY - player0Y, 2) );
+            
+            double ball_player1_dis = sqrt(pow(ballPositionX - player1X, 2)
+                                         + pow(ballPositionY - player1Y, 2) );
+            
+            // with player 0
+            if (ball_player0_dis < ballSize + playerCircleSize) {
 
-                printf("Bounce!!\r\n");
+                printf("Bounce player 0 !!\r\n");
                 //if (!isStart) {
                 //    isStart = true;
                 //}
-                printf("player speed: (%d, %d)\r\n", player0SpeedX, player0SpeedY);
+                printf("player 0 speed: (%d, %d)\r\n", player0SpeedX, player0SpeedY);
                 printf("speed before:(%d, %d)\r\n", ballSpeedX, ballSpeedX);
 
                 ballSpeedX += (int16) (2 * PLAYER_CIRCLE_MASS * (player0SpeedX - ballSpeedX)
                         / (PLAYER_CIRCLE_MASS + BALL_MASS) * BOUNCE_DECAY_RATE);
                 ballSpeedX += (int16) (ballPositionX - player0X) * BOUNCE_ACCELERATE_RATE *
-                        (ballSize + playerCircleSize - ball_playerA_dis) / (ballSize + playerCircleSize);
+                        (ballSize + playerCircleSize - ball_player0_dis) / (ballSize + playerCircleSize);
 
                 ballSpeedY += (int16) (2 * PLAYER_CIRCLE_MASS * (player0SpeedY - ballSpeedY)
                         / (PLAYER_CIRCLE_MASS + BALL_MASS) * BOUNCE_DECAY_RATE);
                 ballSpeedY += (int16) (ballPositionY - player0Y) * BOUNCE_ACCELERATE_RATE *
-                        (ballSize + playerCircleSize - ball_playerA_dis) / (ballSize + playerCircleSize);
+                        (ballSize + playerCircleSize - ball_player0_dis) / (ballSize + playerCircleSize);
+                
+                printf("speed after:(%d, %d)\r\n", ballSpeedX, ballSpeedY);
+            }
+            
+            // with player 1
+            if (ball_player1_dis < ballSize + playerCircleSize) {
+
+                printf("Bounce player 1 !!\r\n");
+                //if (!isStart) {
+                //    isStart = true;
+                //}
+                printf("player 1 speed: (%d, %d)\r\n", player1SpeedX, player1SpeedY);
+                printf("speed before:(%d, %d)\r\n", ballSpeedX, ballSpeedX);
+
+                ballSpeedX += (int16) (2 * PLAYER_CIRCLE_MASS * (player1SpeedX - ballSpeedX)
+                        / (PLAYER_CIRCLE_MASS + BALL_MASS) * BOUNCE_DECAY_RATE);
+                ballSpeedX += (int16) (ballPositionX - player1X) * BOUNCE_ACCELERATE_RATE *
+                        (ballSize + playerCircleSize - ball_player1_dis) / (ballSize + playerCircleSize);
+
+                ballSpeedY += (int16) (2 * PLAYER_CIRCLE_MASS * (player1SpeedY - ballSpeedY)
+                        / (PLAYER_CIRCLE_MASS + BALL_MASS) * BOUNCE_DECAY_RATE);
+                ballSpeedY += (int16) (ballPositionY - player1Y) * BOUNCE_ACCELERATE_RATE *
+                        (ballSize + playerCircleSize - ball_player1_dis) / (ballSize + playerCircleSize);
                 
                 printf("speed after:(%d, %d)\r\n", ballSpeedX, ballSpeedY);
             }
@@ -199,21 +233,18 @@ void GlowHockeyTask(){
             if(0 == (((uint8)(receivedPosition >> 24)) & USER_INDEX_MASK))
             {
                 // player 0
-                sendUserPosition = 0;
-                sendUserPosition |= (uint32)(player0X & USER_POSITION_MASK);
-                sendUserPosition |= ((uint32)(player0Y & USER_POSITION_MASK) << 12);
+                sendOppositePosition = 0;
+                sendOppositePosition |= (uint32)(player1X & USER_POSITION_MASK);
+                sendOppositePosition |= ((uint32)(player1Y & USER_POSITION_MASK) << 12);
                 
                 sendBallPosition = 0;
                 sendBallPosition |= (uint32)(ballPositionX & USER_POSITION_MASK);
                 sendBallPosition |= ((uint32)(ballPositionY & USER_POSITION_MASK) << 12);
                 
                 bytesToSend = 0;
-                bytesToSend |= sendUserPosition;
+                bytesToSend |= sendOppositePosition;
                 bytesToSend |= ((uint64)sendBallPosition) << 32;
-                //printf("User 0 : (%u, %u)\r\n", player0X, player0Y);
-                //printf("Ball : (%u, %u)\r\n", ballPositionX, ballPositionY);
-                
-                // if the notification is allowed , send the notification
+
                 if((isUser_0_PosStartNotification & NOTIFY_BIT_MASK)){
                     SendBleNotification(
                         CY_BLE_GH_POSITION_PLAYER_POSITION_N_CHAR_HANDLE, 
@@ -228,21 +259,17 @@ void GlowHockeyTask(){
             }
             else{
                 // player 1
-                sendUserPosition = 0;
-                sendUserPosition |= (uint32)(player1X & USER_POSITION_MASK);
-                sendUserPosition |= ((uint32)(player1Y & USER_POSITION_MASK) << 12);
+                sendOppositePosition = 0;
+                sendOppositePosition |= ((uint32)tableWidth - (uint32)(player0X & USER_POSITION_MASK));
+                sendOppositePosition |= ((uint32)tableHeight - (uint32)(player0Y & USER_POSITION_MASK)) << 12;
                 
-                
-                sendBallPosition = 0;
-                sendBallPosition |= (uint32)(ballPositionX & USER_POSITION_MASK);
-                sendBallPosition |= ((uint32)(ballPositionY & USER_POSITION_MASK) << 12);
-                
+                sendBallPosition = 0;                                
+                sendBallPosition |= ((uint32)tableWidth - (uint32)(ballPositionX & USER_POSITION_MASK));
+                sendBallPosition |= ((uint32)tableHeight - (uint32)(ballPositionY & USER_POSITION_MASK)) << 12;                
                 bytesToSend = 0;
-                bytesToSend |= sendUserPosition;
+                bytesToSend |= sendOppositePosition;
                 bytesToSend |= ((uint64)sendBallPosition) << 32;
-                //printf("User 0 : (%u, %u)\r\n", player0X, player0Y);
-                //printf("Ball : (%u, %u)\r\n", ballPositionX, ballPositionY);
-                
+
                 // if the notification is allowed , send the notification
                 if((isUser_1_PosStartNotification & NOTIFY_BIT_MASK)){
                     SendBleNotification(

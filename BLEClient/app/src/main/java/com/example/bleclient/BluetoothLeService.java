@@ -60,7 +60,7 @@ public class BluetoothLeService extends Service {
     public final static String ACTION_DATA_AVAILABLE           = "com.example.bleclient.ACTION_DATA_AVAILABLE";
     public final static String EXTRA_DATA                      = "com.example.bleclient.EXTRA_DATA";
     public final static String BALL_POSITION                   = "com.example.bleclient.BALL_POSITION";
-    public final static String PLAYER_POSITION                 = "com.example.bleclient.PLAYER_POSITION";
+    public final static String OPPOSITE_POSITION               = "com.example.bleclient.OPPOSITE_POSITION";
     public final static String EXTRA_UUID                      = "com.example.bleclient.UUID";
     public final static String PLAYER_ID                       = "com.example.bleclient.PLAYER_ID";
 
@@ -131,20 +131,20 @@ public class BluetoothLeService extends Service {
 
             final byte[] data = characteristic.getValue();
 
-            int int0 = data[0] & 0xff;
-            int int1 = (data[1] & 0xff) << 8;
-            int int2 = (data[2] & 0xff) << 16;
-            int int3 = (data[3] & 0xff) << 24;
-            final int playerPosition = int0 | int1 | int2 | int3;
+            int byte0 = data[0] & 0xff;
+            int byte1 = (data[1] & 0xff) << 8;
+            int byte2 = (data[2] & 0xff) << 16;
+            int byte3 = (data[3] & 0xff) << 24;
+            final int oppositePosition = byte0 | byte1 | byte2 | byte3;
 
-            int int4 = data[4] & 0xff;
-            int int5 = (data[5] & 0xff) << 8;
-            int int6 = (data[6] & 0xff) << 16;
-            int int7 = (data[7] & 0xff) << 24;
-            final int ballPosition = int4 | int5 | int6 | int7;
+            int byte4 = data[4] & 0xff;
+            int byte5 = (data[5] & 0xff) << 8;
+            int byte6 = (data[6] & 0xff) << 16;
+            int byte7 = (data[7] & 0xff) << 24;
+            final int ballPosition = byte4 | byte5 | byte6 | byte7;
 
+            intent.putExtra(OPPOSITE_POSITION, oppositePosition);
             intent.putExtra(BALL_POSITION, ballPosition);
-            intent.putExtra(PLAYER_POSITION, playerPosition);
             intent.putExtra(EXTRA_UUID, characteristic.getUuid().toString());
             sendBroadcast(intent);
         }

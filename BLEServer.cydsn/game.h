@@ -35,8 +35,10 @@
 #define DOOR_RIGHT_RATE 0.65
 #define playerCircleSize_RATE 0.1
 #define playerInnerCircleSize_RATE 0.072
-#define PLAYER_A_INITIAL_RATE_X 0.5
-#define PLAYER_A_INITIAL_RATE_Y 0.8
+#define PLAYER_0_INITIAL_RATE_X 0.5
+#define PLAYER_0_INITIAL_RATE_Y 0.8
+#define PLAYER_1_INITIAL_RATE_X 0.5
+#define PLAYER_1_INITIAL_RATE_Y 0.2
 
 // bounce effect const parameters
 #define BALL_MASS 20
@@ -49,8 +51,8 @@
 // other const parameters
 #define USER_INDEX_MASK 1
 #define USER_POSITION_MASK 0x0FFF
-#define STD_SCREEN_WIDTH 1080
-#define STD_SCREEN_HEIGHT 1920
+#define STD_SCREEN_WIDTH 1080u
+#define STD_SCREEN_HEIGHT 1920u
 
 
 /*

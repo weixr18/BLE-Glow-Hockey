@@ -88,10 +88,12 @@ public class GameActivity extends Activity {
     private int scoreB = 0;
 
     // player & Ball parameters
-    private int playerPositionX;
-    private int playerPositionY;
+    private int player_A_PositionX;
+    private int player_A_PositionY;
     private int ballPositionX;
     private int ballPositionY;
+    private int player_B_PositionX;
+    private int player_B_PositionY;
 
     // canvas const parameters
     final private static int STD_SCREEN_WIDTH = 1080;
@@ -107,8 +109,11 @@ public class GameActivity extends Activity {
     final private static double DOOR_RIGHT_RATE = 0.65;
     final private static double playerCircleSize_RATE = 0.1;
     final private static double playerInnerCircleSize_RATE = 0.072;
+
     final private static double PLAYER_A_INITIAL_RATE_X = 0.5;
     final private static double PLAYER_A_INITIAL_RATE_Y = 0.8;
+    final private static double PLAYER_B_INITIAL_RATE_X = 0.5;
+    final private static double PLAYER_B_INITIAL_RATE_Y = 0.2;
 
 
     // canvas parameters
@@ -127,6 +132,9 @@ public class GameActivity extends Activity {
     private Rect gameZone;      // 游戏区域
     private Rect doorZoneB;     //对方门
     private Rect doorZoneA;     //己方门
+
+    private int player_A_Color = Color.rgb(124,249,102);
+    private int player_B_Color = Color.rgb(220,240,120);
 
 
     /*  Unused parameters
@@ -353,23 +361,26 @@ public class GameActivity extends Activity {
                 }
                 else if(uuid.equals(UUID_C_PLAYER_POSITION_N)){
 
-                    Log.d(TAG, "PLAYER_POSITION_N received !!!");
+
 
                     int ballPosition = intent.getIntExtra(BluetoothLeService.BALL_POSITION, 0);
-                    int playerPosition = intent.getIntExtra(BluetoothLeService.PLAYER_POSITION, 0);
+                    int oppositePosition = intent.getIntExtra(BluetoothLeService.OPPOSITE_POSITION, 0);
 
                     int stdBallPositionX = ballPosition & 0x0fff;
                     int stdBallPositionY = (ballPosition >> 12) & 0x0fff;
                     ballPositionX = stdBallPositionX * tableWidth / STD_SCREEN_WIDTH ;
                     ballPositionY = stdBallPositionY * tableHeight / STD_SCREEN_HEIGHT;
 
-                    //Log.d(TAG, String.format("BALL_POSITION : (%d, %d)", ballPositionX, ballPositionY));
 
-                    //playerPositionX = playerPosition & 0x0fff;
-                    //playerPositionY =  (playerPosition >> 12) & 0x0fff;
-                    //Log.d(TAG, String.format("PLAYER_POSITION : (%d, %d)", playerPositionX, playerPositionY));
+                    int stdOppositePositionX = oppositePosition & 0x0fff;
+                    int stdOppositePositionY = (oppositePosition >> 12) & 0x0fff;
 
-                    //Log.d(TAG, "FRAME REFRESH");
+                    player_B_PositionX = stdOppositePositionX * tableWidth / STD_SCREEN_WIDTH ;
+                    player_B_PositionY = stdOppositePositionY * tableHeight / STD_SCREEN_HEIGHT;
+
+                    //Log.d(TAG, "PLAYER_POSITION_N received !!!");
+                    //Log.d(TAG, String.format("BALL_POSITION : (%d, %d)", stdBallPositionX, stdBallPositionY));
+                    //Log.d(TAG, String.format("OPPOSITE_POSITION : (%d, %d)", player_B_PositionX, player_B_PositionY));
                 }
 
 
@@ -414,8 +425,10 @@ public class GameActivity extends Activity {
 
         playerCircleSize = (int) (tableWidth * playerCircleSize_RATE);
         playerInnerCircleSize = (int) (tableWidth * playerInnerCircleSize_RATE);
-        playerPositionX = (int) (tableWidth * PLAYER_A_INITIAL_RATE_X);
-        playerPositionY = (int) (tableHeight * PLAYER_A_INITIAL_RATE_Y);
+        player_A_PositionX = (int) (tableWidth * PLAYER_A_INITIAL_RATE_X);
+        player_A_PositionY = (int) (tableHeight * PLAYER_A_INITIAL_RATE_Y);
+        player_B_PositionX = (int) (tableWidth * PLAYER_B_INITIAL_RATE_X);
+        player_B_PositionY = (int) (tableHeight * PLAYER_B_INITIAL_RATE_Y);
         //playerCircleASpeedX = 0;
         //playerCircleASpeedY = 0;
 
@@ -461,19 +474,19 @@ public class GameActivity extends Activity {
                  * player A position
                  */
                 if (x - gamePaddingLeft < playerCircleSize) {
-                    playerPositionX = gamePaddingLeft + playerCircleSize;
+                    player_A_PositionX = gamePaddingLeft + playerCircleSize;
                 } else if (x + gamePaddingRight > tableWidth - playerCircleSize) {
-                    playerPositionX = tableWidth - playerCircleSize - gamePaddingRight;
+                    player_A_PositionX = tableWidth - playerCircleSize - gamePaddingRight;
                 } else {
-                    playerPositionX = (int) x;
+                    player_A_PositionX = (int) x;
                 }
 
                 if (y < tableHeight * 0.5 + playerCircleSize) {
-                    playerPositionY = (int) (tableHeight * 0.5 + playerCircleSize);
+                    player_A_PositionY = (int) (tableHeight * 0.5 + playerCircleSize);
                 } else if (y + gamePaddingBottom > tableHeight - playerCircleSize) {
-                    playerPositionY = tableHeight - playerCircleSize - gamePaddingBottom;
+                    player_A_PositionY = tableHeight - playerCircleSize - gamePaddingBottom;
                 } else {
-                    playerPositionY = (int) y;
+                    player_A_PositionY = (int) y;
                 }
 
 
@@ -527,18 +540,34 @@ public class GameActivity extends Activity {
                 paint.setColor(Color.rgb(240,240,0));
                 canvas.drawCircle(ballPositionX, ballPositionY, ballSize, paint);
 
-                //画玩家
-                paint.setColor(Color.rgb(124,249,102));
+                //画玩家A
+                paint.setColor(player_A_Color);
                 canvas.drawCircle(
-                        playerPositionX,
-                        playerPositionY,
+                        player_A_PositionX,
+                        player_A_PositionY,
                         playerCircleSize,
                         paint
                 );
                 paint.setColor(Color.BLACK);
                 canvas.drawCircle(
-                        playerPositionX,
-                        playerPositionY,
+                        player_A_PositionX,
+                        player_A_PositionY,
+                        playerInnerCircleSize,
+                        paint
+                );
+
+                //画玩家B
+                paint.setColor(player_B_Color);
+                canvas.drawCircle(
+                        player_B_PositionX,
+                        player_B_PositionY,
+                        playerCircleSize,
+                        paint
+                );
+                paint.setColor(Color.BLACK);
+                canvas.drawCircle(
+                        player_B_PositionX,
+                        player_B_PositionY,
                         playerInnerCircleSize,
                         paint
                 );
@@ -587,8 +616,8 @@ public class GameActivity extends Activity {
                      */
                     if(mGH_Player_Position_W_Characteristic != null){
 
-                        int sendx = (int)(playerPositionX * STD_SCREEN_WIDTH / tableWidth);
-                        int sendy = (int)(playerPositionY * STD_SCREEN_HEIGHT / tableHeight);
+                        int sendx = (int)(player_A_PositionX * STD_SCREEN_WIDTH / tableWidth);
+                        int sendy = (int)(player_A_PositionY * STD_SCREEN_HEIGHT / tableHeight);
                         int position = 0;
                         position |= sendx;
                         position |= (sendy << 12);
