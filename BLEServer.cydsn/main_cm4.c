@@ -60,21 +60,19 @@ void StackEventHandler(uint32 event, void *param){
             //printf("STACK_ON\r\n");
             if(gameState == SERVER_START){
                 gameState = WAITING_FOR_DEVICE_0;
-                printf("gameState: WAITING_FOR_DEVICE_0\r\n");
+                printf("STACK: GameState: WAITING_FOR_DEVICE_0\r\n");
                 bleapiResult = Cy_BLE_GAPP_StartAdvertisement(
                     CY_BLE_ADVERTISING_FAST,
                     CY_BLE_PERIPHERAL_CONFIGURATION_0_INDEX
                 );
             }
             else{
-                 printf("STACK_ON error.\r\n");
+                 printf("STACK: STACK_ON error.\r\n");
             }
             
             break;
         }
-        case CY_BLE_EVT_TIMEOUT:
-            printf("CY_BLE_EVT_TIMEOUT\r\n");
-        break;
+        
  
         // if there is a device connection, store the connection handle 
         case CY_BLE_EVT_GATT_CONNECT_IND:
@@ -82,30 +80,30 @@ void StackEventHandler(uint32 event, void *param){
             //printf("GATT_CONNECT_IND\r\n");
             
             if(gameState == SERVER_START){
-                printf("gameState: SERVER_START\r\n");
+                printf("STACK: GameState: SERVER_START\r\n");
             }
             else if(gameState == WAITING_FOR_DEVICE_0){
                 bleConnectionHandle0 = *(cy_stc_ble_conn_handle_t*)param;
                 gameState = WAITING_FOR_DEVICE_1;
                           
-                printf("gameState: WAITING_FOR_DEVICE_1\r\n");
+                printf("STACK: GameState: WAITING_FOR_DEVICE_1\r\n");
             }
             else if(gameState == WAITING_FOR_DEVICE_1){
                 cy_stc_ble_conn_handle_t temp = *(cy_stc_ble_conn_handle_t*)param;
                 if(bleConnectionHandle0.bdHandle == temp.attId 
                     && bleConnectionHandle0.attId == temp.attId){
-                    printf("Duplicate connection.\r\n");
+                    printf("STACK: Duplicate connection.\r\n");
                 }
                 else{
                     bleConnectionHandle1 = *(cy_stc_ble_conn_handle_t*)param;
 
                     gameState = GAME_INITIALIZE;
-                    printf("gameState: GAME_INITIALIZE\r\n");
+                    printf("STACK: GameState: GAME_INITIALIZE\r\n");
                 }
                 
             }
             else{
-                printf("gameState: %d\r\n", gameState);
+                printf("STACK: GameState: %d\r\n", gameState);
             }
             break;
         }
@@ -133,17 +131,17 @@ void StackEventHandler(uint32 event, void *param){
                 // device 0 write request
                 if(writeReqPara->connHandle.attId == bleConnectionHandle0.attId
                 && writeReqPara->connHandle.bdHandle == bleConnectionHandle0.bdHandle){
-                    printf("DEVICE 0 WRITE REQUEST.\r\n");
+                    printf("STACK: DEVICE 0 WRITE REQUEST.\r\n");
                 }
                 else{
-                     printf("DEVICE 1 WRITE REQUEST.\r\n");
+                     printf("STACK: DEVICE 1 WRITE REQUEST.\r\n");
                 }
                 
                 // Player Position N 
                 if(CY_BLE_GH_POSITION_PLAYER_POSITION_N_CLIENT_CHARACTERISTIC_CONFIGURATION_DESC_HANDLE 
                     == writeReqPara->handleValPair.attrHandle
                 ){
-                    printf("PLAYER_POSITION_N\r\n");
+                    printf("STACK: PLAYER_POSITION_N\r\n");
 
                     if(false == (writeReqPara->handleValPair.value.val[
                         CY_BLE_GH_POSITION_PLAYER_POSITION_N_CLIENT_CHARACTERISTIC_CONFIGURATION_DESC_INDEX
@@ -156,13 +154,13 @@ void StackEventHandler(uint32 event, void *param){
                             isUser_0_PosStartNotification = writeReqPara->handleValPair.value.val[
                                 CY_BLE_GH_POSITION_PLAYER_POSITION_N_CLIENT_CHARACTERISTIC_CONFIGURATION_DESC_INDEX
                             ];
-                            printf("isUser_0_PosStartNotification:%d\r\n", isUser_0_PosStartNotification);
+                            printf("STACK: User 0 Pos Start Notification: %d\r\n", isUser_0_PosStartNotification);
                         }
                         else{
                             isUser_1_PosStartNotification = writeReqPara->handleValPair.value.val[
                                 CY_BLE_GH_POSITION_PLAYER_POSITION_N_CLIENT_CHARACTERISTIC_CONFIGURATION_DESC_INDEX
                             ];
-                            printf("isUser_1_PosStartNotification:%d\r\n", isUser_1_PosStartNotification);
+                            printf("STACK: User 1 Pos Start Notification: %d\r\n", isUser_1_PosStartNotification);
                         }
                         
                         cy_stc_ble_gatts_db_attr_val_info_t info = {
@@ -194,7 +192,7 @@ void StackEventHandler(uint32 event, void *param){
                     == writeReqPara->handleValPair.attrHandle
                 ){
                     
-                    printf("COMMAND_NOTIFY\r\n");
+                    printf("STACK: COMMAND_NOTIFY\r\n");
                     
                     if(false == (writeReqPara->handleValPair.value.val[
                         CY_BLE_GH_COMMAND_COMMAND_NOTIFY_CLIENT_CHARACTERISTIC_CONFIGURATION_DESC_INDEX
@@ -240,72 +238,9 @@ void StackEventHandler(uint32 event, void *param){
                 
                 }
                 
-                Cy_BLE_GATTS_WriteRsp(writeReqPara->connHandle);
-            
-           
-        
+                Cy_BLE_GATTS_WriteRsp(writeReqPara->connHandle);       
             }
-            
-            
-            
-            /*
-            
-            if(writeReqPara->connHandle.attId == bleConnectionHandle0.attId
-                && writeReqPara->connHandle.bdHandle == bleConnectionHandle0.bdHandle){
-                
-                    
-                
-                }
-            
-            else if(writeReqPara->connHandle.attId == bleConnectionHandle1.attId
-                && writeReqPara->connHandle.bdHandle == bleConnectionHandle1.bdHandle){
-                
-                    
-                } 
-            */
-            
-            /*
-            
-            else if(CY_BLE_GH_POSITION_BALL_POSITION_CLIENT_CHARACTERISTIC_CONFIGURATION_DESC_HANDLE 
-                == writeReqPara->handleValPair.attrHandle
-            ){
 
-                if(false == (writeReqPara->handleValPair.value.val[
-                    CY_BLE_GH_POSITION_BALL_POSITION_CLIENT_CHARACTERISTIC_CONFIGURATION_DESC_INDEX
-                    
-                ] & (~CCCD_VALID_BIT_MASK))
-                ){
-                    // set the flag for application to know whether the notificatio is allowed
-                    isBallPosStartNotification = writeReqPara->handleValPair.value.val[
-                        CY_BLE_GH_POSITION_BALL_POSITION_CLIENT_CHARACTERISTIC_CONFIGURATION_DESC_INDEX
-                    ];
-
-                    cy_stc_ble_gatts_db_attr_val_info_t info = {
-                        .handleValuePair = writeReqPara -> handleValPair,
-                        .offset = false,
-                        .connHandle = bleConnectionHandle0,
-                        .flags = CY_BLE_GATT_DB_PEER_INITIATED
-                    };
- 
-                    // update the gatt database
-                    Cy_BLE_GATTS_WriteAttributeValue(&info);
-                }
-                else{
-                    cy_stc_ble_gatt_err_info_t err_info;
-                    err_info.opCode = CY_BLE_GATT_WRITE_REQ;
-                    err_info.attrHandle = writeReqPara->handleValPair.attrHandle;
-                    err_info.errorCode = ERR_INVALID_PDU;
-
-                    cy_stc_ble_gatt_err_param_t errParam = {
-                        .connHandle = bleConnectionHandle0,
-                        .errInfo = err_info
-                    };
-                    Cy_BLE_GATTS_ErrorRsp(&errParam);
-                }
-            }
-            */
-            
-            
             break;
         }
         
@@ -316,13 +251,9 @@ void StackEventHandler(uint32 event, void *param){
             cy_stc_ble_gatt_handle_value_pair_t tmp = ((cy_stc_ble_gatts_write_cmd_req_param_t*)param)->handleValPair;
             xQueueSendFromISR(bleQueueHandle, (int32*)tmp.value.val, &xHigherPriorityTaskWoken);
             break;
-        
-        case CY_BLE_EVT_GATTS_READ_CHAR_VAL_ACCESS_REQ:
-            printf("READ_CHAR_VAL_ACCESS_REQ\r\n");
-            break;
             
         case CY_BLE_EVT_GAPP_ADVERTISEMENT_START_STOP:
-            printf("GAPP_ADVERTISEMENT_START_STOP\r\n");
+            printf("STACK: GAPP_ADVERTISEMENT_START_STOP\r\n");
             break;
             
         case CY_BLE_EVT_GAP_ENHANCE_CONN_COMPLETE:
@@ -330,12 +261,22 @@ void StackEventHandler(uint32 event, void *param){
                     CY_BLE_ADVERTISING_FAST,
                     CY_BLE_PERIPHERAL_CONFIGURATION_0_INDEX
             );
-            printf("BLE API result: %d\r\n", bleapiResult);
+            printf("STACK: Restart Advertisement.\r\n", bleapiResult);
             break;
+            
+        case CY_BLE_EVT_TIMEOUT:
+            printf("STACK: CY_BLE_EVT_TIMEOUT\r\n");
+            break;
+        
+        case CY_BLE_EVT_GATTS_READ_CHAR_VAL_ACCESS_REQ:
+        {
+            printf("STACK: READ_CHAR_VAL_ACCESS_REQ\r\n");
+            break;
+        }
         
         default:
         {
-            printf("DEFAULT : %u\r\n", event);
+            printf("STACK: event code: %u\r\n", event);
             break;
         }
     } 
