@@ -106,7 +106,8 @@ enum GameState{
     INIT_DEVICE_0,
     WAIT_FOR_DEVICE_1,
     INIT_DEVICE_1,
-    GAME_START
+    GAME_START,
+    GAME_OVER
 };
 
 

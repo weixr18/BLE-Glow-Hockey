@@ -112,13 +112,32 @@ void GlowHockeyTask(){
                     Cy_BLE_ProcessEvents();
                     delayTime(1000);
                     
-                    // return to start position
-                    
-                    //if (scoreA >= 7) {
-                    //    isOver = true;
-                    //} 
-                    //else {
-                    //isStart = false;
+                    if (score_0 >= 7) {
+                        // game over
+                        gameState = GAME_OVER;
+                        uint64 operand = GH_CC_N_OVER;
+                        bytesToSend = (operand) & (uint64)0x000007ff;
+                        
+                        SendBleNotification(
+                            CY_BLE_GH_COMMAND_COMMAND_NOTIFY_CHAR_HANDLE,
+                            (uint64*)&bytesToSend,
+                            bleConnectionHandle0
+                        );
+                        Cy_BLE_ProcessEvents();
+                        delayTime(1000);
+                        
+                        SendBleNotification(
+                            CY_BLE_GH_COMMAND_COMMAND_NOTIFY_CHAR_HANDLE,
+                            (uint64*)&bytesToSend,
+                            bleConnectionHandle1
+                        );
+                        Cy_BLE_ProcessEvents();
+                        delayTime(1000);
+                        
+                        continue;
+                    } 
+                    else {
+                        // return to start position
                 
                         ballPositionX = (int16) (tableWidth * BALL_INITIAL_RATE_X);
                         ballPositionY = (int16) (tableHeight * BALL_INITIAL_RATE_Y);
@@ -129,7 +148,7 @@ void GlowHockeyTask(){
                         player1X = (int16) (tableWidth * PLAYER_1_INITIAL_RATE_X);
                         player1Y = (int16) (tableHeight * PLAYER_1_INITIAL_RATE_Y);
                         
-                    //}
+                    }
                 }
                 // 正常碰撞
                 else{
@@ -163,10 +182,32 @@ void GlowHockeyTask(){
                     Cy_BLE_ProcessEvents();
                     delayTime(1000);
                     
-                    //if (scoreB >= 7) {
-                    //    isOver = true;
-                    //} else {
-                        //isStart = false;
+                    if (score_1 >= 7) {
+                        // game over
+                        gameState = GAME_OVER;
+                        uint64 operand = GH_CC_N_OVER;
+                        bytesToSend = (operand) & (uint64)0x000007ff;
+                        
+                        SendBleNotification(
+                            CY_BLE_GH_COMMAND_COMMAND_NOTIFY_CHAR_HANDLE,
+                            (uint64*)&bytesToSend,
+                            bleConnectionHandle0
+                        );
+                        Cy_BLE_ProcessEvents();
+                        delayTime(1000);
+                        
+                        SendBleNotification(
+                            CY_BLE_GH_COMMAND_COMMAND_NOTIFY_CHAR_HANDLE,
+                            (uint64*)&bytesToSend,
+                            bleConnectionHandle1
+                        );
+                        Cy_BLE_ProcessEvents();
+                        delayTime(1000);
+                        
+                        continue;
+                    } 
+                    else {
+                        // return to start position
                                         
                         ballPositionX = (int16) (tableWidth * BALL_INITIAL_RATE_X);
                         ballPositionY = (int16) (tableHeight * BALL_INITIAL_RATE_Y);
@@ -177,7 +218,7 @@ void GlowHockeyTask(){
                         player1X = (int16) (tableWidth * PLAYER_1_INITIAL_RATE_X);
                         player1Y = (int16) (tableHeight * PLAYER_1_INITIAL_RATE_Y);
                         
-                    //}
+                    }
                 }
                 // 正常碰撞
                 else{

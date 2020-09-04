@@ -83,7 +83,8 @@ public class GameActivity extends Activity {
         Running,
         Pause,
         Score,
-        Over
+        Over,
+        Replay
     }
 
     ClientGameState mGameState = ClientGameState.Connecting;
@@ -401,6 +402,11 @@ public class GameActivity extends Activity {
                         mGameState = ClientGameState.Running;
                         Log.d(TAG, "Game start!");
                     }
+                    // over
+                    else if(oprand == GH_CC_N_OVER){
+                        mGameState = ClientGameState.Over;
+                        Log.d(TAG, "Game over!");
+                    }
                     // score
                     else if(oprand == GH_CC_N_SCORE){
                         Log.d(TAG, "Score!!!!!!!");
@@ -587,14 +593,25 @@ public class GameActivity extends Activity {
             //内部填充
             if (mGameState == ClientGameState.Over) {
                 // 游戏结束
-                paint.setColor(Color.RED);
-                paint.setTextSize(40);
-                canvas.drawText("Game Over!", 50, 200, paint);
+                paint.setColor(Color.WHITE);
+                paint.setTextSize((int)(tableHeight * 0.07));
+                canvas.drawText(
+                        "Game over.",
+                        (int)(tableWidth * 0.25),
+                        (int)(tableHeight * 0.4),
+                        paint
+                );
+                paint.setTextSize((int)(tableHeight * 0.2));
+                canvas.drawText(
+                        (scoreA) + " -- " + (scoreB),
+                        (int)(tableWidth * 0.18),
+                        (int)(tableHeight * 0.6),
+                        paint
+                );
             }
             else if(mGameState == ClientGameState.Connecting) {
                 // 正在连接
                 paint.setColor(Color.WHITE);
-                paint.setTextSize(40);
                 paint.setTextSize((int)(tableHeight * 0.04));
                 canvas.drawText(
                         "Connecting...",
@@ -604,6 +621,7 @@ public class GameActivity extends Activity {
                 );
             }
             else if(mGameState == ClientGameState.Initializing){
+                // 正在初始化
                 paint.setColor(Color.WHITE);
                 paint.setTextSize((int)(tableHeight * 0.04));
                 canvas.drawText(
@@ -614,7 +632,20 @@ public class GameActivity extends Activity {
                 );
             }
             else if(mGameState == ClientGameState.Waiting) {
+                // 等待对方连接
                 paint.setColor(Color.WHITE);
+                paint.setTextSize((int)(tableHeight * 0.04));
+                canvas.drawText(
+                        "Waiting...",
+                        (int)(tableWidth * 0.3),
+                        (int)(tableHeight * 0.5),
+                        paint
+                );
+            }
+            else if(mGameState == ClientGameState.Replay) {
+                // 正在连接
+                paint.setColor(Color.WHITE);
+                paint.setTextSize(40);
                 paint.setTextSize((int)(tableHeight * 0.04));
                 canvas.drawText(
                         "Waiting...",
@@ -680,16 +711,12 @@ public class GameActivity extends Activity {
                         paint
                 );
 
-
-
-
             }
         }
     }
 
 
     /******************************* Other Components *******************************/
-
 
 
     /**
