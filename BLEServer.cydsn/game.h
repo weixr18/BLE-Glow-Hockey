@@ -42,10 +42,10 @@
 
 // bounce effect const parameters
 #define BALL_MASS 20
-#define PLAYER_CIRCLE_MASS 30
+#define PLAYER_CIRCLE_MASS 20
 #define BALL_SPEED_MAX_RATE 0.6
 #define BALL_SPEED_MIN_RATE 0.05
-#define BOUNCE_DECAY_RATE 0.3
+#define BOUNCE_DECAY_RATE 0.2
 #define BOUNCE_ACCELERATE_RATE 0.4
 
 // other const parameters
@@ -84,10 +84,19 @@ int scoreB 0
 #define MY_IPC_CHANNEL 8u
 
 // game command macros
-#define C_NOTIFY_ID       0x18
-#define C_NOTIFY_COLOR    0x19
-#define C_READY           0x10
-#define C_START           0x11
+#define GH_CC_W_PAUSE         0x02
+#define GH_CC_W_RESUME        0x03
+#define GH_CC_N_READY         0x10
+#define GH_CC_N_START         0x11
+#define GH_CC_N_PAUSE         0x12
+
+#define GH_CC_N_RESUME        0x13
+#define GH_CC_N_SCORE         0x14
+#define GH_CC_N_OVER          0x15
+#define GH_CC_N_NOTIFY_ID     0x18
+#define GH_CC_N_NOTIFY_COLOR  0x19
+
+
 
 /******************************STRUCT DEFINATIONS***********************************/
 

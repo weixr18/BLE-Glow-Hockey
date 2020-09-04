@@ -44,34 +44,71 @@ public class GameActivity extends Activity {
 
     /********************************** Variables ***************************************/
 
-    // constants
     final private static String TAG = "Game Page";
-    public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
-    public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
+
+    /********Inner variables*********/
+
     final private static int MSG_WHAT = 170411;
     final private static int TIMER_PERIOD = 16;     //ms
 
-    public static String UUID_S_GH_COMMAND        = "00030700-0000-1000-8000-00805f9b0131";
-    public static String UUID_S_GH_POSITION       = "00030710-0000-1000-8000-00805f9b0131";
-    public static String UUID_C_COMMAND_N         = "00030701-0000-1000-8000-00805f9b0131";
-    public static String UUID_C_COMMAND_W         = "00030702-0000-1000-8000-00805f9b0131";
-    public static String UUID_C_PLAYER_POSITION_N = "00030711-0000-1000-8000-00805f9b0131";
-    public static String UUID_C_OPPOSITE_POSITION = "00030713-0000-1000-8000-00805f9b0131";
-    public static String UUID_C_BALL_POSITION     = "00030713-0000-1000-8000-00805f9b0131";
-    public static String UUID_C_PLAYER_POSITION_W = "00030714-0000-1000-8000-00805f9b0131";
+    private Timer mTimer = new Timer();
+    private TimerTask mTimerTask = getNewTimerTask();
+    private myHandler mHandler = null;
+    private GameView mGameView = null;
 
-    public static int GH_MASK_C_OPRAND = 0x1f;
-    public static int GH_MASK_C_DATA = 0x7e0;
+    /********Control related*********/
 
-    public static int GH_COMMAND_NOTIFY_ID = 0x18;
+    //GH_CMASK: Glow Hockey Command Mask
+    public static int GH_CMASK_OPRAND = 0x1f;
+    public static int GH_CMASK_DATA = 0x7e0;
+
+    //GH_CC: Glow Hockey Command Code
+
+    public static int GH_CC_W_PAUSE = 0x02;
+    public static int GH_CC_W_RESUME = 0x03;
+    public static int GH_CC_N_READY = 0x10;
+    public static int GH_CC_N_START = 0x11;
+    public static int GH_CC_N_PAUSE = 0x12;
+
+    public static int GH_CC_N_RESUME = 0x13;
+    public static int GH_CC_N_SCORE = 0x14;
+    public static int GH_CC_N_OVER = 0x15;
+    public static int GH_CC_N_NOTIFY_ID = 0x18;
+    public static int GH_CC_N_NOTIFY_COLOR = 0x19;
+
+    public enum ClientGameState{
+        Connecting,
+        Initializing,
+        Waiting,
+        Running,
+        Pause,
+        Score,
+        Over
+    }
+
+    ClientGameState mGameState = ClientGameState.Connecting;
+
+    // game states
+    private int playerID;
+    private boolean isOver = false;
+    private boolean isStart = false;
+    private int scoreA = 0;
+    private int scoreB = 0;
 
 
 
-    // custom components
-    private Timer timer = new Timer();
-    private TimerTask timerTask = getNewTimerTask();
-    private myHandler handler = null;
-    private GameView gameView = null;
+    /**********BLE related***********/
+    public static final String EXTRAS_DEVICE_NAME = "DEVICE_NAME";
+    public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
+
+    public static final String UUID_S_GH_COMMAND        = "00030700-0000-1000-8000-00805f9b0131";
+    public static final String UUID_S_GH_POSITION       = "00030710-0000-1000-8000-00805f9b0131";
+    public static final String UUID_C_COMMAND_N         = "00030701-0000-1000-8000-00805f9b0131";
+    public static final String UUID_C_COMMAND_W         = "00030702-0000-1000-8000-00805f9b0131";
+    public static final String UUID_C_PLAYER_POSITION_N = "00030711-0000-1000-8000-00805f9b0131";
+    public static final String UUID_C_OPPOSITE_POSITION = "00030713-0000-1000-8000-00805f9b0131";
+    public static final String UUID_C_BALL_POSITION     = "00030713-0000-1000-8000-00805f9b0131";
+    public static final String UUID_C_PLAYER_POSITION_W = "00030714-0000-1000-8000-00805f9b0131";
 
     // BLE components
     private String mDeviceName;
@@ -87,12 +124,7 @@ public class GameActivity extends Activity {
     private BluetoothGattCharacteristic mGH_Player_Position_W_Characteristic;
     private boolean mConnected = false;
 
-    // game states
-    private int playerID;
-    private boolean isOver = false;
-    private boolean isStart = false;
-    private int scoreA = 0;
-    private int scoreB = 0;
+    /**********Game related***********/
 
     // player & Ball parameters
     private int player_A_PositionX;
@@ -145,7 +177,6 @@ public class GameActivity extends Activity {
 
 
 
-
     /********************************** OnCreate ***********************************/
 
 
@@ -164,10 +195,10 @@ public class GameActivity extends Activity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         //本地组件设置
-        gameView = new GameView(this);          //游戏视图实例化
-        setContentView(gameView);                       //设置Activity的视图为游戏视图
-        handler = new myHandler(this);                 //handler实例化
-        gameView.setOnTouchListener(listener);          //设置触摸事件监听器
+        mGameView = new GameView(this);          //游戏视图实例化
+        setContentView(mGameView);                       //设置Activity的视图为游戏视图
+        mHandler = new myHandler(this);                 //mHandler实例化
+        mGameView.setOnTouchListener(listener);          //设置触摸事件监听器
 
         //蓝牙服务设置
 
@@ -184,7 +215,7 @@ public class GameActivity extends Activity {
         this.UIInitialize();
 
         //定时任务开始
-        timer.schedule(timerTask , 0, TIMER_PERIOD);
+        mTimer.schedule(mTimerTask , 0, TIMER_PERIOD);
 
     }
 
@@ -352,14 +383,21 @@ public class GameActivity extends Activity {
                 else if(uuid.equals(UUID_C_COMMAND_N)){
 
                     int command = intent.getIntExtra(BluetoothLeService.GH_COMMAND, 0);
-
-                    int oprand = command & GH_MASK_C_OPRAND;
-                    int data = (command & GH_MASK_C_DATA) >> 5;
-
+                    int oprand = command & GH_CMASK_OPRAND;
+                    int data = (command & GH_CMASK_DATA) >> 5;
                     Log.d(TAG, String.format("COMMAND_N received :%x, %x", oprand, data));
 
-                    if(oprand == GH_COMMAND_NOTIFY_ID){
+                    if(oprand == GH_CC_N_NOTIFY_ID){
                         playerID = data;
+                        mGameState = ClientGameState.Initializing;
+                    }
+                    else if(oprand == GH_CC_N_READY){
+                        mGameState = ClientGameState.Waiting;
+                        Log.d(TAG, "Initialize complete. waiting for another connection.");
+                    }
+                    else if(oprand == GH_CC_N_START){
+                        mGameState = ClientGameState.Running;
+                        Log.d(TAG, "Game start!");
                     }
                 }
 
@@ -367,9 +405,7 @@ public class GameActivity extends Activity {
                 // position
                 else if(uuid.equals(UUID_C_PLAYER_POSITION_N)){
 
-
-
-                    int ballPosition = intent.getIntExtra(BluetoothLeService.BALL_POSITION, 0);
+                   int ballPosition = intent.getIntExtra(BluetoothLeService.BALL_POSITION, 0);
                     int oppositePosition = intent.getIntExtra(BluetoothLeService.OPPOSITE_POSITION, 0);
 
                     int stdBallPositionX = ballPosition & 0x0fff;
@@ -532,12 +568,45 @@ public class GameActivity extends Activity {
             canvas.drawRect(doorZoneA, paint);
 
             //内部填充
-            if (isOver) {
-                //游戏结束
+            if (mGameState == ClientGameState.Over) {
+                // 游戏结束
                 paint.setColor(Color.RED);
                 paint.setTextSize(40);
                 canvas.drawText("Game Over!", 50, 200, paint);
-            } else {
+            }
+            else if(mGameState == ClientGameState.Connecting) {
+                // 正在连接
+                paint.setColor(Color.WHITE);
+                paint.setTextSize(40);
+                paint.setTextSize((int)(tableHeight * 0.04));
+                canvas.drawText(
+                        "Connecting...",
+                        (int)(tableWidth * 0.3),
+                        (int)(tableHeight * 0.5),
+                        paint
+                );
+            }
+            else if(mGameState == ClientGameState.Initializing){
+                paint.setColor(Color.WHITE);
+                paint.setTextSize((int)(tableHeight * 0.04));
+                canvas.drawText(
+                        "Initializing...",
+                        (int)(tableWidth * 0.3),
+                        (int)(tableHeight * 0.5),
+                        paint
+                );
+            }
+            else if(mGameState == ClientGameState.Waiting) {
+                paint.setColor(Color.WHITE);
+                paint.setTextSize((int)(tableHeight * 0.04));
+                canvas.drawText(
+                        "Waiting...",
+                        (int)(tableWidth * 0.3),
+                        (int)(tableHeight * 0.5),
+                        paint
+                );
+            }
+            else if(mGameState == ClientGameState.Running) {
                 //游戏进行中
                 //画球
                 paint.setColor(Color.rgb(240,240,0));
@@ -585,7 +654,7 @@ public class GameActivity extends Activity {
 
 
     /**
-     * handler，调动gameView刷新
+     * mHandler，调动mGameView刷新
      */
     final class myHandler extends Handler {
         private WeakReference<GameActivity> mMainActivityWeakReference;
@@ -597,7 +666,7 @@ public class GameActivity extends Activity {
         @Override
         public void handleMessage(Message msg) {
             if (msg.what == MSG_WHAT) {
-                gameView.invalidate();
+                mGameView.invalidate();
             }
             super.handleMessage(msg);
         }
@@ -605,7 +674,7 @@ public class GameActivity extends Activity {
 
 
     /**
-     * 定时任务
+     * 定时任务，发送位置
      */
     private TimerTask getNewTimerTask(){
         return new TimerTask() {
@@ -617,7 +686,8 @@ public class GameActivity extends Activity {
                     /**
                      * send to server
                      */
-                    if(mGH_Player_Position_W_Characteristic != null){
+                    if(mGH_Player_Position_W_Characteristic != null
+                        && mGameState == ClientGameState.Running){
 
                         int sendx = (int)(player_A_PositionX * STD_SCREEN_WIDTH / tableWidth);
                         int sendy = (int)(player_A_PositionY * STD_SCREEN_HEIGHT / tableHeight);
@@ -631,7 +701,7 @@ public class GameActivity extends Activity {
                         mBluetoothLeService.writeCharacteristic(mGH_Player_Position_W_Characteristic);
                     }
 
-                    handler.sendEmptyMessage(MSG_WHAT);        //刷新视图
+                    mHandler.sendEmptyMessage(MSG_WHAT);        //刷新视图
                 }
             }
         };
@@ -644,8 +714,8 @@ public class GameActivity extends Activity {
 
     @Override
     protected void onStop(){
-        timerTask.cancel();
-        timer.cancel();
+        mTimerTask.cancel();
+        mTimer.cancel();
         Log.d(TAG, "GamePage Stop");
         super.onStop();
 
@@ -654,9 +724,9 @@ public class GameActivity extends Activity {
     @Override
     protected void onRestart(){
         Log.d(TAG, "GamePage Restart");
-        timer = new Timer();
-        timerTask = getNewTimerTask();
-        timer.schedule(timerTask, 0, TIMER_PERIOD);
+        mTimer = new Timer();
+        mTimerTask = getNewTimerTask();
+        mTimer.schedule(mTimerTask, 0, TIMER_PERIOD);
         super.onRestart();
     }
 

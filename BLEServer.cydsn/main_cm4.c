@@ -22,6 +22,13 @@ void StackEventHandler(uint32 event, void * param);
 /******************************FUNCTION DEFINATIONS***********************************/
 
 
+void delayTime(uint16 x){
+    double temp = 12.87346;
+    for(uint16 i = 0; i < x; i++){
+        temp = sqrt(pow(98765.234, 0.5)+pow(temp, 0.8));
+    }
+}
+
 
 // BLE task
 void bleTask()
@@ -31,7 +38,7 @@ void bleTask()
     isCommand_0_StartNotification = false;
     isReceivePosition = false;
     
-    int isUser_0_notified = 10;
+    int isUser_0_notified = 10;         // send 10 times to ensure client get it.
     int isUser_1_notified = 10;
     
     int bytesToSend_0 = 0;
@@ -48,12 +55,16 @@ void bleTask()
  
     for(;;){
         if((gameState == INIT_DEVICE_0) &&
-            (isCommand_0_StartNotification & NOTIFY_BIT_MASK)){ //&& 
+            (isCommand_0_StartNotification & NOTIFY_BIT_MASK)){ 
+            
+            // send device ID
             if(isUser_0_notified > 0) {
+                
                 int id = 0;
-                int operand = C_NOTIFY_ID;
+                int operand = GH_CC_N_NOTIFY_ID;
                 bytesToSend_0 = ((id << 5) | operand) & (int)0x000007ff;
-                printf("BLE: user 0. bytes to send: %d\r\n", bytesToSend_0);
+                //printf("BLE: user 0. Notify ID. Bytes: %d\r\n", bytesToSend_0);
+                
                 SendBleNotification(
                     CY_BLE_GH_COMMAND_COMMAND_NOTIFY_CHAR_HANDLE,
                     (uint64*)&bytesToSend_0,
@@ -61,21 +72,36 @@ void bleTask()
                 );
                 isUser_0_notified--;
                 Cy_BLE_ProcessEvents();
+                delayTime(1000);
             }
+            // send "Ready" signal
             else if (isUser_0_notified == 0){
+                
                 gameState = WAIT_FOR_DEVICE_1;
+                int operand = GH_CC_N_READY;
+                bytesToSend_0 = (operand) & (int)0x000007ff;
+                printf("BLE: user 0. READY. Bytes: %d\r\n", bytesToSend_0);
+                
+                SendBleNotification(
+                    CY_BLE_GH_COMMAND_COMMAND_NOTIFY_CHAR_HANDLE,
+                    (uint64*)&bytesToSend_0,
+                    bleConnectionHandle0
+                );
                 printf("BLE: GameState: WAIT_FOR_DEVICE_1\r\n");
+                Cy_BLE_ProcessEvents();
             }
         }
             
         // notify command 1
         else if((gameState == INIT_DEVICE_1) && 
             (isCommand_1_StartNotification & NOTIFY_BIT_MASK)){
+                
+            // send device ID
             if(isUser_1_notified > 0){
                 int id = 1;
-                int operand = C_NOTIFY_ID;
+                int operand = GH_CC_N_NOTIFY_ID;
                 bytesToSend_1 = ((id << 5) | operand) & (int)0x000007ff;
-                printf("BLE: user 1. bytes to send: %d\r\n", bytesToSend_1);
+                //printf("BLE: user 1. Notify iD. Bytes: %d\r\n", bytesToSend_1);
                 SendBleNotification(
                     CY_BLE_GH_COMMAND_COMMAND_NOTIFY_CHAR_HANDLE,
                     (uint64*)&bytesToSend_1,
@@ -83,12 +109,47 @@ void bleTask()
                 );
                 isUser_1_notified--;
                 Cy_BLE_ProcessEvents();
+                delayTime(1000);
             }
+            
             else if (isUser_1_notified == 0){
+                
+                // send "Ready" signal
+                int operand = GH_CC_N_READY;
+                bytesToSend_0 = (operand) & (int)0x000007ff;
+                printf("BLE: user 1. READY. Bytes: %d\r\n", bytesToSend_0);
+                SendBleNotification(
+                    CY_BLE_GH_COMMAND_COMMAND_NOTIFY_CHAR_HANDLE,
+                    (uint64*)&bytesToSend_0,
+                    bleConnectionHandle0
+                );
                 gameState = GAME_START;
                 printf("BLE: GameState: GAME_START\r\n");
+                Cy_BLE_ProcessEvents();
+                delayTime(1000);
+                
+                // send "Start" signal to device 0
+                operand = GH_CC_N_START;
+                bytesToSend_0 = (operand) & (int)0x000007ff;
+                //printf("BLE: user 0. START. Bytes: %d\r\n", bytesToSend_0);
+                SendBleNotification(
+                    CY_BLE_GH_COMMAND_COMMAND_NOTIFY_CHAR_HANDLE,
+                    (uint64*)&bytesToSend_0,
+                    bleConnectionHandle0
+                );
+                Cy_BLE_ProcessEvents();
+                delayTime(1000);
+                
+                // send "Start" signal to device 1
+                bytesToSend_1 = (operand) & (int)0x000007ff;
+                //printf("BLE: user 1. START. Bytes: %d\r\n", bytesToSend_1);
+                SendBleNotification(
+                    CY_BLE_GH_COMMAND_COMMAND_NOTIFY_CHAR_HANDLE,
+                    (uint64*)&bytesToSend_1,
+                    bleConnectionHandle1
+                );
+                Cy_BLE_ProcessEvents();
             }
-
         }
         else{
             Cy_BLE_ProcessEvents();
@@ -366,11 +427,8 @@ int main(void)
     Cy_IPC_Sema_Init(CY_IPC_CHAN_SEMA, (uint32_t)NULL, (uint32_t*)NULL);
     UART_Start();
     
-    // only for delay
-    double temp = 12.87346;
-    for(int i = 0; i < 2000; i++){
-        temp = sqrt(pow(98765.234, 0.5)+pow(temp, 0.8));
-    }
+    delayTime(2000);
+    
     gameState = INIT_SERVER;
        
     /*******************Task creates**********************/
