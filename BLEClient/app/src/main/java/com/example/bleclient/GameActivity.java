@@ -50,6 +50,7 @@ public class GameActivity extends Activity {
     public static final String EXTRAS_DEVICE_ADDRESS = "DEVICE_ADDRESS";
     final private static int MSG_WHAT = 170411;
     final private static int TIMER_PERIOD = 16;     //ms
+
     public static String UUID_S_GH_COMMAND        = "00030700-0000-1000-8000-00805f9b0131";
     public static String UUID_S_GH_POSITION       = "00030710-0000-1000-8000-00805f9b0131";
     public static String UUID_C_COMMAND_N         = "00030701-0000-1000-8000-00805f9b0131";
@@ -58,6 +59,12 @@ public class GameActivity extends Activity {
     public static String UUID_C_OPPOSITE_POSITION = "00030713-0000-1000-8000-00805f9b0131";
     public static String UUID_C_BALL_POSITION     = "00030713-0000-1000-8000-00805f9b0131";
     public static String UUID_C_PLAYER_POSITION_W = "00030714-0000-1000-8000-00805f9b0131";
+
+    public static int GH_MASK_C_OPRAND = 0x1f;
+    public static int GH_MASK_C_DATA = 0x7e0;
+
+    public static int GH_COMMAND_NOTIFY_ID = 0x18;
+
 
 
     // custom components
@@ -137,22 +144,7 @@ public class GameActivity extends Activity {
     private int player_B_Color = Color.rgb(220,240,120);
 
 
-    /*  Unused parameters
-    private int playerCircleAPositionLastX;
-    private int playerCircleAPositionLastY;
-    private int playerCircleASpeedX;
-    private int playerCircleASpeedY;
-    private int ballSpeedY;
-    private int ballSpeedX;
 
-    // bounce effect const parameters
-    final private static int BALL_MASS = 20;
-    final private static int PLAYER_CIRCLE_MASS = 20;
-    final private static double BALL_SPEED_MAX_RATE = 1.3;
-    final private static double BALL_SPEED_MIN_RATE = 0.25;
-    final private static double BOUNCE_DECAY_RATE = 0.8;
-    final private static double BOUNCE_ACCELERATE_RATE = 0.4;
-    */
 
     /********************************** OnCreate ***********************************/
 
@@ -351,14 +343,28 @@ public class GameActivity extends Activity {
             else if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
 
                 String uuid = intent.getStringExtra(BluetoothLeService.EXTRA_UUID);
+
                 if(uuid == null){
                     Log.d(TAG, "UUID is null!!");
                 }
+
+                // command
                 else if(uuid.equals(UUID_C_COMMAND_N)){
 
-                    playerID = intent.getIntExtra(BluetoothLeService.PLAYER_ID, 0);
-                    Log.d(TAG, String.format("COMMAND_N received :%d", playerID));
+                    int command = intent.getIntExtra(BluetoothLeService.GH_COMMAND, 0);
+
+                    int oprand = command & GH_MASK_C_OPRAND;
+                    int data = (command & GH_MASK_C_DATA) >> 5;
+
+                    Log.d(TAG, String.format("COMMAND_N received :%x, %x", oprand, data));
+
+                    if(oprand == GH_COMMAND_NOTIFY_ID){
+                        playerID = data;
+                    }
                 }
+
+
+                // position
                 else if(uuid.equals(UUID_C_PLAYER_POSITION_N)){
 
 
@@ -378,9 +384,6 @@ public class GameActivity extends Activity {
                     player_B_PositionX = stdOppositePositionX * tableWidth / STD_SCREEN_WIDTH ;
                     player_B_PositionY = stdOppositePositionY * tableHeight / STD_SCREEN_HEIGHT;
 
-                    //Log.d(TAG, "PLAYER_POSITION_N received !!!");
-                    //Log.d(TAG, String.format("BALL_POSITION : (%d, %d)", stdBallPositionX, stdBallPositionY));
-                    //Log.d(TAG, String.format("OPPOSITE_POSITION : (%d, %d)", player_B_PositionX, player_B_PositionY));
                 }
 
 

@@ -83,6 +83,12 @@ int scoreB 0
 #define NOTIFY_BIT_MASK 0x01
 #define MY_IPC_CHANNEL 8u
 
+// game command macros
+#define C_NOTIFY_ID       0x18
+#define C_NOTIFY_COLOR    0x19
+#define C_READY           0x10
+#define C_START           0x11
+
 /******************************STRUCT DEFINATIONS***********************************/
 
 enum GameState{

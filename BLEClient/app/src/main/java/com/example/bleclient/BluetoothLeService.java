@@ -62,7 +62,7 @@ public class BluetoothLeService extends Service {
     public final static String BALL_POSITION                   = "com.example.bleclient.BALL_POSITION";
     public final static String OPPOSITE_POSITION               = "com.example.bleclient.OPPOSITE_POSITION";
     public final static String EXTRA_UUID                      = "com.example.bleclient.UUID";
-    public final static String PLAYER_ID                       = "com.example.bleclient.PLAYER_ID";
+    public final static String GH_COMMAND                       = "com.example.bleclient.GH_COMMAND";
 
     public final static UUID UUID_HEART_RATE_MEASUREMENT       = UUID.fromString(SampleGattAttributes.HEART_RATE_MEASUREMENT);
     public final static UUID UUID_PLAYER_POSITION_N            = UUID.fromString(SampleGattAttributes.UUID_C_PLAYER_POSITION_N);
@@ -148,11 +148,18 @@ public class BluetoothLeService extends Service {
             intent.putExtra(EXTRA_UUID, characteristic.getUuid().toString());
             sendBroadcast(intent);
         }
+
         else if(UUID_COMMAND_N.equals(characteristic.getUuid())){
 
             final byte[] data = characteristic.getValue();
-            int playerID = data[0] & 0xff;
-            intent.putExtra(PLAYER_ID, playerID);
+            int byte0 = data[0] & 0xff;
+            int byte1 = (data[1] & 0xff) << 8;
+            int byte2 = (data[2] & 0xff) << 16;
+            int byte3 = (data[3] & 0xff) << 24;
+            final int command = byte0 | byte1 | byte2 | byte3;
+
+            //Log.d(TAG, String.format("received command: %d", command));
+            intent.putExtra(GH_COMMAND, command);
             intent.putExtra(EXTRA_UUID, characteristic.getUuid().toString());
             sendBroadcast(intent);
         }
@@ -160,23 +167,10 @@ public class BluetoothLeService extends Service {
         else {
             // For all other profiles, writes the data formatted in HEX.
             final byte[] data = characteristic.getValue();
-           /*
-           if (data != null && data.length > 0) {
-                final StringBuilder stringBuilder = new StringBuilder(data.length);
-                for(byte byteChar : data)
-                    stringBuilder.append(String.format("%02X ", byteChar));
-                intent.putExtra(EXTRA_DATA, new String(data) + "\n" + stringBuilder.toString());
-            }
-            */
-            if (data[0]=='A') {
-            	return;
-            }
-            else{
             intent.putExtra(EXTRA_DATA, new String(data));
-            
-            Log.i("yq","data字符串："+ new String(data));
+            Log.i(TAG,"Receive other message:" + data);
             sendBroadcast(intent);
-            }
+
         }
         
     }

@@ -31,9 +31,12 @@ void bleTask()
     isCommand_0_StartNotification = false;
     isReceivePosition = false;
     
-    int isUser_0_notified = 100;
-    int isUser_1_notified = 100;
-    uint64 bytesToSend;
+    int isUser_0_notified = 10;
+    int isUser_1_notified = 10;
+    
+    int bytesToSend_0 = 0;
+    int bytesToSend_1 = 0;
+    
     
     bleQueueHandle = xQueueCreate(1, sizeof(brightVal));
  
@@ -47,10 +50,13 @@ void bleTask()
         if((gameState == INIT_DEVICE_0) &&
             (isCommand_0_StartNotification & NOTIFY_BIT_MASK)){ //&& 
             if(isUser_0_notified > 0) {
-                bytesToSend = 0;
+                int id = 0;
+                int operand = C_NOTIFY_ID;
+                bytesToSend_0 = ((id << 5) | operand) & (int)0x000007ff;
+                printf("BLE: user 0. bytes to send: %d\r\n", bytesToSend_0);
                 SendBleNotification(
                     CY_BLE_GH_COMMAND_COMMAND_NOTIFY_CHAR_HANDLE,
-                    (uint64*)&bytesToSend,
+                    (uint64*)&bytesToSend_0,
                     bleConnectionHandle0
                 );
                 isUser_0_notified--;
@@ -66,10 +72,13 @@ void bleTask()
         else if((gameState == INIT_DEVICE_1) && 
             (isCommand_1_StartNotification & NOTIFY_BIT_MASK)){
             if(isUser_1_notified > 0){
-                bytesToSend = 1;
+                int id = 1;
+                int operand = C_NOTIFY_ID;
+                bytesToSend_1 = ((id << 5) | operand) & (int)0x000007ff;
+                printf("BLE: user 1. bytes to send: %d\r\n", bytesToSend_1);
                 SendBleNotification(
                     CY_BLE_GH_COMMAND_COMMAND_NOTIFY_CHAR_HANDLE,
-                    (uint64*)&bytesToSend,
+                    (uint64*)&bytesToSend_1,
                     bleConnectionHandle1
                 );
                 isUser_1_notified--;
