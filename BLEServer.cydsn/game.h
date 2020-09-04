@@ -86,10 +86,11 @@ int scoreB 0
 /******************************STRUCT DEFINATIONS***********************************/
 
 enum GameState{
-    SERVER_START,
-    WAITING_FOR_DEVICE_0,
-    WAITING_FOR_DEVICE_1,
-    GAME_INITIALIZE,
+    INIT_SERVER,
+    WAIT_FOR_DEVICE_0,
+    INIT_DEVICE_0,
+    WAIT_FOR_DEVICE_1,
+    INIT_DEVICE_1,
     GAME_START
 };
 

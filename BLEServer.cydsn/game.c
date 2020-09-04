@@ -40,11 +40,10 @@ void GlowHockeyTask(){
     uint32 sendOppositePosition;
     uint64 bytesToSend;
     
-    int isUser_0_notified = 100;
-    int isUser_1_notified = 100;
+
     
-    int counter = 1000;
-    int buffer = 0;
+    //int counter = 1000;
+    //int buffer = 0;
     
     //printf("gamePaddingBottom ,tableHeight , ballSize: %d, %d, %d\r\n", gamePaddingBottom ,tableHeight , ballSize);
     
@@ -288,39 +287,7 @@ void GlowHockeyTask(){
         }
         
         // notify command 0
-        else if((gameState == WAITING_FOR_DEVICE_1) &&
-            (isCommand_0_StartNotification & NOTIFY_BIT_MASK) && 
-            (isUser_0_notified > 0)  ){
-            bytesToSend = 0;
-            SendBleNotification(
-                CY_BLE_GH_COMMAND_COMMAND_NOTIFY_CHAR_HANDLE,
-                (uint64*)&bytesToSend,
-                bleConnectionHandle0
-            );
-            //printf("command notify 0 sent.\r\n");
-            isUser_0_notified--;
-            Cy_BLE_ProcessEvents();
-        }
-            
-        // notify command 1
-        else if((gameState == GAME_INITIALIZE) && 
-            (isCommand_1_StartNotification & NOTIFY_BIT_MASK)){
-            if(isUser_1_notified > 0){
-                bytesToSend = 1;
-                SendBleNotification(
-                    CY_BLE_GH_COMMAND_COMMAND_NOTIFY_CHAR_HANDLE,
-                    (uint64*)&bytesToSend,
-                    bleConnectionHandle1
-                );
-                //printf("command notify 1 sent.\r\n");
-                isUser_1_notified--;
-                Cy_BLE_ProcessEvents();
-            }
-            else if (isUser_1_notified == 0){
-                gameState = GAME_START;
-            }
-
-        }
+        //else 
         
         
         else{

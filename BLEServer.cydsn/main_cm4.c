@@ -30,6 +30,11 @@ void bleTask()
     isUser_0_PosStartNotification = false;
     isCommand_0_StartNotification = false;
     isReceivePosition = false;
+    
+    int isUser_0_notified = 100;
+    int isUser_1_notified = 100;
+    uint64 bytesToSend;
+    
     bleQueueHandle = xQueueCreate(1, sizeof(brightVal));
  
     cy_en_ble_api_result_t apiResult;
@@ -39,8 +44,44 @@ void bleTask()
     }
  
     for(;;){
-        Cy_BLE_ProcessEvents();
-        taskYIELD();
+        if((gameState == WAIT_FOR_DEVICE_1) &&
+            (isCommand_0_StartNotification & NOTIFY_BIT_MASK) && 
+            (isUser_0_notified > 0)  ){
+            bytesToSend = 0;
+            SendBleNotification(
+                CY_BLE_GH_COMMAND_COMMAND_NOTIFY_CHAR_HANDLE,
+                (uint64*)&bytesToSend,
+                bleConnectionHandle0
+            );
+            //printf("command notify 0 sent.\r\n");
+            isUser_0_notified--;
+            Cy_BLE_ProcessEvents();
+        }
+            
+        // notify command 1
+        else if((gameState == INIT_DEVICE_1) && 
+            (isCommand_1_StartNotification & NOTIFY_BIT_MASK)){
+            if(isUser_1_notified > 0){
+                bytesToSend = 1;
+                SendBleNotification(
+                    CY_BLE_GH_COMMAND_COMMAND_NOTIFY_CHAR_HANDLE,
+                    (uint64*)&bytesToSend,
+                    bleConnectionHandle1
+                );
+                //printf("command notify 1 sent.\r\n");
+                isUser_1_notified--;
+                Cy_BLE_ProcessEvents();
+            }
+            else if (isUser_1_notified == 0){
+                gameState = GAME_START;
+            }
+
+        }
+        else{
+            Cy_BLE_ProcessEvents();
+            taskYIELD();
+        }
+        
     }
 }
 
@@ -48,7 +89,6 @@ void StackEventHandler(uint32 event, void *param){
     
     cy_stc_ble_gatts_write_cmd_req_param_t* writeReqPara;
     cy_en_ble_api_result_t bleapiResult;
-    uint32 val;
     BaseType_t xHigherPriorityTaskWoken = pdTRUE;
     
  
@@ -58,9 +98,9 @@ void StackEventHandler(uint32 event, void *param){
         case CY_BLE_EVT_STACK_ON:
         {
             //printf("STACK_ON\r\n");
-            if(gameState == SERVER_START){
-                gameState = WAITING_FOR_DEVICE_0;
-                printf("STACK: GameState: WAITING_FOR_DEVICE_0\r\n");
+            if(gameState == INIT_SERVER){
+                gameState = WAIT_FOR_DEVICE_0;
+                printf("STACK: GameState: WAIT_FOR_DEVICE_0\r\n");
                 bleapiResult = Cy_BLE_GAPP_StartAdvertisement(
                     CY_BLE_ADVERTISING_FAST,
                     CY_BLE_PERIPHERAL_CONFIGURATION_0_INDEX
@@ -79,16 +119,16 @@ void StackEventHandler(uint32 event, void *param){
         {
             //printf("GATT_CONNECT_IND\r\n");
             
-            if(gameState == SERVER_START){
-                printf("STACK: GameState: SERVER_START\r\n");
+            if(gameState == INIT_SERVER){
+                printf("STACK: GameState: INIT_SERVER\r\n");
             }
-            else if(gameState == WAITING_FOR_DEVICE_0){
+            else if(gameState == WAIT_FOR_DEVICE_0){
                 bleConnectionHandle0 = *(cy_stc_ble_conn_handle_t*)param;
-                gameState = WAITING_FOR_DEVICE_1;
+                gameState = WAIT_FOR_DEVICE_1;
                           
-                printf("STACK: GameState: WAITING_FOR_DEVICE_1\r\n");
+                printf("STACK: GameState: WAIT_FOR_DEVICE_1\r\n");
             }
-            else if(gameState == WAITING_FOR_DEVICE_1){
+            else if(gameState == WAIT_FOR_DEVICE_1){
                 cy_stc_ble_conn_handle_t temp = *(cy_stc_ble_conn_handle_t*)param;
                 if(bleConnectionHandle0.bdHandle == temp.attId 
                     && bleConnectionHandle0.attId == temp.attId){
@@ -97,8 +137,8 @@ void StackEventHandler(uint32 event, void *param){
                 else{
                     bleConnectionHandle1 = *(cy_stc_ble_conn_handle_t*)param;
 
-                    gameState = GAME_INITIALIZE;
-                    printf("STACK: GameState: GAME_INITIALIZE\r\n");
+                    gameState = INIT_DEVICE_1;
+                    printf("STACK: GameState: INIT_DEVICE_1\r\n");
                 }
                 
             }
@@ -261,7 +301,7 @@ void StackEventHandler(uint32 event, void *param){
                     CY_BLE_ADVERTISING_FAST,
                     CY_BLE_PERIPHERAL_CONFIGURATION_0_INDEX
             );
-            printf("STACK: Restart Advertisement.\r\n", bleapiResult);
+            printf("STACK: Restart Advertisement.\r\n");
             break;
             
         case CY_BLE_EVT_TIMEOUT:
@@ -276,7 +316,7 @@ void StackEventHandler(uint32 event, void *param){
         
         default:
         {
-            printf("STACK: event code: %u\r\n", event);
+            printf("STACK: event code: %ul\r\n", event);
             break;
         }
     } 
@@ -304,18 +344,21 @@ void SendBleNotification(cy_ble_gatt_db_attr_handle_t charHandle, uint64* value,
 
 
 int main(void)
-{
-    IPC_STRUCT_Type *myIpcHandle;
+{    
     
     __enable_irq(); /* Enable global interrupts. */
-        
+    
     /**************Components Startups***************/
     Cy_IPC_Sema_Init(CY_IPC_CHAN_SEMA, (uint32_t)NULL, (uint32_t*)NULL);
     UART_Start();
-    CapSense_Start();
-    gameState = SERVER_START;
-    //CapSense_ScanAllWidgets();
     
+    // only for delay
+    double temp = 12.87346;
+    for(int i = 0; i < 2000; i++){
+        temp = sqrt(pow(98765.234, 0.5)+pow(temp, 0.8));
+    }
+    gameState = INIT_SERVER;
+       
     /*******************Task creates**********************/
     
     xTaskCreate(bleTask, "ble task", configMINIMAL_STACK_SIZE * 20, 0, 3, 0);
