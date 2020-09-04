@@ -129,7 +129,7 @@ cy_stc_ble_conn_handle_t bleConnectionHandle1;
 
 void GlowHockeyTask();
 void SendBleNotification(cy_ble_gatt_db_attr_handle_t charHandle, uint64* value, cy_stc_ble_conn_handle_t connHandle);
-
+void delayTime(uint16 x);
 
 
 /* [] END OF FILE */

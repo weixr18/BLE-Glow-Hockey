@@ -41,8 +41,8 @@ void bleTask()
     int isUser_0_notified = 10;         // send 10 times to ensure client get it.
     int isUser_1_notified = 10;
     
-    int bytesToSend_0 = 0;
-    int bytesToSend_1 = 0;
+    uint64 bytesToSend_0 = 0;
+    uint64 bytesToSend_1 = 0;
     
     
     bleQueueHandle = xQueueCreate(1, sizeof(brightVal));
@@ -60,9 +60,9 @@ void bleTask()
             // send device ID
             if(isUser_0_notified > 0) {
                 
-                int id = 0;
-                int operand = GH_CC_N_NOTIFY_ID;
-                bytesToSend_0 = ((id << 5) | operand) & (int)0x000007ff;
+                uint64 id = 0;
+                uint64 operand = GH_CC_N_NOTIFY_ID;
+                bytesToSend_0 = ((id << 5) | operand) & (uint64)0x000007ff;
                 //printf("BLE: user 0. Notify ID. Bytes: %d\r\n", bytesToSend_0);
                 
                 SendBleNotification(
@@ -78,7 +78,7 @@ void bleTask()
             else if (isUser_0_notified == 0){
                 
                 gameState = WAIT_FOR_DEVICE_1;
-                int operand = GH_CC_N_READY;
+                uint64 operand = GH_CC_N_READY;
                 bytesToSend_0 = (operand) & (int)0x000007ff;
                 printf("BLE: user 0. READY. Bytes: %d\r\n", bytesToSend_0);
                 
@@ -98,8 +98,8 @@ void bleTask()
                 
             // send device ID
             if(isUser_1_notified > 0){
-                int id = 1;
-                int operand = GH_CC_N_NOTIFY_ID;
+                uint64 id = 1;
+                uint64 operand = GH_CC_N_NOTIFY_ID;
                 bytesToSend_1 = ((id << 5) | operand) & (int)0x000007ff;
                 //printf("BLE: user 1. Notify iD. Bytes: %d\r\n", bytesToSend_1);
                 SendBleNotification(
@@ -115,7 +115,7 @@ void bleTask()
             else if (isUser_1_notified == 0){
                 
                 // send "Ready" signal
-                int operand = GH_CC_N_READY;
+                uint64 operand = GH_CC_N_READY;
                 bytesToSend_0 = (operand) & (int)0x000007ff;
                 printf("BLE: user 1. READY. Bytes: %d\r\n", bytesToSend_0);
                 SendBleNotification(

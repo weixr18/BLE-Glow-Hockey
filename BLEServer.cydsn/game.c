@@ -15,6 +15,9 @@
 
 // Game task
 void GlowHockeyTask(){
+    
+    uint score_0 = 0;
+    uint score_1 = 0;
    
     uint16 ballPositionX = (uint16) (tableWidth * BALL_INITIAL_RATE_X);
     uint16 ballPositionY = (uint16) (tableHeight * BALL_INITIAL_RATE_Y);
@@ -39,18 +42,13 @@ void GlowHockeyTask(){
     uint32 sendBallPosition;
     uint32 sendOppositePosition;
     uint64 bytesToSend;
-    
 
     
-    //int counter = 1000;
-    //int buffer = 0;
-    
-    //printf("gamePaddingBottom ,tableHeight , ballSize: %d, %d, %d\r\n", gamePaddingBottom ,tableHeight , ballSize);
-    
+
     for(;;){
         if(gameState == GAME_START && isReceivePosition){
 
-            // receive position
+            /********** receive position *************/
             xQueueReceive(bleQueueHandle, &receivedPosition, portTICK_PERIOD_MS);
             isReceivePosition = false;
             
@@ -59,19 +57,16 @@ void GlowHockeyTask(){
                 // player 0
                 player0X = ((uint16) receivedPosition) & USER_POSITION_MASK;
                 player0Y = ((uint16)(receivedPosition >> 12)) & USER_POSITION_MASK;
-                //printf("User 0 : (%u, %u)\r\n", player0X, player0Y);
                 
                 player0SpeedX = player0X - player0XLast;
                 player0SpeedY = player0Y - player0YLast;
                 player0XLast = player0X;
                 player0YLast = player0Y;
-                
             }
             else{
                 // player 1
                 player1X = tableWidth - (((uint16) receivedPosition) & USER_POSITION_MASK);
                 player1Y = tableHeight - ((uint16)(receivedPosition >> 12) & USER_POSITION_MASK);
-                //printf("User 1 : (%u, %u)\r\n", player1X, player1Y);
                 
                 player1SpeedX = player1X - player1XLast;
                 player1SpeedY = player1Y - player1YLast;
@@ -79,9 +74,7 @@ void GlowHockeyTask(){
                 player1YLast = player1Y;
             }
             
-            // game logic
-            
-            
+            /********** game logic *************/
             
              // 小球左右边框碰撞事件
             if (ballPositionX - gamePaddingLeft <= ballSize) {
@@ -94,14 +87,39 @@ void GlowHockeyTask(){
             if (ballPositionY - gamePaddingTop <= ballSize) {
                 // 0方得分
                 if (ballPositionX > doorSideLeft && ballPositionX < doorSideRight) {
-                    //scoreA += 1;
-                    //printf("You Scored! current score : %d -- %d", scoreA, scoreB);
+                    
+                    // send scores
+                    score_0 += 1;
+                    printf("GAME: Player 0 scored!! %d -- %d\r\n", score_0, score_1);
+                   
+                    uint64 scores = ((score_1 & ((uint64)0x07)) << 3) | (score_0 & ((uint64)0x07));
+                    uint64 operand = GH_CC_N_SCORE;
+                    bytesToSend = ((scores << 5) | operand) & (uint64)0x000007ff;
+                    
+                    SendBleNotification(
+                        CY_BLE_GH_COMMAND_COMMAND_NOTIFY_CHAR_HANDLE,
+                        (uint64*)&bytesToSend,
+                        bleConnectionHandle0
+                    );
+                    Cy_BLE_ProcessEvents();
+                    delayTime(1000);
+                    
+                    SendBleNotification(
+                        CY_BLE_GH_COMMAND_COMMAND_NOTIFY_CHAR_HANDLE,
+                        (uint64*)&bytesToSend,
+                        bleConnectionHandle1
+                    );
+                    Cy_BLE_ProcessEvents();
+                    delayTime(1000);
+                    
+                    // return to start position
+                    
                     //if (scoreA >= 7) {
                     //    isOver = true;
-                    //} else {
-                        //isStart = false;
-                    printf("GAME: Player 0 scored!!\r\n");
-                    
+                    //} 
+                    //else {
+                    //isStart = false;
+                
                         ballPositionX = (int16) (tableWidth * BALL_INITIAL_RATE_X);
                         ballPositionY = (int16) (tableHeight * BALL_INITIAL_RATE_Y);
                         ballSpeedX = 0;
@@ -113,20 +131,43 @@ void GlowHockeyTask(){
                         
                     //}
                 }
-                ballSpeedY = abs(ballSpeedY);
+                // 正常碰撞
+                else{
+                    ballSpeedY = abs(ballSpeedY);
+                }
             } 
             else if (ballPositionY + gamePaddingBottom >= tableHeight - ballSize) {
                 printf("GAME: Reach bottom.\r\n");
                 // 1方得分
                 if (ballPositionX > doorSideLeft && ballPositionX < doorSideRight) {
-                    //scoreB += 1;
-                    //Log.d(TAG, String.format("Your rival Scored! current score : %d -- %d", scoreA, scoreB));
+                    score_1 += 1;
+                    printf("GAME: Player 1 scored!! %d -- %d\r\n", score_0, score_1);
+                    
+                    uint64 scores = ((score_1 & ((uint64)0x07)) << 3) | (score_0 & ((uint64)0x07));
+                    uint64 operand = GH_CC_N_SCORE;
+                    bytesToSend = ((scores << 5) | operand) & (uint64)0x000007ff;
+                    
+                    SendBleNotification(
+                        CY_BLE_GH_COMMAND_COMMAND_NOTIFY_CHAR_HANDLE,
+                        (uint64*)&bytesToSend,
+                        bleConnectionHandle0
+                    );
+                    Cy_BLE_ProcessEvents();
+                    delayTime(1000);
+                    
+                    SendBleNotification(
+                        CY_BLE_GH_COMMAND_COMMAND_NOTIFY_CHAR_HANDLE,
+                        (uint64*)&bytesToSend,
+                        bleConnectionHandle1
+                    );
+                    Cy_BLE_ProcessEvents();
+                    delayTime(1000);
+                    
                     //if (scoreB >= 7) {
                     //    isOver = true;
                     //} else {
                         //isStart = false;
-                    printf("GAME: Player 1 scored!!\r\n");
-                    
+                                        
                         ballPositionX = (int16) (tableWidth * BALL_INITIAL_RATE_X);
                         ballPositionY = (int16) (tableHeight * BALL_INITIAL_RATE_Y);
                         ballSpeedX = 0;
@@ -138,7 +179,11 @@ void GlowHockeyTask(){
                         
                     //}
                 }
-                ballSpeedY = - abs(ballSpeedY);
+                // 正常碰撞
+                else{
+                    ballSpeedY = - abs(ballSpeedY);
+                }
+                
             }
 
 
@@ -285,9 +330,6 @@ void GlowHockeyTask(){
 
             }
         }
-        
-        // notify command 0
-        //else 
         
         
         else{

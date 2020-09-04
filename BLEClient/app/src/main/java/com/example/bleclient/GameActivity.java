@@ -387,17 +387,34 @@ public class GameActivity extends Activity {
                     int data = (command & GH_CMASK_DATA) >> 5;
                     Log.d(TAG, String.format("COMMAND_N received :%x, %x", oprand, data));
 
+                    // id
                     if(oprand == GH_CC_N_NOTIFY_ID){
                         playerID = data;
                         mGameState = ClientGameState.Initializing;
                     }
+                    // ready
                     else if(oprand == GH_CC_N_READY){
                         mGameState = ClientGameState.Waiting;
-                        Log.d(TAG, "Initialize complete. waiting for another connection.");
                     }
+                    // start
                     else if(oprand == GH_CC_N_START){
                         mGameState = ClientGameState.Running;
                         Log.d(TAG, "Game start!");
+                    }
+                    // score
+                    else if(oprand == GH_CC_N_SCORE){
+                        Log.d(TAG, "Score!!!!!!!");
+                        int player0Score = data & 0x07;
+                        int player1Score = (data >> 3) & 0x07;
+
+                        if(playerID == 0){
+                            scoreA = player0Score;
+                            scoreB = player1Score;
+                        }
+                        else {
+                            scoreA = player1Score;
+                            scoreB = player0Score;
+                        }
                     }
                 }
 
@@ -608,6 +625,25 @@ public class GameActivity extends Activity {
             }
             else if(mGameState == ClientGameState.Running) {
                 //游戏进行中
+
+                // 画比分
+                paint.setColor(Color.rgb(100, 100, 100));
+                paint.setTextSize((int)(tableHeight * 0.3));
+
+                canvas.drawText(
+                        String.valueOf(scoreA),
+                        (int)(tableWidth * 0.38),
+                        (int)(tableHeight * 0.9),
+                        paint
+                );
+
+                canvas.drawText(
+                        String.valueOf(scoreB),
+                        (int)(tableWidth * 0.38),
+                        (int)(tableHeight * 0.3),
+                        paint
+                );
+
                 //画球
                 paint.setColor(Color.rgb(240,240,0));
                 canvas.drawCircle(ballPositionX, ballPositionY, ballSize, paint);
@@ -643,6 +679,9 @@ public class GameActivity extends Activity {
                         playerInnerCircleSize,
                         paint
                 );
+
+
+
 
             }
         }
