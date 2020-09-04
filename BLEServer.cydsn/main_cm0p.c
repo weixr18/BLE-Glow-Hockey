@@ -15,15 +15,12 @@
 
 #define MY_IPC_CHANNEL 8u
 
-static uint32_t sharedBrightNessVal;
 static uint32_t array[4];
 
 int main(void)
 {
     __enable_irq(); /* Enable global interrupts. */
     
-    
-    IPC_STRUCT_Type * myIpcHandle;  
     Cy_IPC_Sema_Init(CY_IPC_CHAN_SEMA, sizeof(array) * 8,array) ;
  
     // Enable CM4. CY_CORTEX_M4_APPL_ADDR must be updated if CM4 memory layout is changed. 
@@ -37,7 +34,6 @@ int main(void)
 
     /* Place your initialization/startup code here (e.g. MyInst_Start()) */
 
-    uint32_t lastBrightnessVal = 0;
     for(;;)
     {
         Cy_BLE_ProcessEvents();

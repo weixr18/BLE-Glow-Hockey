@@ -136,21 +136,9 @@
 #include "cyfitter_sysint.h"
 #include "cydisabledsheets.h"
 #include "UART.h"
-#include "CapSense.h"
-#include "CapSense_Control.h"
-#include "CapSense_Filter.h"
-#include "CapSense_Processing.h"
-#include "CapSense_Sensing.h"
-#include "CapSense_Structure.h"
-#include "CapSense_Tuner.h"
-#include "CapSense_Configuration.h"
-#include "CapSense_SensingCSD_LL.h"
-#include "CapSense_RegisterMap.h"
-#include "CapSense_SmartSense_LL.h"
 #include "BLE.h"
 #include "BLE_config.h"
 #include "UART_SCBCLK.h"
-#include "CapSense_ModClk.h"
 
 /*[]*/
 

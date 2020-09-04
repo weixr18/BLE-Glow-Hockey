@@ -16,32 +16,12 @@
   <file name="D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\codegentemp\cydisabledsheets.h" value="HEADER;;;;;" />
   <file name="D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\codegentemp\UART.c" value="SOURCE_C;CortexM0p,CortexM4;;;;UART" />
   <file name="D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\codegentemp\UART.h" value="HEADER;;;;;UART" />
-  <file name="D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\codegentemp\CapSense.h" value="HEADER;;;;;CapSense" />
-  <file name="D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\codegentemp\CapSense_Control.c" value="SOURCE_C;CortexM0p,CortexM4;;;;CapSense" />
-  <file name="D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\codegentemp\CapSense_Processing.c" value="SOURCE_C;CortexM0p,CortexM4;;;;CapSense" />
-  <file name="D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\codegentemp\CapSense_Structure.c" value="SOURCE_C;CortexM0p,CortexM4;;;;CapSense" />
-  <file name="D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\codegentemp\CapSense_Tuner.c" value="SOURCE_C;CortexM0p,CortexM4;;;;CapSense" />
-  <file name="D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\codegentemp\CapSense_Filter.c" value="SOURCE_C;CortexM0p,CortexM4;;;;CapSense" />
-  <file name="D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\codegentemp\CapSense_Sensing.c" value="SOURCE_C;CortexM0p,CortexM4;;;;CapSense" />
-  <file name="D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\codegentemp\CapSense_Control.h" value="HEADER;;;;;CapSense" />
-  <file name="D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\codegentemp\CapSense_Filter.h" value="HEADER;;;;;CapSense" />
-  <file name="D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\codegentemp\CapSense_Processing.h" value="HEADER;;;;;CapSense" />
-  <file name="D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\codegentemp\CapSense_Sensing.h" value="HEADER;;;;;CapSense" />
-  <file name="D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\codegentemp\CapSense_Structure.h" value="HEADER;;;;;CapSense" />
-  <file name="D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\codegentemp\CapSense_Tuner.h" value="HEADER;;;;;CapSense" />
-  <file name="D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\codegentemp\CapSense_Configuration.h" value="HEADER;;;;;CapSense" />
-  <file name="D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\codegentemp\CapSense_INT.c" value="SOURCE_C;CortexM0p,CortexM4;;;;CapSense" />
-  <file name="D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\codegentemp\CapSense_SensingCSD_LL.c" value="SOURCE_C;CortexM0p,CortexM4;;;;CapSense" />
-  <file name="D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\codegentemp\CapSense_SensingCSD_LL.h" value="HEADER;;;;;CapSense" />
-  <file name="D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\codegentemp\CapSense_RegisterMap.h" value="HEADER;;;;;CapSense" />
-  <file name="D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\codegentemp\CapSense_SmartSense_LL.h" value="HEADER;;;;;CapSense" />
   <file name="D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\codegentemp\BLE.h" value="HEADER;;;;;BLE" />
   <file name="D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\codegentemp\BLE.c" value="SOURCE_C;CortexM0p,CortexM4;;;;BLE" />
   <file name="D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\codegentemp\BLE_config.c" value="SOURCE_C;CortexM0p,CortexM4;;;;BLE" />
   <file name="D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\codegentemp\BLE_config.h" value="HEADER;;;;;BLE" />
   <file name="D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\codegentemp\BLE_custom_config.c" value="SOURCE_C;CortexM0p,CortexM4;;;;BLE" />
   <file name="D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\codegentemp\UART_SCBCLK.h" value="HEADER;;;;;UART_SCBCLK" />
-  <file name="D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\codegentemp\CapSense_ModClk.h" value="HEADER;;;;;CapSense_ModClk" />
   <file name="D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\codegentemp\project.h" value="OTHER;;;;;" />
   <file name="D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\codegentemp\cycodeshareimport.ld" value="OTHER;;;;;" />
   <file name="D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\codegentemp\cycodeshareexport.ld" value="OTHER;;;;;" />

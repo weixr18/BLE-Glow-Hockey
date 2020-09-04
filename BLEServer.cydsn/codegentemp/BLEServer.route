@@ -19,17 +19,6 @@ net \BLE:Net_1\
 	switch ":BLEcontainer:BLE[0].interrupt==>:intc_0:interrupt24.interrupt"
 	term   ":intc_0:interrupt24.interrupt"
 end \BLE:Net_1\
-net \CapSense:Net_611_ff43\
-	term   ":Clockcontainer:Clock[0].ff_div_43"
-	switch ":Clockcontainer:Clock[0].ff_div_43==>:Clockcontainer:ff_permute.ff_div_43"
-	switch ":Clockcontainer:ff_permute.Clock[0]ff_div_51==>:CSDcontainer:CSD[0].clk"
-	term   ":CSDcontainer:CSD[0].clk"
-end \CapSense:Net_611_ff43\
-net \CapSense:Net_849\
-	term   ":CSDcontainer:CSD[0].irq"
-	switch ":CSDcontainer:CSD[0].irq==>:intc_0:interrupt49.interrupt"
-	term   ":intc_0:interrupt49.interrupt"
-end \CapSense:Net_849\
 net \UART:Net_1172\
 	term   ":ioport5:pin0.fb"
 	switch ":ioport5:pin0.fb==>:ioport5:smartio_mux_out0.direct_in"

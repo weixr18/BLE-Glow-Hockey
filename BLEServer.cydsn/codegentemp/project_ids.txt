@@ -1,7 +1,7 @@
-D:\Codes\_Hardware\PSoC\PSOC6\Advanced_Experiments\Dual_Core_BLE.cydsn\Dual_Core_BLE.cyprj|ed4a5d1c-020b-4278-be44-c1ac71ae1308
-E:\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\CyAnnotationLibrary.cyprj|8be65ec3-096e-41ca-9c8c-0fe8b1c5ca49
-C:\Users\YYDPY\Documents\PSoC Creator\4.2\Downloads ( 4.2).cylib\Downloads ( 4.2).cyprj|526d1548-2bea-497f-b43c-41c1e70889bd
-E:\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cycomponentlibraryupdates\CyComponentLibraryUpdates.cylib\CyComponentLibraryUpdates.cyprj|7a8978e7-1863-4c23-8498-e3798d0d312f
-E:\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CyComponentLibrary.cyprj|e559b430-fb56-40c2-a0b1-24bbef350733
-E:\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\CyPrimitives.cyprj|30957380-9112-43d5-959e-1080c2846d96
-D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\BLEServer.cyprj|92dbf5b2-7b3b-46c3-9bb8-c66310461bb9
+D:\Codes\_Hardware\PSoC\PSOC6\Advanced_Experiments\Dual_Core_BLE.cydsn\Dual_Core_BLE.cyprj|9113bb02-930f-42b1-a0c5-c394dd68fe41
+E:\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\CyAnnotationLibrary.cyprj|579edf4b-08c7-4737-b2b1-b58a8d39fec1
+C:\Users\YYDPY\Documents\PSoC Creator\4.2\Downloads ( 4.2).cylib\Downloads ( 4.2).cyprj|19c197fe-49dc-4747-b591-590d1183c9dc
+E:\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cycomponentlibraryupdates\CyComponentLibraryUpdates.cylib\CyComponentLibraryUpdates.cyprj|b045a3d1-b02b-4296-a494-a46abd43bb73
+E:\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CyComponentLibrary.cyprj|d44b8ae0-91a7-4133-a39c-8a52852988fa
+E:\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\CyPrimitives.cyprj|5662bd8c-dc84-4bb8-bf6b-a1e6536cc02b
+D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\BLEServer.cyprj|8b0c3bf2-4ef9-4724-9353-27718188624b

@@ -100,7 +100,7 @@ void GlowHockeyTask(){
                     //    isOver = true;
                     //} else {
                         //isStart = false;
-                    printf("Player 0 scored!!\r\n");
+                    printf("GAME: Player 0 scored!!\r\n");
                     
                         ballPositionX = (int16) (tableWidth * BALL_INITIAL_RATE_X);
                         ballPositionY = (int16) (tableHeight * BALL_INITIAL_RATE_Y);
@@ -116,7 +116,7 @@ void GlowHockeyTask(){
                 ballSpeedY = abs(ballSpeedY);
             } 
             else if (ballPositionY + gamePaddingBottom >= tableHeight - ballSize) {
-                printf("Reach bottom.\r\n");
+                printf("GAME: Reach bottom.\r\n");
                 // 1方得分
                 if (ballPositionX > doorSideLeft && ballPositionX < doorSideRight) {
                     //scoreB += 1;
@@ -125,7 +125,7 @@ void GlowHockeyTask(){
                     //    isOver = true;
                     //} else {
                         //isStart = false;
-                    printf("Player 1 scored!!\r\n");
+                    printf("GAME: Player 1 scored!!\r\n");
                     
                         ballPositionX = (int16) (tableWidth * BALL_INITIAL_RATE_X);
                         ballPositionY = (int16) (tableHeight * BALL_INITIAL_RATE_Y);
@@ -152,12 +152,12 @@ void GlowHockeyTask(){
             // with player 0
             if (ball_player0_dis < ballSize + playerCircleSize) {
 
-                printf("Bounce player 0 !!\r\n");
+                printf("GAME: Bounce player 0 !!\r\n");
                 //if (!isStart) {
                 //    isStart = true;
                 //}
-                printf("player 0 speed: (%d, %d)\r\n", player0SpeedX, player0SpeedY);
-                printf("speed before:(%d, %d)\r\n", ballSpeedX, ballSpeedX);
+                printf("GAME: player 0 speed: (%d, %d)\r\n", player0SpeedX, player0SpeedY);
+                printf("GAME: speed before:(%d, %d)\r\n", ballSpeedX, ballSpeedX);
 
                 ballSpeedX += (int16) (2 * PLAYER_CIRCLE_MASS * (player0SpeedX - ballSpeedX)
                         / (PLAYER_CIRCLE_MASS + BALL_MASS) * BOUNCE_DECAY_RATE);
@@ -169,18 +169,18 @@ void GlowHockeyTask(){
                 ballSpeedY += (int16) (ballPositionY - player0Y) * BOUNCE_ACCELERATE_RATE *
                         (ballSize + playerCircleSize - ball_player0_dis) / (ballSize + playerCircleSize);
                 
-                printf("speed after:(%d, %d)\r\n", ballSpeedX, ballSpeedY);
+                printf("GAME: speed after:(%d, %d)\r\n", ballSpeedX, ballSpeedY);
             }
             
             // with player 1
             if (ball_player1_dis < ballSize + playerCircleSize) {
 
-                printf("Bounce player 1 !!\r\n");
+                printf("GAME: Bounce player 1 !!\r\n");
                 //if (!isStart) {
                 //    isStart = true;
                 //}
-                printf("player 1 speed: (%d, %d)\r\n", player1SpeedX, player1SpeedY);
-                printf("speed before:(%d, %d)\r\n", ballSpeedX, ballSpeedX);
+                printf("GAME: player 1 speed: (%d, %d)\r\n", player1SpeedX, player1SpeedY);
+                printf("GAME: speed before:(%d, %d)\r\n", ballSpeedX, ballSpeedX);
 
                 ballSpeedX += (int16) (2 * PLAYER_CIRCLE_MASS * (player1SpeedX - ballSpeedX)
                         / (PLAYER_CIRCLE_MASS + BALL_MASS) * BOUNCE_DECAY_RATE);
@@ -192,7 +192,7 @@ void GlowHockeyTask(){
                 ballSpeedY += (int16) (ballPositionY - player1Y) * BOUNCE_ACCELERATE_RATE *
                         (ballSize + playerCircleSize - ball_player1_dis) / (ballSize + playerCircleSize);
                 
-                printf("speed after:(%d, %d)\r\n", ballSpeedX, ballSpeedY);
+                printf("GAME: speed after:(%d, %d)\r\n", ballSpeedX, ballSpeedY);
             }
             
 
@@ -252,7 +252,7 @@ void GlowHockeyTask(){
                     );
                 }  
                 else{
-                    printf("Not send user 0 position.\r\n");
+                    printf("GAME: Not send user 0 position.\r\n");
                 }
                 Cy_BLE_ProcessEvents();
             }
@@ -278,7 +278,7 @@ void GlowHockeyTask(){
                     );
                 }  
                 else{
-                    printf("Not send user 1 position.\r\n");
+                    printf("GAME: Not send user 1 position.\r\n");
                 }
                 Cy_BLE_ProcessEvents();
                 

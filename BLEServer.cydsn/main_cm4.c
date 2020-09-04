@@ -44,18 +44,22 @@ void bleTask()
     }
  
     for(;;){
-        if((gameState == WAIT_FOR_DEVICE_1) &&
-            (isCommand_0_StartNotification & NOTIFY_BIT_MASK) && 
-            (isUser_0_notified > 0)  ){
-            bytesToSend = 0;
-            SendBleNotification(
-                CY_BLE_GH_COMMAND_COMMAND_NOTIFY_CHAR_HANDLE,
-                (uint64*)&bytesToSend,
-                bleConnectionHandle0
-            );
-            //printf("command notify 0 sent.\r\n");
-            isUser_0_notified--;
-            Cy_BLE_ProcessEvents();
+        if((gameState == INIT_DEVICE_0) &&
+            (isCommand_0_StartNotification & NOTIFY_BIT_MASK)){ //&& 
+            if(isUser_0_notified > 0) {
+                bytesToSend = 0;
+                SendBleNotification(
+                    CY_BLE_GH_COMMAND_COMMAND_NOTIFY_CHAR_HANDLE,
+                    (uint64*)&bytesToSend,
+                    bleConnectionHandle0
+                );
+                isUser_0_notified--;
+                Cy_BLE_ProcessEvents();
+            }
+            else if (isUser_0_notified == 0){
+                gameState = WAIT_FOR_DEVICE_1;
+                printf("BLE: GameState: WAIT_FOR_DEVICE_1\r\n");
+            }
         }
             
         // notify command 1
@@ -68,12 +72,12 @@ void bleTask()
                     (uint64*)&bytesToSend,
                     bleConnectionHandle1
                 );
-                //printf("command notify 1 sent.\r\n");
                 isUser_1_notified--;
                 Cy_BLE_ProcessEvents();
             }
             else if (isUser_1_notified == 0){
                 gameState = GAME_START;
+                printf("BLE: GameState: GAME_START\r\n");
             }
 
         }
@@ -97,7 +101,6 @@ void StackEventHandler(uint32 event, void *param){
         // if the ble stack on, start advertisement so other devices can find it
         case CY_BLE_EVT_STACK_ON:
         {
-            //printf("STACK_ON\r\n");
             if(gameState == INIT_SERVER){
                 gameState = WAIT_FOR_DEVICE_0;
                 printf("STACK: GameState: WAIT_FOR_DEVICE_0\r\n");
@@ -124,9 +127,9 @@ void StackEventHandler(uint32 event, void *param){
             }
             else if(gameState == WAIT_FOR_DEVICE_0){
                 bleConnectionHandle0 = *(cy_stc_ble_conn_handle_t*)param;
-                gameState = WAIT_FOR_DEVICE_1;
+                gameState = INIT_DEVICE_0;
                           
-                printf("STACK: GameState: WAIT_FOR_DEVICE_1\r\n");
+                printf("STACK: GameState: INIT_DEVICE_0\r\n");
             }
             else if(gameState == WAIT_FOR_DEVICE_1){
                 cy_stc_ble_conn_handle_t temp = *(cy_stc_ble_conn_handle_t*)param;
@@ -201,6 +204,8 @@ void StackEventHandler(uint32 event, void *param){
                                 CY_BLE_GH_POSITION_PLAYER_POSITION_N_CLIENT_CHARACTERISTIC_CONFIGURATION_DESC_INDEX
                             ];
                             printf("STACK: User 1 Pos Start Notification: %d\r\n", isUser_1_PosStartNotification);
+                            //gameState = GAME_START;
+                            //printf("STACK: GameState: GAME_START\r\n");
                         }
                         
                         cy_stc_ble_gatts_db_attr_val_info_t info = {
@@ -316,7 +321,7 @@ void StackEventHandler(uint32 event, void *param){
         
         default:
         {
-            printf("STACK: event code: %ul\r\n", event);
+            printf("STACK: event code: %u\r\n", event);
             break;
         }
     } 

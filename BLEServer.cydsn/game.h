@@ -43,9 +43,9 @@
 // bounce effect const parameters
 #define BALL_MASS 20
 #define PLAYER_CIRCLE_MASS 30
-#define BALL_SPEED_MAX_RATE 1.3
+#define BALL_SPEED_MAX_RATE 0.6
 #define BALL_SPEED_MIN_RATE 0.05
-#define BOUNCE_DECAY_RATE 0.5
+#define BOUNCE_DECAY_RATE 0.3
 #define BOUNCE_ACCELERATE_RATE 0.4
 
 // other const parameters

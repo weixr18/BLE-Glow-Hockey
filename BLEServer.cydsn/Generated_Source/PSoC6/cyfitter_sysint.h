@@ -18,14 +18,6 @@
 #define INCLUDED_CYFITTER_SYSINT_H
 #include "cy_device_headers.h"
 
-/* CapSense_ISR */
-#define CapSense_ISR__INTC_CORTEXM4_ASSIGNED 1
-#define CapSense_ISR__INTC_CORTEXM4_PRIORITY 7u
-#define CapSense_ISR__INTC_NUMBER 49u
-#define CapSense_ISR_INTC_CORTEXM4_ASSIGNED 1
-#define CapSense_ISR_INTC_CORTEXM4_PRIORITY 7u
-#define CapSense_ISR_INTC_NUMBER 49u
-
 /* UART_SCB_IRQ */
 #define UART_SCB_IRQ__INTC_CORTEXM4_ASSIGNED 1
 #define UART_SCB_IRQ__INTC_CORTEXM4_PRIORITY 7u

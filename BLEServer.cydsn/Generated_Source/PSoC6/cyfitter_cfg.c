@@ -211,11 +211,8 @@ static void ClockInit(void)
 	Cy_SysLib_SetWaitStates(false, 100);
 
 	/* Configure peripheral clock dividers */
-	Cy_SysClk_PeriphAssignDivider(PCLK_SCB5_CLOCK, CY_SYSCLK_DIV_8_BIT, 1u);
-	Cy_SysClk_PeriphSetDivider(CY_SYSCLK_DIV_8_BIT, 1u, 35u);
-	Cy_SysClk_PeriphEnableDivider(CY_SYSCLK_DIV_8_BIT, 1u);
-	Cy_SysClk_PeriphAssignDivider(PCLK_CSD_CLOCK, CY_SYSCLK_DIV_8_BIT, 0u);
-	Cy_SysClk_PeriphSetDivider(CY_SYSCLK_DIV_8_BIT, 0u, 254u);
+	Cy_SysClk_PeriphAssignDivider(PCLK_SCB5_CLOCK, CY_SYSCLK_DIV_8_BIT, 0u);
+	Cy_SysClk_PeriphSetDivider(CY_SYSCLK_DIV_8_BIT, 0u, 35u);
 	Cy_SysClk_PeriphEnableDivider(CY_SYSCLK_DIV_8_BIT, 0u);
 }
 
@@ -241,8 +238,6 @@ static void ClockInit(void)
 static void AnalogSetDefault(void);
 static void AnalogSetDefault(void)
 {
-	CY_SET_REG32(CYREG_HSIOM_AMUX_SPLIT_CTL4, 0x00000003u);
-	CY_SET_REG32(CYREG_PASS_AREF_AREF_CTRL, 0x80110001u);
 }
 
 
@@ -317,23 +312,6 @@ void Cy_SystemInit(void)
 	        .sel1Active = 0x1D1D0000u,
 	    };
 	    (void)Cy_GPIO_Port_Init(GPIO_PRT6, &port6_cfg);
-	}
-
-	/* Port7 configuration */
-	{
-	    const cy_stc_gpio_prt_config_t port7_cfg =
-	    {
-	        .out        = 0x00000082u,
-	        .intrMask   = 0x00000000u,
-	        .intrCfg    = 0x00000000u,
-	        .cfg        = 0x00000000u,
-	        .cfgIn      = 0x00000000u,
-	        .cfgOut     = 0x00000000u,
-	        .cfgSIO     = 0x00000000u,
-	        .sel0Active = 0x00000000u,
-	        .sel1Active = 0x00000000u,
-	    };
-	    (void)Cy_GPIO_Port_Init(GPIO_PRT7, &port7_cfg);
 	}
 
 
