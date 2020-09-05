@@ -49,7 +49,7 @@ void GlowHockeyTask(){
         if(gameState == GAME_START && isReceivePosition){
 
             /********** receive position *************/
-            xQueueReceive(bleQueueHandle, &receivedPosition, portTICK_PERIOD_MS);
+            xQueueReceive(positionQueueHandle, &receivedPosition, portTICK_PERIOD_MS);
             isReceivePosition = false;
             
             if(0 == (((uint8)(receivedPosition >> 24)) & USER_INDEX_MASK))

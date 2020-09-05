@@ -66,19 +66,22 @@ public class GameActivity extends Activity {
 
     public static int GH_CC_W_PAUSE = 0x02;
     public static int GH_CC_W_RESUME = 0x03;
+    public static int GH_CC_W_CHOOSE_COMPLETE = 0x06;
+
     public static int GH_CC_N_READY = 0x10;
     public static int GH_CC_N_START = 0x11;
     public static int GH_CC_N_PAUSE = 0x12;
-
     public static int GH_CC_N_RESUME = 0x13;
     public static int GH_CC_N_SCORE = 0x14;
     public static int GH_CC_N_OVER = 0x15;
+    public static int GH_CC_N_CHOOSE_COLOR = 0x16;
     public static int GH_CC_N_NOTIFY_ID = 0x18;
     public static int GH_CC_N_NOTIFY_COLOR = 0x19;
 
     public enum ClientGameState{
         Connecting,
         Initializing,
+        ChooseColor,
         Waiting,
         Running,
         Pause,
@@ -95,6 +98,7 @@ public class GameActivity extends Activity {
     private boolean isStart = false;
     private int scoreA = 0;
     private int scoreB = 0;
+    private int choosingColorPlayer = 2;
 
 
 
@@ -157,6 +161,11 @@ public class GameActivity extends Activity {
     final private static double BUTTON_RL_RATE = 0.55;
     final private static double BUTTON_RR_RATE = 0.8;
 
+    final private static double BUTTON_M_TOP_RATE = 0.55;
+    final private static double BUTTON_M_BOTTOM_RATE = 0.63;
+    final private static double BUTTON_M_LEFT_RATE = 0.38;
+    final private static double BUTTON_M_RIGHT_RATE = 0.62;
+
 
 
     final private static double PLAYER_A_INITIAL_RATE_X = 0.5;
@@ -179,17 +188,20 @@ public class GameActivity extends Activity {
     private int ballSize;
     private int buttonTop;
     private int buttonBottom;
-    private int buttonLL;
-    private int buttonLR;
-    private int buttonRL;
-    private int buttonRR;
+    private int buttonMTop;
+    private int buttonMBottom;
+    private int buttonMLeft;
+    private int buttonMRight;
+
 
     private Rect fullZone;
     private Rect gameZone;      // 游戏区域
     private Rect doorZoneB;     //对方门
     private Rect doorZoneA;     //己方门
-    private Rect buttonLeft;     //左侧按钮
-    private Rect buttonRight;     //左侧按钮
+    private Rect buttonLeft;     //下方左侧按钮
+    private Rect buttonRight;     //下方左侧按钮
+    private Rect buttonMiddle;  // 中间单个按钮
+
 
     private int player_A_Color = Color.rgb(124,249,102);
     private int player_B_Color = Color.rgb(220,240,120);
@@ -406,14 +418,37 @@ public class GameActivity extends Activity {
                     int data = (command & GH_CMASK_DATA) >> 5;
                     Log.d(TAG, String.format("COMMAND_N received :%x, %x", oprand, data));
 
-                    // id
+                    // notify id
                     if(oprand == GH_CC_N_NOTIFY_ID){
                         playerID = data;
                         mGameState = ClientGameState.Initializing;
                     }
+                    // notify color
+                    else if(oprand == GH_CC_N_NOTIFY_COLOR){
+                        if(mGameState == ClientGameState.ChooseColor){
+                            int red = (command >> 8) & 0xff;
+                            int green = (command >> 16) & 0xff;
+                            int blue = (command >> 24) & 0xff;
+
+                            Log.d(TAG, String.format("Color: R %d G %d B %d", red, green, blue));
+                            if(choosingColorPlayer == playerID){
+                                player_A_Color = Color.rgb(red, green, blue);
+                            }
+                            else {
+                                player_B_Color = Color.rgb(red, green, blue);
+                            }
+                        }
+
+                    }
                     // ready
                     else if(oprand == GH_CC_N_READY){
                         mGameState = ClientGameState.Waiting;
+                    }
+                    // choose color
+                    else if(oprand == GH_CC_N_CHOOSE_COLOR){
+                        mGameState = ClientGameState.ChooseColor;
+                        choosingColorPlayer = data;
+
                     }
                     // start
                     else if(oprand == GH_CC_N_START){
@@ -480,6 +515,12 @@ public class GameActivity extends Activity {
      * UI初始化
      */
     private void UIInitialize(){
+
+        int buttonLL;
+        int buttonLR;
+        int buttonRL;
+        int buttonRR;
+
         //获取屏幕参数
         WindowManager windowManager = getWindowManager();
         Display display = windowManager.getDefaultDisplay();
@@ -508,6 +549,17 @@ public class GameActivity extends Activity {
         buttonRL  = (int) (tableWidth * BUTTON_RL_RATE);
         buttonRR  = (int) (tableWidth * BUTTON_RR_RATE);
 
+        buttonMTop = (int) (tableHeight * BUTTON_M_TOP_RATE);
+        buttonMBottom = (int) (tableHeight * BUTTON_M_BOTTOM_RATE);
+        buttonMLeft = (int) (tableWidth * BUTTON_M_LEFT_RATE);
+        buttonMRight = (int) (tableWidth * BUTTON_M_RIGHT_RATE);
+        Log.d(TAG, String.format(
+                "Button middle (top bottom left right): (%d %d %d %d)",
+                buttonMTop, buttonMBottom, buttonMLeft, buttonMRight
+        ));
+
+
+
         playerCircleSize = (int) (tableWidth * playerCircleSize_RATE);
         playerInnerCircleSize = (int) (tableWidth * playerInnerCircleSize_RATE);
         player_A_PositionX = (int) (tableWidth * PLAYER_A_INITIAL_RATE_X);
@@ -516,25 +568,21 @@ public class GameActivity extends Activity {
         player_B_PositionY = (int) (tableHeight * PLAYER_B_INITIAL_RATE_Y);
 
 
-
         scoreA = scoreB = 0;
 
         fullZone = new Rect(0,0, tableWidth,tableHeight);
-
         gameZone = new Rect(
                 gamePaddingLeft,
                 gamePaddingTop,
                 tableWidth - gamePaddingRight,
                 tableHeight - gamePaddingBottom
         );
-
         doorZoneB = new Rect(
                 doorSideLeft,
                 0,
                 doorSideRight,
                 gamePaddingTop
         );
-
         doorZoneA = new Rect(
                 doorSideLeft,
                 tableHeight - gamePaddingBottom,
@@ -548,12 +596,17 @@ public class GameActivity extends Activity {
                 buttonLR,
                 buttonBottom
         );
-
         buttonRight = new Rect(
                 buttonRL,
                 buttonTop,
                 buttonRR,
                 buttonBottom
+        );
+        buttonMiddle = new Rect(
+                buttonMLeft,
+                buttonMTop,
+                buttonMRight,
+                buttonMBottom
         );
 
     }
@@ -566,7 +619,7 @@ public class GameActivity extends Activity {
     final private View.OnTouchListener listener = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
-            if(!isOver) {
+            if(mGameState == ClientGameState.Running) {
                 float x = event.getX();
                 float y = event.getY();
                 /**
@@ -589,12 +642,32 @@ public class GameActivity extends Activity {
                 }
 
 
-                /**
-                 * send to server
-                 */
-
                 return true;
             }
+
+            else if(mGameState == ClientGameState.ChooseColor){
+
+                int x = (int) event.getX();
+                int y = (int) event.getY();
+
+                if(choosingColorPlayer == playerID){
+
+
+                    if((x > buttonMLeft) && (x < buttonMRight) &&
+                            (y < buttonMBottom) && (y > buttonMTop)){
+
+                        int send = GH_CC_W_CHOOSE_COMPLETE;
+                        mGH_COMMAND_W_Characteristic.setValue(send,
+                                BluetoothGattCharacteristic.FORMAT_UINT32,0);
+                        mBluetoothLeService.writeCharacteristic(mGH_COMMAND_W_Characteristic);
+                        Log.d(TAG, "Choose color complete!");
+
+                    }
+
+                }
+
+            }
+
             return true;
         }
     };
@@ -650,7 +723,6 @@ public class GameActivity extends Activity {
                 canvas.drawRect(buttonLeft, paint);
                 canvas.drawRect(buttonRight, paint);
 
-
             }
             else if(mGameState == ClientGameState.Connecting) {
                 // 正在连接
@@ -685,8 +757,79 @@ public class GameActivity extends Activity {
                         paint
                 );
             }
+            else if(mGameState == ClientGameState.ChooseColor){
+                // 选择颜色
+
+                paint.setColor(Color.WHITE);
+                paint.setTextSize((int)(tableHeight * 0.04));
+                String text = "";
+                if(playerID == choosingColorPlayer){
+                    text = "You are choosing color.";
+                    canvas.drawText(
+                            text,
+                            (int)(tableWidth * 0.2),
+                            (int)(tableHeight * 0.5),
+                            paint
+                    );
+
+                    canvas.drawRect(buttonMiddle, paint);
+
+                    paint.setColor(Color.BLACK);
+                    paint.setTextSize((int)(tableHeight * 0.07));
+                    canvas.drawText(
+                            "OK",
+                            (int)(tableWidth * (BUTTON_M_LEFT_RATE + 0.05)),
+                            (int)(tableHeight * (BUTTON_M_BOTTOM_RATE - 0.02)),
+                            paint
+                    );
+
+                }
+                else {
+                    text = "Your rival is choosing color.";
+                    canvas.drawText(
+                            text,
+                            (int)(tableWidth * 0.1),
+                            (int)(tableHeight * 0.5),
+                            paint
+                    );
+                }
+
+
+                //画玩家A
+                paint.setColor(player_A_Color);
+                canvas.drawCircle(
+                        player_A_PositionX,
+                        player_A_PositionY,
+                        playerCircleSize,
+                        paint
+                );
+                paint.setColor(Color.BLACK);
+                canvas.drawCircle(
+                        player_A_PositionX,
+                        player_A_PositionY,
+                        playerInnerCircleSize,
+                        paint
+                );
+
+                //画玩家B
+                paint.setColor(player_B_Color);
+                canvas.drawCircle(
+                        player_B_PositionX,
+                        player_B_PositionY,
+                        playerCircleSize,
+                        paint
+                );
+                paint.setColor(Color.BLACK);
+                canvas.drawCircle(
+                        player_B_PositionX,
+                        player_B_PositionY,
+                        playerInnerCircleSize,
+                        paint
+                );
+
+            }
             else if(mGameState == ClientGameState.Replay) {
-                // 正在连接
+                // 重玩
                 paint.setColor(Color.WHITE);
                 paint.setTextSize(40);
                 paint.setTextSize((int)(tableHeight * 0.04));
@@ -790,7 +933,7 @@ public class GameActivity extends Activity {
 
             @Override
             public void run() {
-                if(!isOver) {
+                if(true) {
 
                     /**
                      * send to server

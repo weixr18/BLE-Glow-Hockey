@@ -84,17 +84,20 @@ int scoreB 0
 #define MY_IPC_CHANNEL 8u
 
 // game command macros
-#define GH_CC_W_PAUSE         0x02
-#define GH_CC_W_RESUME        0x03
-#define GH_CC_N_READY         0x10
-#define GH_CC_N_START         0x11
-#define GH_CC_N_PAUSE         0x12
+#define GH_CC_W_PAUSE             0x02
+#define GH_CC_W_RESUME            0x03
+#define GH_CC_W_CHOOSE_COMPLETE   0x06
 
-#define GH_CC_N_RESUME        0x13
-#define GH_CC_N_SCORE         0x14
-#define GH_CC_N_OVER          0x15
-#define GH_CC_N_NOTIFY_ID     0x18
-#define GH_CC_N_NOTIFY_COLOR  0x19
+#define GH_CC_N_READY             0x10
+#define GH_CC_N_START             0x11
+#define GH_CC_N_PAUSE             0x12
+#define GH_CC_N_RESUME            0x13
+#define GH_CC_N_SCORE             0x14
+#define GH_CC_N_OVER              0x15
+#define GH_CC_N_CHOOSE_COLOR      0x16
+#define GH_CC_N_NOTIFY_ID         0x18
+#define GH_CC_N_NOTIFY_COLOR      0x19
+
 
 
 
@@ -106,6 +109,8 @@ enum GameState{
     INIT_DEVICE_0,
     WAIT_FOR_DEVICE_1,
     INIT_DEVICE_1,
+    PLAYER_0_CHOOSE_COLOR,
+    PLAYER_1_CHOOSE_COLOR,
     GAME_START,
     GAME_OVER
 };
@@ -113,7 +118,8 @@ enum GameState{
 
 /******************************GLOBAL VARIABLES***********************************/
 
-QueueHandle_t bleQueueHandle;
+QueueHandle_t positionQueueHandle;
+QueueHandle_t colorQueueHandle;
 
 bool isReceivePosition;
 bool isUser_0_PosStartNotification;
@@ -130,6 +136,7 @@ cy_stc_ble_conn_handle_t bleConnectionHandle1;
 
 void GlowHockeyTask();
 void SendBleNotification(cy_ble_gatt_db_attr_handle_t charHandle, uint64* value, cy_stc_ble_conn_handle_t connHandle);
+void StackEventHandler(uint32 event, void *param);
 void delayTime(uint16 x);
 
 
