@@ -150,6 +150,15 @@ public class GameActivity extends Activity {
     final private static double playerCircleSize_RATE = 0.1;
     final private static double playerInnerCircleSize_RATE = 0.072;
 
+    final private static double BUTTON_TOP_RATE = 0.8;
+    final private static double BUTTON_BOTTOM_RATE = 0.9;
+    final private static double BUTTON_LL_RATE = 0.2;
+    final private static double BUTTON_LR_RATE = 0.45;
+    final private static double BUTTON_RL_RATE = 0.55;
+    final private static double BUTTON_RR_RATE = 0.8;
+
+
+
     final private static double PLAYER_A_INITIAL_RATE_X = 0.5;
     final private static double PLAYER_A_INITIAL_RATE_Y = 0.8;
     final private static double PLAYER_B_INITIAL_RATE_X = 0.5;
@@ -168,10 +177,19 @@ public class GameActivity extends Activity {
     private int playerCircleSize;
     private int playerInnerCircleSize;
     private int ballSize;
+    private int buttonTop;
+    private int buttonBottom;
+    private int buttonLL;
+    private int buttonLR;
+    private int buttonRL;
+    private int buttonRR;
+
     private Rect fullZone;
     private Rect gameZone;      // 游戏区域
     private Rect doorZoneB;     //对方门
     private Rect doorZoneA;     //己方门
+    private Rect buttonLeft;     //左侧按钮
+    private Rect buttonRight;     //左侧按钮
 
     private int player_A_Color = Color.rgb(124,249,102);
     private int player_B_Color = Color.rgb(220,240,120);
@@ -482,8 +500,13 @@ public class GameActivity extends Activity {
         ballSize = (int) (tableWidth * BALL_SIZE_RATIO);
         ballPositionX = (int) (tableWidth * BALL_INITIAL_RATE_X);
         ballPositionY = (int) (tableHeight * BALL_INITIAL_RATE_Y);
-        //ballSpeedX = 0;
-        //ballSpeedY = 0;
+
+        buttonTop  = (int) (tableHeight * BUTTON_TOP_RATE);
+        buttonBottom  = (int) (tableHeight * BUTTON_BOTTOM_RATE);
+        buttonLL  = (int) (tableWidth * BUTTON_LL_RATE);
+        buttonLR  = (int) (tableWidth * BUTTON_LR_RATE);
+        buttonRL  = (int) (tableWidth * BUTTON_RL_RATE);
+        buttonRR  = (int) (tableWidth * BUTTON_RR_RATE);
 
         playerCircleSize = (int) (tableWidth * playerCircleSize_RATE);
         playerInnerCircleSize = (int) (tableWidth * playerInnerCircleSize_RATE);
@@ -491,8 +514,8 @@ public class GameActivity extends Activity {
         player_A_PositionY = (int) (tableHeight * PLAYER_A_INITIAL_RATE_Y);
         player_B_PositionX = (int) (tableWidth * PLAYER_B_INITIAL_RATE_X);
         player_B_PositionY = (int) (tableHeight * PLAYER_B_INITIAL_RATE_Y);
-        //playerCircleASpeedX = 0;
-        //playerCircleASpeedY = 0;
+
+
 
         scoreA = scoreB = 0;
 
@@ -517,6 +540,20 @@ public class GameActivity extends Activity {
                 tableHeight - gamePaddingBottom,
                 doorSideRight,
                 tableHeight
+        );
+
+        buttonLeft = new Rect(
+                buttonLL,
+                buttonTop,
+                buttonLR,
+                buttonBottom
+        );
+
+        buttonRight = new Rect(
+                buttonRL,
+                buttonTop,
+                buttonRR,
+                buttonBottom
         );
 
     }
@@ -608,6 +645,12 @@ public class GameActivity extends Activity {
                         (int)(tableHeight * 0.6),
                         paint
                 );
+
+                paint.setColor(Color.WHITE);
+                canvas.drawRect(buttonLeft, paint);
+                canvas.drawRect(buttonRight, paint);
+
+
             }
             else if(mGameState == ClientGameState.Connecting) {
                 // 正在连接

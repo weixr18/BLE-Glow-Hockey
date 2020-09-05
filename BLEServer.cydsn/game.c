@@ -156,7 +156,7 @@ void GlowHockeyTask(){
                 }
             } 
             else if (ballPositionY + gamePaddingBottom >= tableHeight - ballSize) {
-                printf("GAME: Reach bottom.\r\n");
+                //printf("GAME: Reach bottom.\r\n");
                 // 1方得分
                 if (ballPositionX > doorSideLeft && ballPositionX < doorSideRight) {
                     score_1 += 1;
@@ -242,8 +242,7 @@ void GlowHockeyTask(){
                 //if (!isStart) {
                 //    isStart = true;
                 //}
-                printf("GAME: player 0 speed: (%d, %d)\r\n", player0SpeedX, player0SpeedY);
-                printf("GAME: speed before:(%d, %d)\r\n", ballSpeedX, ballSpeedX);
+
 
                 ballSpeedX += (int16) (2 * PLAYER_CIRCLE_MASS * (player0SpeedX - ballSpeedX)
                         / (PLAYER_CIRCLE_MASS + BALL_MASS) * BOUNCE_DECAY_RATE);
@@ -254,9 +253,7 @@ void GlowHockeyTask(){
                         / (PLAYER_CIRCLE_MASS + BALL_MASS) * BOUNCE_DECAY_RATE);
                 ballSpeedY += (int16) (ballPositionY - player0Y) * BOUNCE_ACCELERATE_RATE *
                         (ballSize + playerCircleSize - ball_player0_dis) / (ballSize + playerCircleSize);
-                
-                printf("GAME: speed after:(%d, %d)\r\n", ballSpeedX, ballSpeedY);
-            }
+                }
             
             // with player 1
             if (ball_player1_dis < ballSize + playerCircleSize) {
@@ -265,8 +262,7 @@ void GlowHockeyTask(){
                 //if (!isStart) {
                 //    isStart = true;
                 //}
-                printf("GAME: player 1 speed: (%d, %d)\r\n", player1SpeedX, player1SpeedY);
-                printf("GAME: speed before:(%d, %d)\r\n", ballSpeedX, ballSpeedX);
+
 
                 ballSpeedX += (int16) (2 * PLAYER_CIRCLE_MASS * (player1SpeedX - ballSpeedX)
                         / (PLAYER_CIRCLE_MASS + BALL_MASS) * BOUNCE_DECAY_RATE);
@@ -278,7 +274,6 @@ void GlowHockeyTask(){
                 ballSpeedY += (int16) (ballPositionY - player1Y) * BOUNCE_ACCELERATE_RATE *
                         (ballSize + playerCircleSize - ball_player1_dis) / (ballSize + playerCircleSize);
                 
-                printf("GAME: speed after:(%d, %d)\r\n", ballSpeedX, ballSpeedY);
             }
             
 

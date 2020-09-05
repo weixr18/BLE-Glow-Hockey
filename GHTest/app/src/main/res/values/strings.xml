@@ -1,8 +1,0 @@
-<resources>
-    <string name="app_name">GHTest</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
-    <string name="title_activity_first">Glow Hockey</string>
-    <string name="first_page_content">Welcome to Glow Hockey!</string>
-    <string name="first_page_button">Start Game</string>
-</resources>

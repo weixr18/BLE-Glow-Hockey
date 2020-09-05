@@ -50,7 +50,7 @@ void bleTask()
     cy_en_ble_api_result_t apiResult;
     apiResult = Cy_BLE_Start(StackEventHandler);
     if(apiResult == CY_BLE_SUCCESS){
-        printf("Core 4 BLE Start success.\r\n");
+        printf("Core 4 BLE start success.\r\n");
     }
  
     for(;;){
@@ -74,20 +74,21 @@ void bleTask()
                 Cy_BLE_ProcessEvents();
                 delayTime(1000);
             }
-            // send "Ready" signal
-            else if (isUser_0_notified == 0){
+            
+            // send "Ready" signal, change state
+            if (isUser_0_notified == 0 && isUser_0_PosStartNotification){
                 
                 gameState = WAIT_FOR_DEVICE_1;
+                printf("BLE: GameState: WAIT_FOR_DEVICE_1\r\n");
+                
                 uint64 operand = GH_CC_N_READY;
                 bytesToSend_0 = (operand) & (int)0x000007ff;
                 printf("BLE: user 0. READY. Bytes: %d\r\n", bytesToSend_0);
-                
                 SendBleNotification(
                     CY_BLE_GH_COMMAND_COMMAND_NOTIFY_CHAR_HANDLE,
                     (uint64*)&bytesToSend_0,
                     bleConnectionHandle0
                 );
-                printf("BLE: GameState: WAIT_FOR_DEVICE_1\r\n");
                 Cy_BLE_ProcessEvents();
             }
         }
@@ -112,8 +113,10 @@ void bleTask()
                 delayTime(1000);
             }
             
-            else if (isUser_1_notified == 0){
+            // change state
+            if (isUser_1_notified == 0 && isUser_1_PosStartNotification){
                 
+                /*
                 // send "Ready" signal
                 uint64 operand = GH_CC_N_READY;
                 bytesToSend_0 = (operand) & (int)0x000007ff;
@@ -123,13 +126,16 @@ void bleTask()
                     (uint64*)&bytesToSend_0,
                     bleConnectionHandle0
                 );
-                gameState = GAME_START;
-                printf("BLE: GameState: GAME_START\r\n");
                 Cy_BLE_ProcessEvents();
                 delayTime(1000);
+                */
                 
+                // change game state
+                gameState = GAME_START;
+                printf("BLE: GameState: GAME_START\r\n");
+          
                 // send "Start" signal to device 0
-                operand = GH_CC_N_START;
+                uint64 operand = GH_CC_N_START;
                 bytesToSend_0 = (operand) & (int)0x000007ff;
                 //printf("BLE: user 0. START. Bytes: %d\r\n", bytesToSend_0);
                 SendBleNotification(

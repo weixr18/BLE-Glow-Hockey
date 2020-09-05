@@ -29,7 +29,7 @@ int main(void)
     
     if(Cy_BLE_Start(NULL) == CY_BLE_SUCCESS)
     {
-        printf("Core 0 BLE Start.\r\n");
+        printf("Core 0 BLE start success.\r\n");
     }
 
     /* Place your initialization/startup code here (e.g. MyInst_Start()) */
