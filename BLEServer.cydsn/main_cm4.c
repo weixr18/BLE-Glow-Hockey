@@ -84,9 +84,15 @@ void UartTask(void* arg){
             }
 
         }
-        taskYIELD();
+        
+        /*
+        if(gameState == GAME_START){
+            return;
+        }
+        */
+        
+        taskYIELD();    
     } 
-
 }
 
 
@@ -119,43 +125,87 @@ void bleTask()
  
     for(;;){
         
-        // device 0 choose color
-        if(gameState == PLAYER_0_CHOOSE_COLOR){
+        if(gameState == PLAYER_0_CHOOSE_COLOR || gameState == PLAYER_1_CHOOSE_COLOR){
             xQueueReceive(colorQueueHandle, &receivedColor, portTICK_PERIOD_MS);
             
-            if(receivedColor != receivedColorLast){
-                buffer[2] = (char)((receivedColor >> 24) & 0xff);
-                buffer[1] = (char)((receivedColor >> 16) & 0xff);
-                buffer[0] = (char)((receivedColor >> 8) & 0xff);
-                
-                printf("BLE: R %d G %d B %d\r\n", buffer[0], buffer[1], buffer[2]);
-                
-                uint64 operand = GH_CC_N_NOTIFY_COLOR;
-                bytesToSend_0 = (operand) & (uint64)0x000007ff;
-                bytesToSend_0 |= (uint64)(receivedColor & (uint32_t)0xffffff00);
-                
-                SendBleNotification(
-                    CY_BLE_GH_COMMAND_COMMAND_NOTIFY_CHAR_HANDLE,
-                    (uint64*)&bytesToSend_0,
-                    bleConnectionHandle0
-                );
-                Cy_BLE_ProcessEvents();
-                delayTime(3000);
-                
-                bytesToSend_1 = bytesToSend_0;
-                SendBleNotification(
-                    CY_BLE_GH_COMMAND_COMMAND_NOTIFY_CHAR_HANDLE,
-                    (uint64*)&bytesToSend_1,
-                    bleConnectionHandle1
-                );
-                Cy_BLE_ProcessEvents();
-                delayTime(1000);
-                
-                receivedColorLast = receivedColor;           
-            }
+            // device 0 choose color
+            if(gameState == PLAYER_0_CHOOSE_COLOR){
 
+                if(receivedColor != receivedColorLast){
+                    buffer[2] = (char)((receivedColor >> 24) & 0xff);
+                    buffer[1] = (char)((receivedColor >> 16) & 0xff);
+                    buffer[0] = (char)((receivedColor >> 8) & 0xff);
+                    
+                    printf("BLE: R %d G %d B %d\r\n", buffer[0], buffer[1], buffer[2]);
+                    
+                    uint64 operand = GH_CC_N_NOTIFY_COLOR;
+                    bytesToSend_0 = (operand) & (uint64)0x000007ff;
+                    bytesToSend_0 |= (uint64)(receivedColor & (uint32_t)0xffffff00);
+                    
+                    SendBleNotification(
+                        CY_BLE_GH_COMMAND_COMMAND_NOTIFY_CHAR_HANDLE,
+                        (uint64*)&bytesToSend_0,
+                        bleConnectionHandle0
+                    );
+                    Cy_BLE_ProcessEvents();
+                    delayTime(500);
+                    
+                    bytesToSend_1 = bytesToSend_0;
+                    SendBleNotification(
+                        CY_BLE_GH_COMMAND_COMMAND_NOTIFY_CHAR_HANDLE,
+                        (uint64*)&bytesToSend_1,
+                        bleConnectionHandle1
+                    );
+                    Cy_BLE_ProcessEvents();
+                    delayTime(500);
+                    
+                    receivedColorLast = receivedColor;           
+                }
+                else{
+                    Cy_BLE_ProcessEvents();
+                }
+
+            }
+            
+            // device 1 choose color
+            else if(gameState == PLAYER_1_CHOOSE_COLOR){
+                
+                if(receivedColor != receivedColorLast){
+                    buffer[2] = (char)((receivedColor >> 24) & 0xff);
+                    buffer[1] = (char)((receivedColor >> 16) & 0xff);
+                    buffer[0] = (char)((receivedColor >> 8) & 0xff);
+                    
+                    printf("BLE: R %d G %d B %d\r\n", buffer[0], buffer[1], buffer[2]);
+                    
+                    uint64 operand = GH_CC_N_NOTIFY_COLOR;
+                    bytesToSend_0 = (operand) & (uint64)0x000007ff;
+                    bytesToSend_0 |= (uint64)(receivedColor & (uint32_t)0xffffff00);
+                    
+                    SendBleNotification(
+                        CY_BLE_GH_COMMAND_COMMAND_NOTIFY_CHAR_HANDLE,
+                        (uint64*)&bytesToSend_0,
+                        bleConnectionHandle0
+                    );
+                    Cy_BLE_ProcessEvents();
+                    delayTime(500);
+                    
+                    bytesToSend_1 = bytesToSend_0;
+                    SendBleNotification(
+                        CY_BLE_GH_COMMAND_COMMAND_NOTIFY_CHAR_HANDLE,
+                        (uint64*)&bytesToSend_1,
+                        bleConnectionHandle1
+                    );
+                    Cy_BLE_ProcessEvents();
+                    delayTime(500);
+                    
+                    receivedColorLast = receivedColor;           
+                }
+                else{
+                    Cy_BLE_ProcessEvents();
+                }
+            }
         }
-        
+             
         // notify command for device 0
         else if((gameState == INIT_DEVICE_0) &&
             (isCommand_0_StartNotification & NOTIFY_BIT_MASK)){ 
@@ -219,14 +269,12 @@ void bleTask()
             // change state
             if (isUser_1_notified == 0 && isUser_1_PosStartNotification){
                
-                
                 // change game state
                 gameState = PLAYER_0_CHOOSE_COLOR;
-                printf("BLE: GameState: PLAYER_0_CHOOSE_COLOR\r\n");
+                printf("STACK: GameState: PLAYER_0_CHOOSE_COLOR\r\n");
           
                 
                 // player 0 choose color
-                
                 uint64 id = 0;
                 uint64 operand = GH_CC_N_CHOOSE_COLOR;
                 bytesToSend_0 = ((id << 5) | operand) & (uint64)0x000007ff;
@@ -245,6 +293,36 @@ void bleTask()
                     bleConnectionHandle1
                 );
                 Cy_BLE_ProcessEvents();
+                delayTime(1000);
+                
+                /*
+                // change game state
+                gameState = GAME_START;
+                printf("BLE: GameState: GAME_START\r\n");
+          
+                
+                // send start signal
+                
+                uint64 id = 0;
+                uint64 operand = GH_CC_N_START;
+                bytesToSend_0 = ((id << 5) | operand) & (uint64)0x000007ff;
+                SendBleNotification(
+                    CY_BLE_GH_COMMAND_COMMAND_NOTIFY_CHAR_HANDLE,
+                    (uint64*)&bytesToSend_0,
+                    bleConnectionHandle0
+                );
+                Cy_BLE_ProcessEvents();
+                delayTime(1000);
+                
+                bytesToSend_1 = ((id << 5) | operand) & (uint64)0x000007ff;
+                SendBleNotification(
+                    CY_BLE_GH_COMMAND_COMMAND_NOTIFY_CHAR_HANDLE,
+                    (uint64*)&bytesToSend_1,
+                    bleConnectionHandle1
+                );
+                Cy_BLE_ProcessEvents();
+                
+                */
             }
         }
         
@@ -326,6 +404,7 @@ void StackEventHandler(uint32 event, void *param){
             );
             break;
         }
+        
  
         //if receive the "write request" from the gatt client
         case CY_BLE_EVT_GATTS_WRITE_REQ:
@@ -337,12 +416,14 @@ void StackEventHandler(uint32 event, void *param){
                 && writeReqPara->connHandle.bdHandle == bleConnectionHandle1.bdHandle);
             
             if(flag){
-                // device 0 write request
+                
                 if(writeReqPara->connHandle.attId == bleConnectionHandle0.attId
                 && writeReqPara->connHandle.bdHandle == bleConnectionHandle0.bdHandle){
+                    // device 0 write request
                     printf("STACK: DEVICE 0 WRITE REQUEST.\r\n");
                 }
                 else{
+                    // device 1 write request
                      printf("STACK: DEVICE 1 WRITE REQUEST.\r\n");
                 }
                 
@@ -423,7 +504,6 @@ void StackEventHandler(uint32 event, void *param){
                         ];
                         }
                         
-
                         cy_stc_ble_gatts_db_attr_val_info_t info = {
                             .handleValuePair = writeReqPara -> handleValPair,
                             .offset = false,
@@ -449,21 +529,90 @@ void StackEventHandler(uint32 event, void *param){
                 
                 }
                 
+                // Choose color
+                else if(CY_BLE_GH_COMMAND_COMMAND_WRITE_CHAR_HANDLE == writeReqPara->handleValPair.attrHandle){
+                    printf("STACK: COMMAND_WRITE_CHAR_HANDLE\r\n");
+                    
+                    // device 0 write request
+                    if(writeReqPara->connHandle.attId == bleConnectionHandle0.attId
+                    && writeReqPara->connHandle.bdHandle == bleConnectionHandle0.bdHandle){
+                        
+                        // player 1 choose color
+                        gameState = PLAYER_1_CHOOSE_COLOR;
+                        
+                        uint64 id = 1;
+                        uint64 operand = GH_CC_N_CHOOSE_COLOR;
+                        uint64 bytesToSend_0 = ((id << 5) | operand) & (uint64)0x000007ff;
+                        SendBleNotification(
+                            CY_BLE_GH_COMMAND_COMMAND_NOTIFY_CHAR_HANDLE,
+                            (uint64*)&bytesToSend_0,
+                            bleConnectionHandle0
+                        );
+                        Cy_BLE_ProcessEvents();
+                        delayTime(1000);
+                        
+                        uint64 bytesToSend_1 = ((id << 5) | operand) & (uint64)0x000007ff;
+                        SendBleNotification(
+                            CY_BLE_GH_COMMAND_COMMAND_NOTIFY_CHAR_HANDLE,
+                            (uint64*)&bytesToSend_1,
+                            bleConnectionHandle1
+                        );
+                        Cy_BLE_ProcessEvents();
+                        delayTime(1000);
+                        
+                    }
+                    
+                    // device 1 write request
+                    else{
+                        // change game state
+                        gameState = GAME_START;
+                     
+                        // send start signal
+                        uint64 operand = GH_CC_N_START;
+                        uint64 bytesToSend_0 = (operand) & (uint64)0x000007ff;
+                        SendBleNotification(
+                            CY_BLE_GH_COMMAND_COMMAND_NOTIFY_CHAR_HANDLE,
+                            (uint64*)&bytesToSend_0,
+                            bleConnectionHandle0
+                        );
+                        Cy_BLE_ProcessEvents();
+                        delayTime(1000);
+                        
+                        uint64 bytesToSend_1 = (operand) & (uint64)0x000007ff;
+                        SendBleNotification(
+                            CY_BLE_GH_COMMAND_COMMAND_NOTIFY_CHAR_HANDLE,
+                            (uint64*)&bytesToSend_1,
+                            bleConnectionHandle1
+                        );
+                        Cy_BLE_ProcessEvents();
+                        delayTime(1000);
+                        
+                        printf("BLE: GameState: GAME_START\r\n");
+                    }
+                    
+                }
+                
                 Cy_BLE_GATTS_WriteRsp(writeReqPara->connHandle);       
             }
 
             break;
         }
         
+        case CY_BLE_EVT_GATTS_PREP_WRITE_REQ:
+            printf("STACK: GATTS_PREP_WRITE_REQ\r\n");
+            break;
+            
+        case CY_BLE_EVT_GATTS_EXEC_WRITE_REQ:
+            printf("STACK: GATTS_EXEC_WRITE_REQ\r\n");
+            break;
+        
         case CY_BLE_EVT_GATTS_WRITE_CMD_REQ:
         {
-            
             writeReqPara = (cy_stc_ble_gatts_write_cmd_req_param_t*)param;
-            printf("STACK: receive write command req!!\r\n");
+            
             // player position
             if(CY_BLE_GH_POSITION_PLAYER_POSITION_W_DECL_HANDLE == writeReqPara->handleValPair.attrHandle
                  || CY_BLE_GH_POSITION_PLAYER_POSITION_W_CHAR_HANDLE == writeReqPara->handleValPair.attrHandle){
-                
                 isReceivePosition = true;
                 cy_stc_ble_gatt_handle_value_pair_t tmp = ((cy_stc_ble_gatts_write_cmd_req_param_t*)param)->handleValPair;
                 xQueueSendFromISR(positionQueueHandle, (int32*)tmp.value.val, &xHigherPriorityTaskWoken);
@@ -493,6 +642,9 @@ void StackEventHandler(uint32 event, void *param){
                 }
                 
             }
+            else{
+                printf("STACK: command write!!\r\n");
+            }
             
             break;
         }
@@ -518,6 +670,7 @@ void StackEventHandler(uint32 event, void *param){
             printf("STACK: READ_CHAR_VAL_ACCESS_REQ\r\n");
             break;
         }
+        
         
         default:
         {

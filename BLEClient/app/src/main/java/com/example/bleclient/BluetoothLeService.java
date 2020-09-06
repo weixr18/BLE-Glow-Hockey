@@ -317,7 +317,7 @@ public class BluetoothLeService extends Service {
             return;
         }
         mBluetoothGatt.writeCharacteristic(characteristic);
-        //Log.d(TAG, "Execute write.");
+        Log.d(TAG, "Execute write.");
     }
 
     /**
@@ -347,16 +347,6 @@ public class BluetoothLeService extends Service {
             }
         }
 
-        /*
-        // This is specific to Heart Rate Measurement.
-        if (UUID_HEART_RATE_MEASUREMENT.equals(characteristic.getUuid())) {
-            BluetoothGattDescriptor descriptor = characteristic.getDescriptor(
-                    UUID.fromString(SampleGattAttributes.CLIENT_CHARACTERISTIC_CONFIG));
-            descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
-            mBluetoothGatt.writeDescriptor(descriptor);
-        }
-
-         */
     }
 
     /**
