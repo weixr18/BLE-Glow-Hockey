@@ -119,7 +119,7 @@ enum GameState{
 /******************************GLOBAL VARIABLES***********************************/
 
 QueueHandle_t positionQueueHandle;
-QueueHandle_t colorQueueHandle;
+//QueueHandle_t colorQueueHandle;
 
 bool isReceivePosition;
 bool isUser_0_PosStartNotification;

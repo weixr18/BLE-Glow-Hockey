@@ -8,6 +8,9 @@
 #include <stdlib.h>
 #include <math.h>
 
+unsigned char playerRed = 63;
+unsigned char playerGreen = 237;
+unsigned char playerBlue = 228;
 
 typedef enum UartState{
     WAIT,
@@ -72,11 +75,18 @@ void UartTask(void* arg){
                 state = BLUE;
                 if(gameState == PLAYER_0_CHOOSE_COLOR || gameState == PLAYER_1_CHOOSE_COLOR){
                   
+                    /*
                     msg = 0;
                     msg |= ((uint32_t)buffer[0]) << 8;      // R
                     msg |= ((uint32_t)buffer[1]) << 16;     // G
                     msg |= ((uint32_t)buffer[2]) << 24;     // B
                     xQueueSend(colorQueueHandle, &msg, portMAX_DELAY);
+                    */
+                    
+                    playerRed = buffer[0];
+                    playerGreen = buffer[1];
+                    playerBlue = buffer[2];
+                    
                     printf("UART: Send!\r\n");
                 }
 
@@ -85,11 +95,6 @@ void UartTask(void* arg){
 
         }
         
-        /*
-        if(gameState == GAME_START){
-            return;
-        }
-        */
         
         taskYIELD();    
     } 
@@ -114,7 +119,7 @@ void bleTask()
     isCommand_0_StartNotification = false;
     isReceivePosition = false;
     
-    colorQueueHandle = xQueueCreate(1, sizeof(uint32));
+    //colorQueueHandle = xQueueCreate(3, sizeof(uint32));
     positionQueueHandle = xQueueCreate(1, sizeof(uint32));
     
     cy_en_ble_api_result_t apiResult;
@@ -126,17 +131,21 @@ void bleTask()
     for(;;){
         
         if(gameState == PLAYER_0_CHOOSE_COLOR || gameState == PLAYER_1_CHOOSE_COLOR){
-            xQueueReceive(colorQueueHandle, &receivedColor, portTICK_PERIOD_MS);
-            
+            //xQueueReceive(colorQueueHandle, &receivedColor, portTICK_PERIOD_MS);
+            receivedColor = 0;
+            receivedColor |= ((uint32_t) playerRed) << 8;
+            receivedColor |= ((uint32_t) playerGreen) << 16;
+            receivedColor |= ((uint32_t) playerBlue) << 24;
+
             // device 0 choose color
             if(gameState == PLAYER_0_CHOOSE_COLOR){
 
                 if(receivedColor != receivedColorLast){
-                    buffer[2] = (char)((receivedColor >> 24) & 0xff);
-                    buffer[1] = (char)((receivedColor >> 16) & 0xff);
-                    buffer[0] = (char)((receivedColor >> 8) & 0xff);
+                    buffer[2] = (char)((receivedColor >> 24) & 0xff); //B
+                    buffer[1] = (char)((receivedColor >> 16) & 0xff); //G
+                    buffer[0] = (char)((receivedColor >> 8) & 0xff);  //R
                     
-                    printf("BLE: R %d G %d B %d\r\n", buffer[0], buffer[1], buffer[2]);
+                    //printf("BLE: R %d G %d B %d\r\n", buffer[0], buffer[1], buffer[2]);
                     
                     uint64 operand = GH_CC_N_NOTIFY_COLOR;
                     bytesToSend_0 = (operand) & (uint64)0x000007ff;
@@ -175,7 +184,7 @@ void bleTask()
                     buffer[1] = (char)((receivedColor >> 16) & 0xff);
                     buffer[0] = (char)((receivedColor >> 8) & 0xff);
                     
-                    printf("BLE: R %d G %d B %d\r\n", buffer[0], buffer[1], buffer[2]);
+                    //printf("BLE: R %d G %d B %d\r\n", buffer[0], buffer[1], buffer[2]);
                     
                     uint64 operand = GH_CC_N_NOTIFY_COLOR;
                     bytesToSend_0 = (operand) & (uint64)0x000007ff;
@@ -204,6 +213,9 @@ void bleTask()
                     Cy_BLE_ProcessEvents();
                 }
             }
+        
+            taskYIELD();
+        
         }
              
         // notify command for device 0
