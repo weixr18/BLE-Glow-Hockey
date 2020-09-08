@@ -1,0 +1,69 @@
+/*
+ * "Hello World" example.
+ *
+ * This example prints 'Hello from Nios II' to the STDOUT stream. It runs on
+ * the Nios II 'standard', 'full_featured', 'fast', and 'low_cost' example
+ * designs. It runs with or without the MicroC/OS-II RTOS and requires a STDOUT
+ * device in your system's hardware.
+ * The memory footprint of this hosted application is ~69 kbytes by default
+ * using the standard reference design.
+ *
+ * For a reduced footprint version of this template, and an explanation of how
+ * to reduce the memory footprint for a given application, see the
+ * "small_hello_world" template.
+ *
+ */
+
+#include <stdio.h>
+#include "unistd.h"
+#include "system.h"
+#include "alt_types.h"
+#include "altera_avalon_uart_regs.h"
+#include "sys\alt_irq.h"
+
+alt_u8 txdata = 0;	//send
+alt_u8 rxdata = 0;	//receive
+
+// 串口中断服务函数
+void IRQ_UART_Interrupts(){
+
+	rxdata = IORD_ALTERA_AVALON_UART_RXDATA(UART_BASE);
+	txdata = rxdata;
+
+	// judge if TRDY(T ready) is true
+	while(!(IORD_ALTERA_AVALON_UART_STATUS(UART_BASE)&
+			ALTERA_AVALON_UART_STATUS_TRDY_MASK)){
+		;	//do nothing
+	}
+
+	IOWR_ALTERA_AVALON_UART_TXDATA(UART_BASE, txdata);
+
+}
+
+
+void IRQ_Init(){
+
+	//clear status register
+	IOWR_ALTERA_AVALON_UART_STATUS(UART_BASE, 0);
+
+	// write control register
+	IOWR_ALTERA_AVALON_UART_CONTROL(UART_BASE, 0x80);	//enable receive ready interrupt
+
+	// register ISR
+	alt_ic_isr_register(
+			UART_IRQ_INTERRUPT_CONTROLLER_ID,
+			UART_IRQ,
+			IRQ_UART_Interrupts,
+			0x0,
+			0x0
+			);
+
+
+}
+
+int main()
+{
+  printf("Hello from Nios II!\n");
+
+  return 0;
+}

@@ -1,0 +1,6 @@
+DATE = "20:23:37 September 07, 2020"
+QUARTUS_VERSION = "12.0"
+
+# Revisions
+
+PROJECT_REVISION = "UART_Nios"

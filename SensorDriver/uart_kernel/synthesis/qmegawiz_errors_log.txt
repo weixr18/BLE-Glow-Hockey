@@ -1,0 +1,13 @@
+
+
+D:/Codes/_Hardware/FPGA-NIOS/UART_Nios/PLL.v
+
+Sep 07 08PM:43:41>: The following design file, which has identical name but a different extension 
+from the specified variation file, already exists in the working directory:
+
+PLL.vhd
+
+This may create a conflict of design files and/or lead to undesirable side
+effects.
+
+Is it OK to continue file generation?
