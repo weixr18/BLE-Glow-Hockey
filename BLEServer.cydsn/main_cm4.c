@@ -598,13 +598,6 @@ void StackEventHandler(uint32 event, void *param){
             break;
         }
         
-        case CY_BLE_EVT_GATTS_PREP_WRITE_REQ:
-            printf("STACK: GATTS_PREP_WRITE_REQ\r\n");
-            break;
-            
-        case CY_BLE_EVT_GATTS_EXEC_WRITE_REQ:
-            printf("STACK: GATTS_EXEC_WRITE_REQ\r\n");
-            break;
         
         case CY_BLE_EVT_GATTS_WRITE_CMD_REQ:
         {
@@ -664,12 +657,6 @@ void StackEventHandler(uint32 event, void *param){
         case CY_BLE_EVT_TIMEOUT:
             printf("STACK: CY_BLE_EVT_TIMEOUT\r\n");
             break;
-        
-        case CY_BLE_EVT_GATTS_READ_CHAR_VAL_ACCESS_REQ:
-        {
-            printf("STACK: READ_CHAR_VAL_ACCESS_REQ\r\n");
-            break;
-        }
         
         
         default:

@@ -1,9 +1,0 @@
-11:36:47 **** Incremental Build of configuration Nios II for project UART ****
-make all 
-Info: Building ../UART_bsp/
-E:/altera/15.0/nios2eds/bin/gnu/H-x86_64-mingw32/bin/make --no-print-directory -C ../UART_bsp/
-[BSP build complete]
-[UART build complete]
-
-11:36:47 Build Finished (took 764ms)
-

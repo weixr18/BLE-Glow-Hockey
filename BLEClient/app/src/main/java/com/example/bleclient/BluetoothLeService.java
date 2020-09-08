@@ -317,7 +317,7 @@ public class BluetoothLeService extends Service {
             return;
         }
         mBluetoothGatt.writeCharacteristic(characteristic);
-        Log.d(TAG, "Execute write.");
+        //Log.d(TAG, "Execute write.");
     }
 
     /**

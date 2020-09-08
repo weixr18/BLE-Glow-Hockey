@@ -1,4 +1,4 @@
---------------- Build Started: 09/06/2020 17:32:43 Project: BLEServer, Configuration: ARM GCC 5.4-2016-q2-update Debug ---------------
+--------------- Build Started: 09/08/2020 12:06:03 Project: BLEServer, Configuration: ARM GCC 5.4-2016-q2-update Debug ---------------
 The code generation step is up to date.
 The compile step is up to date, no work needs to be done.
 The link step is up to date, no work needs to be done.
@@ -9,18 +9,18 @@ main_cm4.c:239:24: warning: format '%d' expects argument of type 'int', but argu
                         ^
 main_cm4.c:239:24: warning: format '%d' expects argument of type 'int', but argument 2 has type 'uint64 {aka long long unsigned int}' [-Wformat=]
 main_cm4.c: In function 'StackEventHandler':
-main_cm4.c:635:32: warning: format '%x' expects argument of type 'unsigned int', but argument 2 has type 'uint32 {aka long unsigned int}' [-Wformat=]
+main_cm4.c:628:32: warning: format '%x' expects argument of type 'unsigned int', but argument 2 has type 'uint32 {aka long unsigned int}' [-Wformat=]
                          printf("STACK: DEVICE 0 WRITE COMMAND %x.\r\n", val);
                                 ^
-main_cm4.c:635:32: warning: format '%x' expects argument of type 'unsigned int', but argument 2 has type 'uint32 {aka long unsigned int}' [-Wformat=]
-main_cm4.c:640:33: warning: format '%x' expects argument of type 'unsigned int', but argument 2 has type 'uint32 {aka long unsigned int}' [-Wformat=]
+main_cm4.c:628:32: warning: format '%x' expects argument of type 'unsigned int', but argument 2 has type 'uint32 {aka long unsigned int}' [-Wformat=]
+main_cm4.c:633:33: warning: format '%x' expects argument of type 'unsigned int', but argument 2 has type 'uint32 {aka long unsigned int}' [-Wformat=]
                           printf("STACK: DEVICE 1 WRITE COMMAND %x.\r\n", val);
                                  ^
-main_cm4.c:640:33: warning: format '%x' expects argument of type 'unsigned int', but argument 2 has type 'uint32 {aka long unsigned int}' [-Wformat=]
-main_cm4.c:677:20: warning: format '%u' expects argument of type 'unsigned int', but argument 2 has type 'uint32 {aka long unsigned int}' [-Wformat=]
+main_cm4.c:633:33: warning: format '%x' expects argument of type 'unsigned int', but argument 2 has type 'uint32 {aka long unsigned int}' [-Wformat=]
+main_cm4.c:664:20: warning: format '%u' expects argument of type 'unsigned int', but argument 2 has type 'uint32 {aka long unsigned int}' [-Wformat=]
              printf("STACK: event code: %u\r\n", event);
                     ^
-main_cm4.c:677:20: warning: format '%u' expects argument of type 'unsigned int', but argument 2 has type 'uint32 {aka long unsigned int}' [-Wformat=]
+main_cm4.c:664:20: warning: format '%u' expects argument of type 'unsigned int', but argument 2 has type 'uint32 {aka long unsigned int}' [-Wformat=]
 main_cm4.c:340:28: warning: variable 'bleapiResult' set but not used [-Wunused-but-set-variable]
      cy_en_ble_api_result_t bleapiResult;
                             ^
@@ -37,5 +37,5 @@ E:\Cypress\PDL\3.0.1\tools\win\elf\cymcuelftool.exe --merge D:\Codes\_Projects\B
 Application checksum calculated and stored in ELF section .cychecksum
 Checksum calculated and stored in ELF section .cymeta
 E:\Cypress\PDL\3.0.1\tools\win\elf\cymcuelftool.exe -A D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\CortexM4\ARM_GCC_541\Debug\BLEServer.elf
-code:214782	sram:100868
---------------- Build Succeeded: 09/06/2020 17:32:45 ---------------
+code:214614	sram:100868
+--------------- Build Succeeded: 09/08/2020 12:06:14 ---------------
