@@ -1,9 +1,9 @@
-16:50:30 **** Incremental Build of configuration Nios II for project DataHub ****
+21:05:56 **** Incremental Build of configuration Nios II for project DataHub ****
 make all 
 Info: Building ../DataHub_bsp/
 E:/altera/15.0/nios2eds/bin/gnu/H-x86_64-mingw32/bin/make --no-print-directory -C ../DataHub_bsp/
 [BSP build complete]
 [DataHub build complete]
 
-16:50:31 Build Finished (took 730ms)
+21:05:57 Build Finished (took 810ms)
 

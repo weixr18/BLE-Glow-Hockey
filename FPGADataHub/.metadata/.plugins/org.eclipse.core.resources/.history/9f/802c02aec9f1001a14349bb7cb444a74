@@ -114,8 +114,8 @@ int main()
 
 		//blue = (int) (-0.0098*dblue*dblue+4.6305*dblue-291.92);
 		//blue = (int) (-0.0004*dblue*dblue*dblue + 0.2215*dblue*dblue -33.719*dblue + 1689);
-		if(dblue < 80){
-			blue = (int) (-0.00162 *dblue*dblue + 5.3372*dblue - 163.11);
+		if(blue < 80){
+			blue = (int) (-0.00162*dblue*dblue+5.3372*dblue-163.11);
 		}
 		else{
 			blue = 255;

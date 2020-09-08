@@ -114,12 +114,17 @@ int main()
 
 		//blue = (int) (-0.0098*dblue*dblue+4.6305*dblue-291.92);
 		//blue = (int) (-0.0004*dblue*dblue*dblue + 0.2215*dblue*dblue -33.719*dblue + 1689);
-		if(dblue < 80){
-			blue = (int) (-0.00162 *dblue*dblue + 5.3372*dblue - 163.11);
+		if(blue < 80){
+			blue = (int) (-0.00162*dblue*dblue+5.3372*dblue-163.11);
 		}
 		else{
 			blue = 255;
 		}
+
+
+
+		//printf("R %d G %d, B %d\n", red, green, blue);
+		printf("R %lf G %lf B %lf\n", dred, dgreen, dblue);
 
 		R = (unsigned char) red;
 		G = (unsigned char) green;
@@ -137,8 +142,6 @@ int main()
 			B = 255;
 		else if(blue < 0)
 			B = 0;
-
-		printf("dR %lf dG %lf dB %lf R %u G %u B %u\n", dred, dgreen, dblue, R, G, B);
 
 		sendRGB(R, G, B);
 	}

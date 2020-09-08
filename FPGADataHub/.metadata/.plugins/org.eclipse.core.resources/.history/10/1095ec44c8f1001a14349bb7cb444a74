@@ -103,23 +103,19 @@ int main()
 		double dblue = (double) myRGB.BValue;
 
 		//red = (int) (-0.0098*dred*dred+3.9431*dred-143.22);
-		//red = (int) (-0.0062*dred*dred+3.1126*dred-131.16);
-		red = (int) (-0.0259*dred*dred+6.2633*dred-115.91);
+		red = (int) (-0.0062*dred*dred+3.1126*dred-131.16);
 
 
 		//green = (int) (-0.008*dgreen*dgreen+3.7674*dgreen-166.82);
-		//green = (int) (-0.006*dgreen*dgreen+3.2612*dgreen-145.38);
-		green = (int) (-0.0266*dgreen*dgreen+6.767*dgreen-134.74);
+		green = (int) (-0.006*dgreen*dgreen+3.2612*dgreen-145.38);
 
 
 		//blue = (int) (-0.0098*dblue*dblue+4.6305*dblue-291.92);
-		//blue = (int) (-0.0004*dblue*dblue*dblue + 0.2215*dblue*dblue -33.719*dblue + 1689);
-		if(dblue < 80){
-			blue = (int) (-0.00162 *dblue*dblue + 5.3372*dblue - 163.11);
-		}
-		else{
-			blue = 255;
-		}
+		blue = (int) (-0.0004*dblue*dblue*dblue + 0.2215*dblue*dblue -33.719*dblue + 1689);
+
+
+		//printf("R %d G %d, B %d\n", red, green, blue);
+		printf("R %lf G %lf B %lf\n", dred, dgreen, dblue);
 
 		R = (unsigned char) red;
 		G = (unsigned char) green;
@@ -137,8 +133,6 @@ int main()
 			B = 255;
 		else if(blue < 0)
 			B = 0;
-
-		printf("dR %lf dG %lf dB %lf R %u G %u B %u\n", dred, dgreen, dblue, R, G, B);
 
 		sendRGB(R, G, B);
 	}

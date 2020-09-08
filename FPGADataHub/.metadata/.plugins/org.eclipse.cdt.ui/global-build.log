@@ -319,3 +319,111 @@ Info: Building ../DataHub_bsp/
 E:/altera/15.0/nios2eds/bin/gnu/H-x86_64-mingw32/bin/make --no-print-directory -C ../DataHub_bsp/
 [BSP build complete]
 [DataHub build complete]
+19:27:19 **** Incremental Build of configuration Nios II for project DataHub ****
+make all 
+Info: Building ../DataHub_bsp/
+E:/altera/15.0/nios2eds/bin/gnu/H-x86_64-mingw32/bin/make --no-print-directory -C ../DataHub_bsp/
+[BSP build complete]
+[DataHub build complete]
+19:28:09 **** Incremental Build of configuration Nios II for project DataHub ****
+make all 
+Info: Building ../DataHub_bsp/
+E:/altera/15.0/nios2eds/bin/gnu/H-x86_64-mingw32/bin/make --no-print-directory -C ../DataHub_bsp/
+[BSP build complete]
+[DataHub build complete]
+19:42:07 **** Incremental Build of configuration Nios II for project DataHub ****
+make all 
+Info: Building ../DataHub_bsp/
+E:/altera/15.0/nios2eds/bin/gnu/H-x86_64-mingw32/bin/make --no-print-directory -C ../DataHub_bsp/
+[BSP build complete]
+Info: Compiling hello_world.c to obj/default/hello_world.o
+nios2-elf-gcc -xc -MP -MMD -c -I../DataHub_bsp//HAL/inc -I../DataHub_bsp/ -I../DataHub_bsp//drivers/inc  -pipe -D__hal__ -DALT_NO_INSTRUCTION_EMULATION -DALT_SINGLE_THREADED    -O0 -g -Wall   -mno-hw-div -mhw-mul -mno-hw-mulx  -o obj/default/hello_world.o hello_world.c
+In file included from hello_world.c:7:0:
+../DataHub_bsp/system.h:190:20: warning: initialization makes pointer from integer without a cast
+ #define COLOR_BASE 0x10001000
+                    ^
+hello_world.c:19:25: note: in expansion of macro 'COLOR_BASE'
+ unsigned int *RGBbase = COLOR_BASE;
+                         ^
+Info: Linking DataHub.elf
+nios2-elf-g++  -T'../DataHub_bsp//linker.x' -msys-crt0='../DataHub_bsp//obj/HAL/src/crt0.o' -msys-lib=hal_bsp -L../DataHub_bsp/   -Wl,-Map=DataHub.map   -O0 -g -Wall   -mno-hw-div -mhw-mul -mno-hw-mulx  -o DataHub.elf obj/default/hello_world.o -lm -msys-lib=m
+nios2-elf-insert DataHub.elf --thread_model hal --cpu_name nios2 --qsys true --simulation_enabled false --id 0 --sidp 0x100010a0 --timestamp 1599550417 --stderr_dev jtag_uart --stdin_dev jtag_uart --stdout_dev jtag_uart --sopc_system_name kernel --quartus_project_dir "D:/Codes/_Projects/BLE-Glow-Hockey/FPGADataHub" --jdi D:/Codes/_Projects/BLE-Glow-Hockey/FPGADataHub/software/DataHub_bsp/../../FPGA_Data_Hub.jdi --sopcinfo D:/Codes/_Projects/BLE-Glow-Hockey/FPGADataHub/software/DataHub_bsp/../../kernel.sopcinfo
+Info: (DataHub.elf) 78 KBytes program size (code + initialized data).
+Info:               130986 KBytes free for stack + heap.
+Info: Creating DataHub.objdump
+nios2-elf-objdump --disassemble --syms --all-header --source DataHub.elf >DataHub.objdump
+[DataHub build complete]
+19:42:21 **** Incremental Build of configuration Nios II for project DataHub ****
+make all 
+Info: Building ../DataHub_bsp/
+E:/altera/15.0/nios2eds/bin/gnu/H-x86_64-mingw32/bin/make --no-print-directory -C ../DataHub_bsp/
+[BSP build complete]
+[DataHub build complete]
+19:49:59 **** Incremental Build of configuration Nios II for project DataHub ****
+make all 
+Info: Building ../DataHub_bsp/
+E:/altera/15.0/nios2eds/bin/gnu/H-x86_64-mingw32/bin/make --no-print-directory -C ../DataHub_bsp/
+[BSP build complete]
+Info: Compiling hello_world.c to obj/default/hello_world.o
+nios2-elf-gcc -xc -MP -MMD -c -I../DataHub_bsp//HAL/inc -I../DataHub_bsp/ -I../DataHub_bsp//drivers/inc  -pipe -D__hal__ -DALT_NO_INSTRUCTION_EMULATION -DALT_SINGLE_THREADED    -O0 -g -Wall   -mno-hw-div -mhw-mul -mno-hw-mulx  -o obj/default/hello_world.o hello_world.c
+In file included from hello_world.c:7:0:
+../DataHub_bsp/system.h:190:20: warning: initialization makes pointer from integer without a cast
+ #define COLOR_BASE 0x10001000
+                    ^
+hello_world.c:19:25: note: in expansion of macro 'COLOR_BASE'
+ unsigned int *RGBbase = COLOR_BASE;
+                         ^
+Info: Linking DataHub.elf
+nios2-elf-g++  -T'../DataHub_bsp//linker.x' -msys-crt0='../DataHub_bsp//obj/HAL/src/crt0.o' -msys-lib=hal_bsp -L../DataHub_bsp/   -Wl,-Map=DataHub.map   -O0 -g -Wall   -mno-hw-div -mhw-mul -mno-hw-mulx  -o DataHub.elf obj/default/hello_world.o -lm -msys-lib=m
+nios2-elf-insert DataHub.elf --thread_model hal --cpu_name nios2 --qsys true --simulation_enabled false --id 0 --sidp 0x100010a0 --timestamp 1599550417 --stderr_dev jtag_uart --stdin_dev jtag_uart --stdout_dev jtag_uart --sopc_system_name kernel --quartus_project_dir "D:/Codes/_Projects/BLE-Glow-Hockey/FPGADataHub" --jdi D:/Codes/_Projects/BLE-Glow-Hockey/FPGADataHub/software/DataHub_bsp/../../FPGA_Data_Hub.jdi --sopcinfo D:/Codes/_Projects/BLE-Glow-Hockey/FPGADataHub/software/DataHub_bsp/../../kernel.sopcinfo
+Info: (DataHub.elf) 78 KBytes program size (code + initialized data).
+Info:               130986 KBytes free for stack + heap.
+Info: Creating DataHub.objdump
+nios2-elf-objdump --disassemble --syms --all-header --source DataHub.elf >DataHub.objdump
+[DataHub build complete]
+19:50:04 **** Incremental Build of configuration Nios II for project DataHub ****
+make all 
+Info: Building ../DataHub_bsp/
+E:/altera/15.0/nios2eds/bin/gnu/H-x86_64-mingw32/bin/make --no-print-directory -C ../DataHub_bsp/
+[BSP build complete]
+[DataHub build complete]
+19:52:02 **** Incremental Build of configuration Nios II for project DataHub ****
+make all 
+Info: Building ../DataHub_bsp/
+E:/altera/15.0/nios2eds/bin/gnu/H-x86_64-mingw32/bin/make --no-print-directory -C ../DataHub_bsp/
+[BSP build complete]
+Info: Compiling hello_world.c to obj/default/hello_world.o
+nios2-elf-gcc -xc -MP -MMD -c -I../DataHub_bsp//HAL/inc -I../DataHub_bsp/ -I../DataHub_bsp//drivers/inc  -pipe -D__hal__ -DALT_NO_INSTRUCTION_EMULATION -DALT_SINGLE_THREADED    -O0 -g -Wall   -mno-hw-div -mhw-mul -mno-hw-mulx  -o obj/default/hello_world.o hello_world.c
+In file included from hello_world.c:7:0:
+../DataHub_bsp/system.h:190:20: warning: initialization makes pointer from integer without a cast
+ #define COLOR_BASE 0x10001000
+                    ^
+hello_world.c:19:25: note: in expansion of macro 'COLOR_BASE'
+ unsigned int *RGBbase = COLOR_BASE;
+                         ^
+Info: Linking DataHub.elf
+nios2-elf-g++  -T'../DataHub_bsp//linker.x' -msys-crt0='../DataHub_bsp//obj/HAL/src/crt0.o' -msys-lib=hal_bsp -L../DataHub_bsp/   -Wl,-Map=DataHub.map   -O0 -g -Wall   -mno-hw-div -mhw-mul -mno-hw-mulx  -o DataHub.elf obj/default/hello_world.o -lm -msys-lib=m
+nios2-elf-insert DataHub.elf --thread_model hal --cpu_name nios2 --qsys true --simulation_enabled false --id 0 --sidp 0x100010a0 --timestamp 1599550417 --stderr_dev jtag_uart --stdin_dev jtag_uart --stdout_dev jtag_uart --sopc_system_name kernel --quartus_project_dir "D:/Codes/_Projects/BLE-Glow-Hockey/FPGADataHub" --jdi D:/Codes/_Projects/BLE-Glow-Hockey/FPGADataHub/software/DataHub_bsp/../../FPGA_Data_Hub.jdi --sopcinfo D:/Codes/_Projects/BLE-Glow-Hockey/FPGADataHub/software/DataHub_bsp/../../kernel.sopcinfo
+Info: (DataHub.elf) 78 KBytes program size (code + initialized data).
+Info:               130986 KBytes free for stack + heap.
+Info: Creating DataHub.objdump
+nios2-elf-objdump --disassemble --syms --all-header --source DataHub.elf >DataHub.objdump
+[DataHub build complete]
+19:52:10 **** Incremental Build of configuration Nios II for project DataHub ****
+make all 
+Info: Building ../DataHub_bsp/
+E:/altera/15.0/nios2eds/bin/gnu/H-x86_64-mingw32/bin/make --no-print-directory -C ../DataHub_bsp/
+[BSP build complete]
+[DataHub build complete]
+19:53:46 **** Incremental Build of configuration Nios II for project DataHub ****
+make all 
+Info: Building ../DataHub_bsp/
+E:/altera/15.0/nios2eds/bin/gnu/H-x86_64-mingw32/bin/make --no-print-directory -C ../DataHub_bsp/
+[BSP build complete]
+[DataHub build complete]
+21:05:56 **** Incremental Build of configuration Nios II for project DataHub ****
+make all 
+Info: Building ../DataHub_bsp/
+E:/altera/15.0/nios2eds/bin/gnu/H-x86_64-mingw32/bin/make --no-print-directory -C ../DataHub_bsp/
+[BSP build complete]
+[DataHub build complete]
