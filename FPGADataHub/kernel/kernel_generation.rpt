@@ -1,0 +1,100 @@
+Info: Starting: Create HDL design files for synthesis
+Info: qsys-generate D:\Codes\_Projects\BLE-Glow-Hockey\FPGADataHub\kernel.qsys --synthesis=VERILOG --output-directory=D:\Codes\_Projects\BLE-Glow-Hockey\FPGADataHub\kernel\synthesis --family="Cyclone IV E" --part=EP4CE115F29C7
+Progress: Loading FPGADataHub/kernel.qsys
+Progress: Reading input file
+Progress: Adding clk_0 [clock_source 15.0]
+Progress: Parameterizing module clk_0
+Progress: Adding color [color 1.0]
+Progress: Parameterizing module color
+Progress: Adding jtag_uart [altera_avalon_jtag_uart 15.0]
+Progress: Parameterizing module jtag_uart
+Progress: Adding nios2 [altera_nios2_gen2 15.0]
+Progress: Parameterizing module nios2
+Progress: Adding sdram [altera_avalon_new_sdram_controller 15.0]
+Progress: Parameterizing module sdram
+Progress: Adding sysid [altera_avalon_sysid_qsys 15.0]
+Progress: Parameterizing module sysid
+Progress: Adding uart [altera_avalon_uart 15.0]
+Progress: Parameterizing module uart
+Progress: Building connections
+Progress: Parameterizing connections
+Progress: Validating
+Progress: Done reading input file
+Info: kernel.sysid: System ID is not assigned automatically. Edit the System ID parameter to provide a unique ID
+Info: kernel.sysid: Time stamp will be automatically updated when this component is generated.
+Info: kernel: Generating kernel "kernel" for QUARTUS_SYNTH
+Warning: kernel: "No matching role found for uart:s1:dataavailable (dataavailable)"
+Warning: kernel: "No matching role found for uart:s1:readyfordata (readyfordata)"
+Info: color: "kernel" instantiated color "color"
+Info: jtag_uart: Starting RTL generation for module 'kernel_jtag_uart'
+Info: jtag_uart:   Generation command is [exec E:/altera/15.0/quartus/bin64/perl/bin/perl.exe -I E:/altera/15.0/quartus/bin64/perl/lib -I E:/altera/15.0/quartus/sopc_builder/bin/europa -I E:/altera/15.0/quartus/sopc_builder/bin/perl_lib -I E:/altera/15.0/quartus/sopc_builder/bin -I E:/altera/15.0/quartus/../ip/altera/sopc_builder_ip/common -I E:/altera/15.0/quartus/../ip/altera/sopc_builder_ip/altera_avalon_jtag_uart -- E:/altera/15.0/quartus/../ip/altera/sopc_builder_ip/altera_avalon_jtag_uart/generate_rtl.pl --name=kernel_jtag_uart --dir=C:/Users/YYDPY/AppData/Local/Temp/alt8513_1033044449789333987.dir/0004_jtag_uart_gen/ --quartus_dir=E:/altera/15.0/quartus --verilog --config=C:/Users/YYDPY/AppData/Local/Temp/alt8513_1033044449789333987.dir/0004_jtag_uart_gen//kernel_jtag_uart_component_configuration.pl  --do_build_sim=0  ]
+Info: jtag_uart: Done RTL generation for module 'kernel_jtag_uart'
+Info: jtag_uart: "kernel" instantiated altera_avalon_jtag_uart "jtag_uart"
+Info: nios2: "kernel" instantiated altera_nios2_gen2 "nios2"
+Info: sdram: Starting RTL generation for module 'kernel_sdram'
+Info: sdram:   Generation command is [exec E:/altera/15.0/quartus/bin64/perl/bin/perl.exe -I E:/altera/15.0/quartus/bin64/perl/lib -I E:/altera/15.0/quartus/sopc_builder/bin/europa -I E:/altera/15.0/quartus/sopc_builder/bin/perl_lib -I E:/altera/15.0/quartus/sopc_builder/bin -I E:/altera/15.0/quartus/../ip/altera/sopc_builder_ip/common -I E:/altera/15.0/quartus/../ip/altera/sopc_builder_ip/altera_avalon_new_sdram_controller -- E:/altera/15.0/quartus/../ip/altera/sopc_builder_ip/altera_avalon_new_sdram_controller/generate_rtl.pl --name=kernel_sdram --dir=C:/Users/YYDPY/AppData/Local/Temp/alt8513_1033044449789333987.dir/0005_sdram_gen/ --quartus_dir=E:/altera/15.0/quartus --verilog --config=C:/Users/YYDPY/AppData/Local/Temp/alt8513_1033044449789333987.dir/0005_sdram_gen//kernel_sdram_component_configuration.pl  --do_build_sim=0  ]
+Info: sdram: Done RTL generation for module 'kernel_sdram'
+Info: sdram: "kernel" instantiated altera_avalon_new_sdram_controller "sdram"
+Info: sysid: "kernel" instantiated altera_avalon_sysid_qsys "sysid"
+Info: uart: Starting RTL generation for module 'kernel_uart'
+Info: uart:   Generation command is [exec E:/altera/15.0/quartus/bin64/perl/bin/perl.exe -I E:/altera/15.0/quartus/bin64/perl/lib -I E:/altera/15.0/quartus/sopc_builder/bin/europa -I E:/altera/15.0/quartus/sopc_builder/bin/perl_lib -I E:/altera/15.0/quartus/sopc_builder/bin -I E:/altera/15.0/quartus/../ip/altera/sopc_builder_ip/common -I E:/altera/15.0/quartus/../ip/altera/sopc_builder_ip/altera_avalon_uart -- E:/altera/15.0/quartus/../ip/altera/sopc_builder_ip/altera_avalon_uart/generate_rtl.pl --name=kernel_uart --dir=C:/Users/YYDPY/AppData/Local/Temp/alt8513_1033044449789333987.dir/0007_uart_gen/ --quartus_dir=E:/altera/15.0/quartus --verilog --config=C:/Users/YYDPY/AppData/Local/Temp/alt8513_1033044449789333987.dir/0007_uart_gen//kernel_uart_component_configuration.pl  --do_build_sim=0  ]
+Info: uart: Done RTL generation for module 'kernel_uart'
+Info: uart: "kernel" instantiated altera_avalon_uart "uart"
+Info: avalon_st_adapter: Inserting error_adapter: error_adapter_0
+Info: avalon_st_adapter_001: Inserting error_adapter: error_adapter_0
+Info: avalon_st_adapter_002: Inserting error_adapter: error_adapter_0
+Info: avalon_st_adapter_003: Inserting error_adapter: error_adapter_0
+Info: avalon_st_adapter_004: Inserting error_adapter: error_adapter_0
+Info: avalon_st_adapter_005: Inserting error_adapter: error_adapter_0
+Info: mm_interconnect_0: "kernel" instantiated altera_mm_interconnect "mm_interconnect_0"
+Info: irq_mapper: "kernel" instantiated altera_irq_mapper "irq_mapper"
+Info: rst_controller: "kernel" instantiated altera_reset_controller "rst_controller"
+Info: cpu: Starting RTL generation for module 'kernel_nios2_cpu'
+Info: cpu:   Generation command is [exec E:/altera/15.0/quartus/bin64/eperlcmd.exe -I E:/altera/15.0/quartus/bin64/perl/lib -I E:/altera/15.0/quartus/sopc_builder/bin/europa -I E:/altera/15.0/quartus/sopc_builder/bin/perl_lib -I E:/altera/15.0/quartus/sopc_builder/bin -I E:/altera/15.0/quartus/../ip/altera/nios2_ip/altera_nios2_gen2/cpu_lib -I E:/altera/15.0/quartus/../ip/altera/nios2_ip/altera_nios2_gen2/nios_lib -I E:/altera/15.0/quartus/../ip/altera/nios2_ip/altera_nios2_gen2 -I E:/altera/15.0/quartus/../ip/altera/nios2_ip/altera_nios2_gen2 -- E:/altera/15.0/quartus/../ip/altera/nios2_ip/altera_nios2_gen2/generate_rtl.epl --name=kernel_nios2_cpu --dir=C:/Users/YYDPY/AppData/Local/Temp/alt8513_1033044449789333987.dir/0010_cpu_gen/ --quartus_bindir=E:/altera/15.0/quartus/bin64 --verilog --config=C:/Users/YYDPY/AppData/Local/Temp/alt8513_1033044449789333987.dir/0010_cpu_gen//kernel_nios2_cpu_processor_configuration.pl  --do_build_sim=0  ]
+Info: cpu: # 2020.09.08 15:34:05 (*) Starting Nios II generation
+Info: cpu: # 2020.09.08 15:34:06 (*)   Checking for plaintext license.
+Info: cpu: # 2020.09.08 15:34:08 (*)   Plaintext license not found.
+Info: cpu: # 2020.09.08 15:34:08 (*)   Checking for encrypted license (non-evaluation).
+Info: cpu: # 2020.09.08 15:34:09 (*)   Encrypted license found.  SOF will not be time-limited.
+Info: cpu: # 2020.09.08 15:34:09 (*)   Elaborating CPU configuration settings
+Info: cpu: # 2020.09.08 15:34:09 (*)   Creating all objects for CPU
+Info: cpu: # 2020.09.08 15:34:09 (*)     Testbench
+Info: cpu: # 2020.09.08 15:34:09 (*)     Instruction decoding
+Info: cpu: # 2020.09.08 15:34:09 (*)       Instruction fields
+Info: cpu: # 2020.09.08 15:34:09 (*)       Instruction decodes
+Info: cpu: # 2020.09.08 15:34:10 (*)       Signals for RTL simulation waveforms
+Info: cpu: # 2020.09.08 15:34:10 (*)       Instruction controls
+Info: cpu: # 2020.09.08 15:34:10 (*)     Pipeline frontend
+Info: cpu: # 2020.09.08 15:34:10 (*)     Pipeline backend
+Info: cpu: # 2020.09.08 15:34:11 (*)   Generating RTL from CPU objects
+Info: cpu: # 2020.09.08 15:34:13 (*)   Creating encrypted RTL
+Info: cpu: # 2020.09.08 15:34:14 (*) Done Nios II generation
+Info: cpu: Done RTL generation for module 'kernel_nios2_cpu'
+Info: cpu: "nios2" instantiated altera_nios2_gen2_unit "cpu"
+Info: nios2_data_master_translator: "mm_interconnect_0" instantiated altera_merlin_master_translator "nios2_data_master_translator"
+Info: jtag_uart_avalon_jtag_slave_translator: "mm_interconnect_0" instantiated altera_merlin_slave_translator "jtag_uart_avalon_jtag_slave_translator"
+Info: nios2_data_master_agent: "mm_interconnect_0" instantiated altera_merlin_master_agent "nios2_data_master_agent"
+Info: jtag_uart_avalon_jtag_slave_agent: "mm_interconnect_0" instantiated altera_merlin_slave_agent "jtag_uart_avalon_jtag_slave_agent"
+Info: jtag_uart_avalon_jtag_slave_agent_rsp_fifo: "mm_interconnect_0" instantiated altera_avalon_sc_fifo "jtag_uart_avalon_jtag_slave_agent_rsp_fifo"
+Info: router: "mm_interconnect_0" instantiated altera_merlin_router "router"
+Info: router_001: "mm_interconnect_0" instantiated altera_merlin_router "router_001"
+Info: router_002: "mm_interconnect_0" instantiated altera_merlin_router "router_002"
+Info: router_005: "mm_interconnect_0" instantiated altera_merlin_router "router_005"
+Info: nios2_instruction_master_limiter: "mm_interconnect_0" instantiated altera_merlin_traffic_limiter "nios2_instruction_master_limiter"
+Info: Reusing file D:/Codes/_Projects/BLE-Glow-Hockey/FPGADataHub/kernel/synthesis/submodules/altera_avalon_sc_fifo.v
+Info: cmd_demux: "mm_interconnect_0" instantiated altera_merlin_demultiplexer "cmd_demux"
+Info: cmd_demux_001: "mm_interconnect_0" instantiated altera_merlin_demultiplexer "cmd_demux_001"
+Info: cmd_mux: "mm_interconnect_0" instantiated altera_merlin_multiplexer "cmd_mux"
+Info: cmd_mux_003: "mm_interconnect_0" instantiated altera_merlin_multiplexer "cmd_mux_003"
+Info: Reusing file D:/Codes/_Projects/BLE-Glow-Hockey/FPGADataHub/kernel/synthesis/submodules/altera_merlin_arbitrator.sv
+Info: rsp_demux: "mm_interconnect_0" instantiated altera_merlin_demultiplexer "rsp_demux"
+Info: rsp_demux_003: "mm_interconnect_0" instantiated altera_merlin_demultiplexer "rsp_demux_003"
+Info: rsp_mux: "mm_interconnect_0" instantiated altera_merlin_multiplexer "rsp_mux"
+Info: Reusing file D:/Codes/_Projects/BLE-Glow-Hockey/FPGADataHub/kernel/synthesis/submodules/altera_merlin_arbitrator.sv
+Info: rsp_mux_001: "mm_interconnect_0" instantiated altera_merlin_multiplexer "rsp_mux_001"
+Info: Reusing file D:/Codes/_Projects/BLE-Glow-Hockey/FPGADataHub/kernel/synthesis/submodules/altera_merlin_arbitrator.sv
+Info: avalon_st_adapter: "mm_interconnect_0" instantiated altera_avalon_st_adapter "avalon_st_adapter"
+Info: error_adapter_0: "avalon_st_adapter" instantiated error_adapter "error_adapter_0"
+Info: kernel: Done "kernel" with 31 modules, 49 files
+Info: ip-generate succeeded.
+Info: Finished: Create HDL design files for synthesis

@@ -1,0 +1,14 @@
+Analysis & Synthesis Status : Successful - Tue Sep 08 15:55:23 2020
+Quartus II 64-Bit Version : 15.0.0 Build 145 04/22/2015 SJ Full Version
+Revision Name : FPGA_Data_Hub
+Top-level Entity Name : FPGA_Data_Hub
+Family : Cyclone IV E
+Total logic elements : 6,345
+    Total combinational functions : 5,227
+    Dedicated logic registers : 3,535
+Total registers : 3535
+Total pins : 68
+Total virtual pins : 0
+Total memory bits : 52,352
+Embedded Multiplier 9-bit elements : 6
+Total PLLs : 1
