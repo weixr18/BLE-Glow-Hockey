@@ -126,4 +126,19 @@ E:\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\CyPrimitives\cyprimitives.
 E:\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\bIncludeDriverToComponent_v1_0\bIncludeDriverToComponent_v1_0.cysch
 E:\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\bIncludeDriverToComponent_v1_0\bIncludeDriverToComponent_v1_0.cysym
 E:\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\bIncludeDriverToComponent_v1_0\version.cypatch
+E:\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\SCB_I2C_PDL_v2_0\SCB_I2C_PDL_v2_0.cysym
+E:\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\SCB_I2C_PDL_v2_0\SCB_I2C_PDL_v2_0.cystate
+E:\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\SCB_I2C_PDL_v2_0\SCB_I2C_PDL_v2_0.pdf
+E:\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\SCB_I2C_PDL_v2_0\SCB_I2C_PDL_v2_0.cysch
+E:\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\SCB_I2C_PDL_v2_0\version.cypatch
+E:\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\SCB_I2C_PDL_v2_0\API\SCB_I2C_PDL.c
+E:\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\SCB_I2C_PDL_v2_0\API\SCB_I2C_PDL.h
+E:\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\SCB_I2C_PDL_v2_0\Custom\cycustomizer.cs
+E:\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\SCB_I2C_PDL_v2_0\Custom\cyparameters.cs
+E:\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\SCB_I2C_PDL_v2_0\Custom\Resources.Designer.cs
+E:\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\SCB_I2C_PDL_v2_0\Custom\Controls\cydefaultpageusercontrol.cs
+E:\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\SCB_I2C_PDL_v2_0\Custom\Controls\cydynamicdatacontrol.cs
+E:\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\SCB_I2C_PDL_v2_0\Custom\Controls\cydynamicdatacontrol.Designer.cs
+E:\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\SCB_I2C_PDL_v2_0\Custom\Resources.resx
+E:\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\CyComponentLibrary\CyComponentLibrary.cylib\SCB_I2C_PDL_v2_0\Custom\Controls\cydynamicdatacontrol.resx
 D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\BLEServer.cydwr

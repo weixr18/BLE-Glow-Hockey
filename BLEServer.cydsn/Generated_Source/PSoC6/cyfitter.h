@@ -24,18 +24,27 @@
 #define BLE_cy_mxs40_ble__HW BLE
 #define BLE_cy_mxs40_ble__IDX 0
 
-/* UART_SCB */
+/* UART */
 #define UART_SCB__HW SCB5
 #define UART_SCB__IDX 5
 #define UART_SCB__SS0_POSITION 0u
 #define UART_SCB__SS1_POSITION 1u
 #define UART_SCB__SS2_POSITION 2u
 #define UART_SCB__SS3_POSITION 3u
-
-/* UART_SCBCLK */
-#define UART_SCBCLK__DIV_IDX 0
-#define UART_SCBCLK__DIV_NUM 0
+#define UART_SCBCLK__DIV_IDX 1
+#define UART_SCBCLK__DIV_NUM 1
 #define UART_SCBCLK__DIV_TYPE CY_SYSCLK_DIV_8_BIT
+
+/* I2C_1 */
+#define I2C_1_SCB__HW SCB3
+#define I2C_1_SCB__IDX 3
+#define I2C_1_SCB__SS0_POSITION 0u
+#define I2C_1_SCB__SS1_POSITION 1u
+#define I2C_1_SCB__SS2_POSITION 2u
+#define I2C_1_SCB__SS3_POSITION 3u
+#define I2C_1_SCBCLK__DIV_IDX 0
+#define I2C_1_SCBCLK__DIV_NUM 0
+#define I2C_1_SCBCLK__DIV_TYPE CY_SYSCLK_DIV_8_BIT
 
 /* Miscellaneous */
 #define CPUSS__CTI_TR_IN_0 TRIG5_OUT_CPUSS_CTI_TR_IN0

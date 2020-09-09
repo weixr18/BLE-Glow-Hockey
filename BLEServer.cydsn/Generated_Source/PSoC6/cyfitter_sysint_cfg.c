@@ -32,6 +32,12 @@
 /* ARM CM4 */
 #if (((__CORTEX_M == 4) && (CY_CORE_ID == 0)))
 
+    /* I2C_1_SCB_IRQ */
+    const cy_stc_sysint_t I2C_1_SCB_IRQ_cfg = {
+        .intrSrc = (IRQn_Type)I2C_1_SCB_IRQ__INTC_NUMBER,
+        .intrPriority = I2C_1_SCB_IRQ__INTC_CORTEXM4_PRIORITY
+    };
+
     /* UART_SCB_IRQ */
     const cy_stc_sysint_t UART_SCB_IRQ_cfg = {
         .intrSrc = (IRQn_Type)UART_SCB_IRQ__INTC_NUMBER,

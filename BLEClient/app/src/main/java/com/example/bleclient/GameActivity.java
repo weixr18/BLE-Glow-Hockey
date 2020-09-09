@@ -416,7 +416,7 @@ public class GameActivity extends Activity {
                     int command = intent.getIntExtra(BluetoothLeService.GH_COMMAND, 0);
                     int oprand = command & GH_CMASK_OPRAND;
                     int data = (command & GH_CMASK_DATA) >> 5;
-                    Log.d(TAG, String.format("COMMAND_N received :%x, %x", oprand, data));
+                    //Log.d(TAG, String.format("COMMAND_N received :%x, %x", oprand, data));
 
                     // notify id
                     if(oprand == GH_CC_N_NOTIFY_ID){
@@ -431,12 +431,18 @@ public class GameActivity extends Activity {
                             int blue = (command >> 24) & 0xff;
 
                             Log.d(TAG, String.format("Color: R %d G %d B %d", red, green, blue));
-                            if(choosingColorPlayer == playerID){
-                                player_A_Color = Color.rgb(red, green, blue);
+                            if(red == 2 || red == 3 || green == 2 || green == 3 || blue == 2 || blue == 3){
+                                //do nothing
                             }
-                            else {
-                                player_B_Color = Color.rgb(red, green, blue);
+                            else{
+                                if(choosingColorPlayer == playerID){
+                                    player_A_Color = Color.rgb(red, green, blue);
+                                }
+                                else {
+                                    player_B_Color = Color.rgb(red, green, blue);
+                                }
                             }
+
                         }
 
                     }

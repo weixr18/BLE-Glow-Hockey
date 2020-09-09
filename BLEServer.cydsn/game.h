@@ -9,15 +9,19 @@
  *
  * ========================================
 */
+#ifndef GAME_H
+#define GAME_H
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
 
 #include "project.h"
 #include "FreeRTOS.h"
 #include "task.h"
 #include "queue.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
 
 /***********************************MACROS*****************************************/
 
@@ -44,9 +48,10 @@
 #define BALL_MASS 20
 #define PLAYER_CIRCLE_MASS 20
 #define BALL_SPEED_MAX_RATE 0.6
-#define BALL_SPEED_MIN_RATE 0.05
-#define BOUNCE_DECAY_RATE 0.2
+#define BALL_SPEED_MIN_RATE 0.0
+#define BOUNCE_DECAY_RATE 0.05
 #define BOUNCE_ACCELERATE_RATE 0.4
+#define ACCELERATE_DECAY_RATE 0.002
 
 // other const parameters
 #define USER_INDEX_MASK 1
@@ -58,9 +63,9 @@
 /*
 bool isOver false
 bool isStart false
-int scoreA 0
-int scoreB 0
 */
+
+// game UI parameters
 
 #define tableWidth STD_SCREEN_WIDTH
 #define tableHeight STD_SCREEN_HEIGHT
@@ -119,7 +124,6 @@ enum GameState{
 /******************************GLOBAL VARIABLES***********************************/
 
 QueueHandle_t positionQueueHandle;
-//QueueHandle_t colorQueueHandle;
 
 bool isReceivePosition;
 bool isUser_0_PosStartNotification;
@@ -132,12 +136,21 @@ enum GameState gameState;
 cy_stc_ble_conn_handle_t bleConnectionHandle0;
 cy_stc_ble_conn_handle_t bleConnectionHandle1;
 
+unsigned char playerRed;
+unsigned char playerGreen;
+unsigned char playerBlue;
+
+double accelerateX;
+double accelerateY;
+
 /***********************FUNCTION DECLARATIONS**************************/
 
 void GlowHockeyTask();
 void SendBleNotification(cy_ble_gatt_db_attr_handle_t charHandle, uint64* value, cy_stc_ble_conn_handle_t connHandle);
 void StackEventHandler(uint32 event, void *param);
 void delayTime(uint16 x);
+double doubleAbs(double x);
 
+#endif //GAME_H
 
 /* [] END OF FILE */

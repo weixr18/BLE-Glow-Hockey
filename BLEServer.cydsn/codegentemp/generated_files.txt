@@ -21,7 +21,10 @@
   <file name="D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\codegentemp\BLE_config.c" value="SOURCE_C;CortexM0p,CortexM4;;;;BLE" />
   <file name="D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\codegentemp\BLE_config.h" value="HEADER;;;;;BLE" />
   <file name="D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\codegentemp\BLE_custom_config.c" value="SOURCE_C;CortexM0p,CortexM4;;;;BLE" />
+  <file name="D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\codegentemp\I2C_1.c" value="SOURCE_C;CortexM0p,CortexM4;;;;I2C_1" />
+  <file name="D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\codegentemp\I2C_1.h" value="HEADER;;;;;I2C_1" />
   <file name="D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\codegentemp\UART_SCBCLK.h" value="HEADER;;;;;UART_SCBCLK" />
+  <file name="D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\codegentemp\I2C_1_SCBCLK.h" value="HEADER;;;;;I2C_1_SCBCLK" />
   <file name="D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\codegentemp\project.h" value="OTHER;;;;;" />
   <file name="D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\codegentemp\cycodeshareimport.ld" value="OTHER;;;;;" />
   <file name="D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\codegentemp\cycodeshareexport.ld" value="OTHER;;;;;" />

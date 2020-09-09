@@ -2,7 +2,7 @@
 --	Conversion of BLEServer.v to vh2:
 --
 --	Cypress Semiconductor - WARP Version 6.3 IR 41
---	Fri Sep 04 10:55:02 2020
+--	Wed Sep 09 11:23:15 2020
 --
 
 USE cypress.cypress.all;
@@ -51,6 +51,36 @@ SIGNAL Net_40 : bit;
 SIGNAL Net_39 : bit;
 SIGNAL Net_38 : bit;
 SIGNAL \BLE:Net_1\ : bit;
+SIGNAL \I2C_1:clock_wire\ : bit;
+SIGNAL \I2C_1:Net_283\ : bit;
+SIGNAL \I2C_1:Net_1062\ : bit;
+SIGNAL \I2C_1:Net_1053\ : bit;
+SIGNAL \I2C_1:Net_282\ : bit;
+SIGNAL \I2C_1:Net_277\ : bit;
+SIGNAL Net_90 : bit;
+SIGNAL Net_91 : bit;
+SIGNAL \I2C_1:Net_1059\ : bit;
+SIGNAL \I2C_1:Net_281\ : bit;
+SIGNAL \I2C_1:Net_87_3\ : bit;
+SIGNAL \I2C_1:Net_87_2\ : bit;
+SIGNAL \I2C_1:Net_87_1\ : bit;
+SIGNAL \I2C_1:Net_87_0\ : bit;
+SIGNAL \I2C_1:Net_280\ : bit;
+SIGNAL \I2C_1:Net_1061\ : bit;
+SIGNAL \I2C_1:Net_279\ : bit;
+SIGNAL \I2C_1:Net_278\ : bit;
+SIGNAL \I2C_1:Net_1055\ : bit;
+SIGNAL \I2C_1:intr_wire\ : bit;
+SIGNAL \I2C_1:Net_162\ : bit;
+SIGNAL \I2C_1:Net_163\ : bit;
+SIGNAL Net_92 : bit;
+SIGNAL \I2C_1:Net_224\ : bit;
+SIGNAL \I2C_1:Net_223\ : bit;
+SIGNAL \I2C_1:Net_847\ : bit;
+SIGNAL \I2C_1:tmpFB_0__scl_net_0\ : bit;
+TERMINAL \I2C_1:tmpSIOVREF__scl_net_0\ : bit;
+SIGNAL \I2C_1:tmpFB_0__sda_net_0\ : bit;
+TERMINAL \I2C_1:tmpSIOVREF__sda_net_0\ : bit;
 BEGIN
 
 one <=  ('1') ;
@@ -173,5 +203,109 @@ zero <=  ('0') ;
 		deepsleep_required=>'1',
 		int_type=>"10")
 	PORT MAP(int_signal=>\BLE:Net_1\);
+\I2C_1:SCB\:cy_mxs40_scb_v1_10
+	GENERIC MAP(cy_registers=>"",
+		requires_io_preconfigure=>'1',
+		mode=>0,
+		master=>'1')
+	PORT MAP(clock=>\I2C_1:clock_wire\,
+		uart_rx=>zero,
+		uart_tx=>\I2C_1:Net_1062\,
+		uart_rts=>\I2C_1:Net_1053\,
+		uart_cts=>zero,
+		uart_tx_en=>\I2C_1:Net_277\,
+		i2c_scl=>Net_90,
+		i2c_sda=>Net_91,
+		spi_clk_m=>\I2C_1:Net_1059\,
+		spi_clk_s=>zero,
+		spi_select_m=>(\I2C_1:Net_87_3\, \I2C_1:Net_87_2\, \I2C_1:Net_87_1\, \I2C_1:Net_87_0\),
+		spi_select_s=>zero,
+		spi_mosi_m=>\I2C_1:Net_1061\,
+		spi_miso_m=>zero,
+		spi_mosi_s=>zero,
+		spi_miso_s=>\I2C_1:Net_1055\,
+		interrupt=>\I2C_1:intr_wire\,
+		tr_tx_req=>\I2C_1:Net_162\,
+		tr_rx_req=>\I2C_1:Net_163\,
+		tr_i2c_scl_filtered=>Net_92);
+\I2C_1:SCB_IRQ\:cy_mxs40_isr_v1_0
+	GENERIC MAP(cy_registers=>"",
+		deepsleep_required=>'0',
+		int_type=>"10")
+	PORT MAP(int_signal=>\I2C_1:intr_wire\);
+\I2C_1:SCBCLK\:cy_clock_v1_0
+	GENERIC MAP(cy_registers=>"",
+		id=>"ca2cbab2-2a42-4785-a2ba-b7264d2e6e89/b68e5b9d-7828-482d-a282-930f990e3b3e",
+		source_clock_id=>"",
+		divisor=>0,
+		period=>"645161290.322581",
+		is_direct=>'0',
+		is_digital=>'0')
+	PORT MAP(clock_out=>\I2C_1:clock_wire\,
+		dig_domain_out=>open);
+\I2C_1:scl\:cy_mxs40_gpio_v1_0
+	GENERIC MAP(cy_registers=>"",
+		width=>1,
+		sio_grp_cnt=>0,
+		id=>"ca2cbab2-2a42-4785-a2ba-b7264d2e6e89/69c3b5e8-b094-4d65-b96b-9f4f3a9a8641",
+		drive_mode=>"4",
+		ibuf_enabled=>"1",
+		init_dr_st=>"1",
+		input_sync=>"0",
+		intr_mode=>"0",
+		io_voltage=>"",
+		output_conn=>"0",
+		oe_conn=>"0",
+		output_sync=>"0",
+		oe_sync=>"0",
+		drive_strength=>"0",
+		max_frequency=>"100",
+		output_current_cap=>"8",
+		i2c_mode=>"0",
+		pin_aliases=>"",
+		pin_mode=>"B",
+		slew_rate=>"0",
+		vtrip=>"0",
+		use_annotation=>"0",
+		hotswap_needed=>"0")
+	PORT MAP(oe=>(one),
+		y=>(zero),
+		fb=>(\I2C_1:tmpFB_0__scl_net_0\),
+		analog=>(open),
+		io=>Net_90,
+		annotation=>(open),
+		siovref=>(\I2C_1:tmpSIOVREF__scl_net_0\));
+\I2C_1:sda\:cy_mxs40_gpio_v1_0
+	GENERIC MAP(cy_registers=>"",
+		width=>1,
+		sio_grp_cnt=>0,
+		id=>"ca2cbab2-2a42-4785-a2ba-b7264d2e6e89/2aab8a93-e7dd-4bd4-8210-42652cd079c5",
+		drive_mode=>"4",
+		ibuf_enabled=>"1",
+		init_dr_st=>"1",
+		input_sync=>"0",
+		intr_mode=>"0",
+		io_voltage=>"",
+		output_conn=>"0",
+		oe_conn=>"0",
+		output_sync=>"0",
+		oe_sync=>"0",
+		drive_strength=>"0",
+		max_frequency=>"100",
+		output_current_cap=>"8",
+		i2c_mode=>"0",
+		pin_aliases=>"",
+		pin_mode=>"B",
+		slew_rate=>"0",
+		vtrip=>"0",
+		use_annotation=>"0",
+		hotswap_needed=>"0")
+	PORT MAP(oe=>(one),
+		y=>(zero),
+		fb=>(\I2C_1:tmpFB_0__sda_net_0\),
+		analog=>(open),
+		io=>Net_91,
+		annotation=>(open),
+		siovref=>(\I2C_1:tmpSIOVREF__sda_net_0\));
 
 END R_T_L;

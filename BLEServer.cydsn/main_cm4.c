@@ -3,14 +3,20 @@
 #include "queue.h"
 #include "task.h"
 #include "game.h"
+#include "I2CHelper.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 
+
 unsigned char playerRed = 63;
 unsigned char playerGreen = 237;
 unsigned char playerBlue = 228;
+
+double accelerateX = 0.0;
+double accelerateY = 0.0;
+
 
 typedef enum UartState{
     WAIT,
@@ -20,6 +26,8 @@ typedef enum UartState{
     GREEN,
     BLUE
 } UartState;
+
+
 
 
 void delayTime(uint16 x){
@@ -33,7 +41,6 @@ void UartTask(void* arg){
 
     (void)arg;
     int count = 1;
-    uint32_t msg;
     char charReceive;
     UartState state = WAIT;
     char buffer[3];
@@ -708,8 +715,30 @@ int main(void)
     /**************Components Startups***************/
     Cy_IPC_Sema_Init(CY_IPC_CHAN_SEMA, (uint32_t)NULL, (uint32_t*)NULL);
     UART_Start();
-    
     delayTime(2000);
+    
+    I2C_1_Start();
+    ADXL345_INI();
+    int value1 = ADXL345_ReadRegister(0x31);
+    nap();
+    int value2 = ADXL345_ReadRegister(0x2D);
+    nap();
+    int value3 = ADXL345_ReadRegister(0x2E);
+    nap();
+    ADXL345_SETUP();
+    
+    
+    value1 = ADXL345_ReadRegister(0x31);
+    nap();
+    value2 = ADXL345_ReadRegister(0x2D);
+    nap();
+    value3 = ADXL345_ReadRegister(0x2E);
+    nap();
+    
+    //printf("I2C: value1: %d, value2: %d, value3: %d",value1, value2, value3);
+    //ADXL345_SETUP();
+    
+    
     
     gameState = INIT_SERVER;
        
@@ -717,7 +746,7 @@ int main(void)
     
     xTaskCreate(UartTask, "UART task", configMINIMAL_STACK_SIZE * 3, 0, 3, 0);
     xTaskCreate(bleTask, "BLE task", configMINIMAL_STACK_SIZE * 20, 0, 3, 0);
-    xTaskCreate(GlowHockeyTask, "Game task", configMINIMAL_STACK_SIZE * 7, 0, 3, 0);
+    xTaskCreate(GlowHockeyTask, "Game task", configMINIMAL_STACK_SIZE * 10, 0, 3, 0);
     
     
     vTaskStartScheduler();      //never return.

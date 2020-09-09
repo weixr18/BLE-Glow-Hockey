@@ -545,7 +545,7 @@ Disassembly of section .entry:
  8000014:	08409014 	ori	at,at,576
     jmp r1
  8000018:	0800683a 	jmp	at
- 800001c:	00000000 	call	0 <__reset-0x8000000>
+ 800001c:	00000000 	call	0 <__alt_mem_sdram-0x8000000>
 
 Disassembly of section .exceptions:
 
@@ -4109,7 +4109,7 @@ int main()
  800306c:	24803fcc 	andi	r18,r4,255
  8003070:	a169c83a 	sub	r20,r20,r5
  8003074:	1800683a 	jmp	r3
- 8003078:	080032c0 	call	80032c <__reset-0x77ffcd4>
+ 8003078:	080032c0 	call	80032c <__alt_mem_sdram-0x77ffcd4>
  800307c:	080030f0 	cmpltui	zero,at,195
  8003080:	08003284 	addi	zero,at,202
  8003084:	080030d4 	ori	zero,at,195
@@ -4840,7 +4840,7 @@ int main()
  8003bb8:	08003be8 	cmpgeui	zero,at,239
  8003bbc:	08003be8 	cmpgeui	zero,at,239
  8003bc0:	08003be8 	cmpgeui	zero,at,239
- 8003bc4:	08003fc0 	call	8003fc <__reset-0x77ffc04>
+ 8003bc4:	08003fc0 	call	8003fc <__alt_mem_sdram-0x77ffc04>
  8003bc8:	8104b03a 	or	r2,r16,r4
  8003bcc:	10006a1e 	bne	r2,zero,8003d78 <__muldf3+0x2e0>
  8003bd0:	05400204 	movi	r21,8
@@ -21569,7 +21569,7 @@ alt_exception_cause_generated_bad_addr(alt_exception_cause cause)
  80117d0:	d9400015 	stw	r5,0(sp)
  80117d4:	d9800115 	stw	r6,4(sp)
  80117d8:	d9c00215 	stw	r7,8(sp)
- 80117dc:	00000000 	call	0 <__reset-0x8000000>
+ 80117dc:	00000000 	call	0 <__alt_mem_sdram-0x8000000>
  80117e0:	d9400017 	ldw	r5,0(sp)
  80117e4:	d9800117 	ldw	r6,4(sp)
  80117e8:	d9c00217 	ldw	r7,8(sp)
@@ -21655,7 +21655,7 @@ alt_exception_cause_generated_bad_addr(alt_exception_cause cause)
  8011920:	10003426 	beq	r2,zero,80119f4 <__call_exitprocs+0x18c>
  8011924:	9809883a 	mov	r4,r19
  8011928:	a8800015 	stw	r2,0(r21)
- 801192c:	00000000 	call	0 <__reset-0x8000000>
+ 801192c:	00000000 	call	0 <__alt_mem_sdram-0x8000000>
  8011930:	acc00017 	ldw	r19,0(r21)
  8011934:	983fe41e 	bne	r19,zero,80118c8 <__alt_data_end+0xf80118c8>
  8011938:	dfc00b17 	ldw	ra,44(sp)

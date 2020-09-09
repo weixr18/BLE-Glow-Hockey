@@ -138,7 +138,9 @@
 #include "UART.h"
 #include "BLE.h"
 #include "BLE_config.h"
+#include "I2C_1.h"
 #include "UART_SCBCLK.h"
+#include "I2C_1_SCBCLK.h"
 
 /*[]*/
 

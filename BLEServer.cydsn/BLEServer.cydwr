@@ -29,6 +29,8 @@
       <Data key="a61270bc-07ec-447d-ac9e-34cfe85c30e9" value="LED" />
       <Data key="c3ebdaf0-2922-44d8-bb3e-57ebf7663a2a" value="CY_EINK_DispRst" />
       <Data key="c932a304-7fee-45e3-92f6-c51270dee3cf" value="CY_EINK_DispIoEn" />
+      <Data key="ca2cbab2-2a42-4785-a2ba-b7264d2e6e89/2aab8a93-e7dd-4bd4-8210-42652cd079c5" value="I2C_1_sda" />
+      <Data key="ca2cbab2-2a42-4785-a2ba-b7264d2e6e89/69c3b5e8-b094-4d65-b96b-9f4f3a9a8641" value="I2C_1_scl" />
       <Data key="ef2ddf5d-6cc1-4717-9af4-a24efd99c828" value="THER_OUT_1" />
     </Group>
   </Group>
@@ -730,6 +732,16 @@
     <Group key="c932a304-7fee-45e3-92f6-c51270dee3cf">
       <Group key="0">
         <Data key="Port Format" value="0,2" />
+      </Group>
+    </Group>
+    <Group key="ca2cbab2-2a42-4785-a2ba-b7264d2e6e89/2aab8a93-e7dd-4bd4-8210-42652cd079c5">
+      <Group key="0">
+        <Data key="Port Format" value="6,1" />
+      </Group>
+    </Group>
+    <Group key="ca2cbab2-2a42-4785-a2ba-b7264d2e6e89/69c3b5e8-b094-4d65-b96b-9f4f3a9a8641">
+      <Group key="0">
+        <Data key="Port Format" value="6,0" />
       </Group>
     </Group>
     <Group key="ef2ddf5d-6cc1-4717-9af4-a24efd99c828">
