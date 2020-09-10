@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <blockRegMap version="1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://cypress.com/xsd/cyblockregmap cyblockregmap.xsd" xmlns="http://cypress.com/xsd/cyblockregmap">
+  <block name="DATA_OUT" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  <block name="DATA_OUT_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   <block name="I2C_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false">
     <block name="ZeroTerminal_1" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
     <block name="ZeroTerminal_2" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
@@ -16,11 +18,6 @@
     <block name="ZeroTerminal_5" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
     <block name="ZeroTerminal_6" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   </block>
-  <block name="BLE" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false">
-    <block name="IncludeBleLibs" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-    <block name="bless_isr" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-    <block name="cy_mxs40_ble" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
-  </block>
   <block name="UART" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false">
     <block name="rx_VM" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
     <block name="rx" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
@@ -32,5 +29,10 @@
     <block name="ZeroTerminal_7" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
     <block name="tx" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
     <block name="or_sclk" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+  </block>
+  <block name="BLE" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false">
+    <block name="IncludeBleLibs" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="bless_isr" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
+    <block name="cy_mxs40_ble" BASE="0x0" SIZE="0x0" desc="" visible="true" hidden="false" />
   </block>
 </blockRegMap>

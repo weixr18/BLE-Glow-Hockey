@@ -1,5 +1,5 @@
 # BLEServer
-# 2020-09-09 03:23:21Z
+# 2020-09-10 03:32:30Z
 
 dont_use_location p4usbcell -1 -1 0
 dont_use_location USB -1 -1 0
@@ -11,3 +11,5 @@ set_io "\UART:tx(0)\" iocell 5 1
 set_io "\UART:rx(0)\" iocell 5 0
 set_io "\I2C_1:scl(0)\" iocell 6 0
 set_io "\I2C_1:sda(0)\" iocell 6 1
+set_io "DATA_OUT(0)" iocell 0 3
+set_io "DATA_OUT_1(0)" iocell 9 0

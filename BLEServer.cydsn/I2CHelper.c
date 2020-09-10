@@ -163,7 +163,7 @@ void ReadAccDecoding(){
     accelerateX = Acc_m3_X;
     accelerateY = Acc_m3_Y;
     
-    printf("Game: AccX %lf Accy %lf\r\n", accelerateX, accelerateY);
+    //printf("Game: AccX %lf Accy %lf\r\n", accelerateX, accelerateY);
     
 }
 

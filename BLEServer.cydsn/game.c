@@ -13,15 +13,6 @@
 #include "game.h"
 #include "I2CHelper.h"
 
-double doubleAbs(double x){
-    if(x > 0.0){
-        return x;
-    }
-    else{
-        return -x;
-    }
-}
-
 
 // Game task
 void GlowHockeyTask(){
@@ -59,10 +50,11 @@ void GlowHockeyTask(){
     int value3;
     int value4;
     int count = 0;
-
     
-
+    
     for(;;){
+       
+        
         if(gameState == GAME_START && isReceivePosition){
 
             /********** receive position *************/
@@ -102,8 +94,10 @@ void GlowHockeyTask(){
              // 小球左右边框碰撞事件
             if (ballPositionX - gamePaddingLeft <= ballSize) {
                 ballSpeedX = doubleAbs(ballSpeedX);
+                //BOUNCE_SOUND
             } else if (ballPositionX + gamePaddingRight >= tableWidth - ballSize) {
                 ballSpeedX = - doubleAbs(ballSpeedX);
+                //BOUNCE_SOUND
             }
 
             // 小球上下边框碰撞事件
@@ -135,6 +129,7 @@ void GlowHockeyTask(){
                     Cy_BLE_ProcessEvents();
                     delayTime(1000);
                     
+                    
                     if (score_0 >= 7) {
                         // game over
                         gameState = GAME_OVER;
@@ -157,6 +152,8 @@ void GlowHockeyTask(){
                         Cy_BLE_ProcessEvents();
                         delayTime(1000);
                         
+                        OVER_SOUND
+                        
                         continue;
                     } 
                     else {
@@ -171,11 +168,14 @@ void GlowHockeyTask(){
                         player1X = (int16) (tableWidth * PLAYER_1_INITIAL_RATE_X);
                         player1Y = (int16) (tableHeight * PLAYER_1_INITIAL_RATE_Y);
                         
+                        //GOAL_SOUND
+                        
                     }
                 }
                 // 正常碰撞
                 else{
                     ballSpeedY = doubleAbs(ballSpeedY);
+                    //BOUNCE_SOUND
                 }
             } 
             else if (ballPositionY + gamePaddingBottom >= tableHeight - ballSize) {
@@ -227,6 +227,8 @@ void GlowHockeyTask(){
                         Cy_BLE_ProcessEvents();
                         delayTime(1000);
                         
+                        OVER_SOUND
+                        
                         continue;
                     } 
                     else {
@@ -241,11 +243,14 @@ void GlowHockeyTask(){
                         player1X = (int16) (tableWidth * PLAYER_1_INITIAL_RATE_X);
                         player1Y = (int16) (tableHeight * PLAYER_1_INITIAL_RATE_Y);
                         
+                        //GOAL_SOUND
+                        
                     }
                 }
                 // 正常碰撞
                 else{
                     ballSpeedY = - doubleAbs(ballSpeedY);
+                    //BOUNCE_SOUND
                 }
                 
             }
@@ -262,9 +267,7 @@ void GlowHockeyTask(){
             if (ball_player0_dis < ballSize + playerCircleSize) {
 
                 printf("GAME: Bounce player 0 !!\r\n");
-                //if (!isStart) {
-                //    isStart = true;
-                //}
+                //BOUNCE_SOUND
 
 
                 ballSpeedX += (double) (2 * PLAYER_CIRCLE_MASS * (player0SpeedX - ballSpeedX)
@@ -282,10 +285,7 @@ void GlowHockeyTask(){
             if (ball_player1_dis < ballSize + playerCircleSize) {
 
                 printf("GAME: Bounce player 1 !!\r\n");
-                //if (!isStart) {
-                //    isStart = true;
-                //}
-
+                //BOUNCE_SOUND
 
                 ballSpeedX += (double) (2 * PLAYER_CIRCLE_MASS * (player1SpeedX - ballSpeedX)
                         / (PLAYER_CIRCLE_MASS + BALL_MASS) * BOUNCE_DECAY_RATE);

@@ -19,6 +19,7 @@
       <Data key="7abe379e-485a-4682-b6ba-41efe349b8df/b7e8018e-1ef7-49c0-b5a5-61641a03e31c" value="UART_rx" />
       <Data key="7b8de8d0-52d0-4c68-9915-7f08ff3cf87d/4db2e9d3-9f70-4f4e-a919-7eefada41863" value="CapSense_Cmod" />
       <Data key="7b8de8d0-52d0-4c68-9915-7f08ff3cf87d/0113321b-4a37-46f6-8407-2f8646c68756" value="CapSense_Sns" />
+      <Data key="16e58164-7708-4382-90d8-0471d0d8071e" value="DATA_OUT_1" />
       <Data key="64b3051f-6e7e-4ff7-95e2-9239413826e2" value="THER_OUT_2" />
       <Data key="0479a41f-7847-4e96-b9d9-0145177051b1" value="CY_EINK_Border" />
       <Data key="887ad03f-02dd-4d10-90c0-e3e8ad26059b" value="CY_EINK_Sclk" />
@@ -26,7 +27,7 @@
       <Data key="0113321b-4a37-46f6-8407-2f8646c68756" value="THER_VDD" />
       <Data key="a4e49259-620c-434c-b88d-56477568690d" value="CY_EINK_Miso" />
       <Data key="a168f3f7-9ffe-4429-841e-44d553d0e936" value="CY_EINK_Discharge" />
-      <Data key="a61270bc-07ec-447d-ac9e-34cfe85c30e9" value="LED" />
+      <Data key="a61270bc-07ec-447d-ac9e-34cfe85c30e9" value="DATA_OUT" />
       <Data key="c3ebdaf0-2922-44d8-bb3e-57ebf7663a2a" value="CY_EINK_DispRst" />
       <Data key="c932a304-7fee-45e3-92f6-c51270dee3cf" value="CY_EINK_DispIoEn" />
       <Data key="ca2cbab2-2a42-4785-a2ba-b7264d2e6e89/2aab8a93-e7dd-4bd4-8210-42652cd079c5" value="I2C_1_sda" />
@@ -682,6 +683,11 @@
       </Group>
       <Group key="4">
         <Data key="Port Format" value="8,7" />
+      </Group>
+    </Group>
+    <Group key="16e58164-7708-4382-90d8-0471d0d8071e">
+      <Group key="0">
+        <Data key="Port Format" value="9,0" />
       </Group>
     </Group>
     <Group key="64b3051f-6e7e-4ff7-95e2-9239413826e2">

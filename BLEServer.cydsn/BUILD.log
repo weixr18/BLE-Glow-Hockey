@@ -1,64 +1,64 @@
---------------- Build Started: 09/09/2020 16:07:38 Project: BLEServer, Configuration: ARM GCC 5.4-2016-q2-update Debug ---------------
+--------------- Build Started: 09/10/2020 17:35:59 Project: BLEServer, Configuration: ARM GCC 5.4-2016-q2-update Debug ---------------
 The code generation step is up to date.
 The compile step is up to date, no work needs to be done.
 The link step is up to date, no work needs to be done.
 arm-none-eabi-gcc.exe -mcpu=cortex-m4 -mfloat-abi=softfp -mfpu=fpv4-sp-d16 -mthumb -I. -IGenerated_Source\PSoC6 -IGenerated_Source\PSoC6\pdl\cmsis/include/ -IGenerated_Source\PSoC6\pdl\devices/psoc6/ip/ -IGenerated_Source\PSoC6\pdl\devices/psoc6/psoc63/include/ -IGenerated_Source\PSoC6\pdl\drivers/peripheral/ -IGenerated_Source\PSoC6\pdl\middleware/ -IGenerated_Source\PSoC6\pdl\rtos/FreeRTOS/9.0.0/Source/include/ -IGenerated_Source\PSoC6\pdl\rtos/FreeRTOS/9.0.0/Source/portable/GCC/CM4F/ -IGenerated_Source\PSoC6\pdl\utilities/ -Wa,-alh=.\CortexM4\ARM_GCC_541\Debug/main_cm4.lst -g -D DEBUG -D CY_CORE_ID=0 -D CY_PSOC_CREATOR_USED=1 -D CY8C6347BZI_BLD53 -Wall -ffunction-sections -ffat-lto-objects -Og -c main_cm4.c -o .\CortexM4\ARM_GCC_541\Debug\main_cm4.o
 main_cm4.c: In function 'bleTask':
-main_cm4.c:258:24: warning: format '%d' expects argument of type 'int', but argument 2 has type 'uint64 {aka long long unsigned int}' [-Wformat=]
+main_cm4.c:305:24: warning: format '%d' expects argument of type 'int', but argument 2 has type 'uint64 {aka long long unsigned int}' [-Wformat=]
                  printf("BLE: user 0. READY. Bytes: %d\r\n", bytesToSend_0);
                         ^
-main_cm4.c:258:24: warning: format '%d' expects argument of type 'int', but argument 2 has type 'uint64 {aka long long unsigned int}' [-Wformat=]
-main_cm4.c:123:10: warning: variable 'buffer' set but not used [-Wunused-but-set-variable]
+main_cm4.c:305:24: warning: format '%d' expects argument of type 'int', but argument 2 has type 'uint64 {aka long long unsigned int}' [-Wformat=]
+main_cm4.c:170:10: warning: variable 'buffer' set but not used [-Wunused-but-set-variable]
      char buffer[3] = {0};
           ^
 main_cm4.c: In function 'StackEventHandler':
-main_cm4.c:647:32: warning: format '%x' expects argument of type 'unsigned int', but argument 2 has type 'uint32 {aka long unsigned int}' [-Wformat=]
+main_cm4.c:698:32: warning: format '%x' expects argument of type 'unsigned int', but argument 2 has type 'uint32 {aka long unsigned int}' [-Wformat=]
                          printf("STACK: DEVICE 0 WRITE COMMAND %x.\r\n", val);
                                 ^
-main_cm4.c:647:32: warning: format '%x' expects argument of type 'unsigned int', but argument 2 has type 'uint32 {aka long unsigned int}' [-Wformat=]
-main_cm4.c:652:33: warning: format '%x' expects argument of type 'unsigned int', but argument 2 has type 'uint32 {aka long unsigned int}' [-Wformat=]
+main_cm4.c:698:32: warning: format '%x' expects argument of type 'unsigned int', but argument 2 has type 'uint32 {aka long unsigned int}' [-Wformat=]
+main_cm4.c:703:33: warning: format '%x' expects argument of type 'unsigned int', but argument 2 has type 'uint32 {aka long unsigned int}' [-Wformat=]
                           printf("STACK: DEVICE 1 WRITE COMMAND %x.\r\n", val);
                                  ^
-main_cm4.c:652:33: warning: format '%x' expects argument of type 'unsigned int', but argument 2 has type 'uint32 {aka long unsigned int}' [-Wformat=]
-main_cm4.c:683:20: warning: format '%u' expects argument of type 'unsigned int', but argument 2 has type 'uint32 {aka long unsigned int}' [-Wformat=]
+main_cm4.c:703:33: warning: format '%x' expects argument of type 'unsigned int', but argument 2 has type 'uint32 {aka long unsigned int}' [-Wformat=]
+main_cm4.c:734:20: warning: format '%u' expects argument of type 'unsigned int', but argument 2 has type 'uint32 {aka long unsigned int}' [-Wformat=]
              printf("STACK: event code: %u\r\n", event);
                     ^
-main_cm4.c:683:20: warning: format '%u' expects argument of type 'unsigned int', but argument 2 has type 'uint32 {aka long unsigned int}' [-Wformat=]
-main_cm4.c:359:28: warning: variable 'bleapiResult' set but not used [-Wunused-but-set-variable]
+main_cm4.c:734:20: warning: format '%u' expects argument of type 'unsigned int', but argument 2 has type 'uint32 {aka long unsigned int}' [-Wformat=]
+main_cm4.c:406:28: warning: variable 'bleapiResult' set but not used [-Wunused-but-set-variable]
      cy_en_ble_api_result_t bleapiResult;
                             ^
 main_cm4.c: In function 'main':
-main_cm4.c:726:9: warning: variable 'value3' set but not used [-Wunused-but-set-variable]
+main_cm4.c:777:9: warning: unused variable 'value3' [-Wunused-variable]
      int value3 = ADXL345_ReadRegister(0x2E);
          ^
-main_cm4.c:724:9: warning: variable 'value2' set but not used [-Wunused-but-set-variable]
+main_cm4.c:775:9: warning: unused variable 'value2' [-Wunused-variable]
      int value2 = ADXL345_ReadRegister(0x2D);
          ^
-main_cm4.c:722:9: warning: variable 'value1' set but not used [-Wunused-but-set-variable]
+main_cm4.c:773:9: warning: unused variable 'value1' [-Wunused-variable]
      int value1 = ADXL345_ReadRegister(0x31);
          ^
 main_cm4.c: In function 'bleTask':
-main_cm4.c:189:19: warning: 'receivedColorLast' may be used uninitialized in this function [-Wmaybe-uninitialized]
+main_cm4.c:236:19: warning: 'receivedColorLast' may be used uninitialized in this function [-Wmaybe-uninitialized]
                  if(receivedColor != receivedColorLast){
                    ^
 arm-none-eabi-gcc.exe -mcpu=cortex-m4 -mfloat-abi=softfp -mfpu=fpv4-sp-d16 -mthumb -I. -IGenerated_Source\PSoC6 -IGenerated_Source\PSoC6\pdl\cmsis/include/ -IGenerated_Source\PSoC6\pdl\devices/psoc6/ip/ -IGenerated_Source\PSoC6\pdl\devices/psoc6/psoc63/include/ -IGenerated_Source\PSoC6\pdl\drivers/peripheral/ -IGenerated_Source\PSoC6\pdl\middleware/ -IGenerated_Source\PSoC6\pdl\rtos/FreeRTOS/9.0.0/Source/include/ -IGenerated_Source\PSoC6\pdl\rtos/FreeRTOS/9.0.0/Source/portable/GCC/CM4F/ -IGenerated_Source\PSoC6\pdl\utilities/ -Wa,-alh=.\CortexM4\ARM_GCC_541\Debug/game.lst -g -D DEBUG -D CY_CORE_ID=0 -D CY_PSOC_CREATOR_USED=1 -D CY8C6347BZI_BLD53 -Wall -ffunction-sections -ffat-lto-objects -Og -c game.c -o .\CortexM4\ARM_GCC_541\Debug\game.o
 game.c: In function 'GlowHockeyTask':
-game.c:61:9: warning: unused variable 'count' [-Wunused-variable]
+game.c:52:9: warning: unused variable 'count' [-Wunused-variable]
      int count = 0;
          ^
-game.c:60:9: warning: unused variable 'value4' [-Wunused-variable]
+game.c:51:9: warning: unused variable 'value4' [-Wunused-variable]
      int value4;
          ^
-game.c:59:9: warning: unused variable 'value3' [-Wunused-variable]
+game.c:50:9: warning: unused variable 'value3' [-Wunused-variable]
      int value3;
          ^
-game.c:58:9: warning: unused variable 'value2' [-Wunused-variable]
+game.c:49:9: warning: unused variable 'value2' [-Wunused-variable]
      int value2;
          ^
-game.c:57:9: warning: unused variable 'value1' [-Wunused-variable]
+game.c:48:9: warning: unused variable 'value1' [-Wunused-variable]
      int value1;
          ^
-game.c:56:13: warning: unused variable 'resultd' [-Wunused-variable]
+game.c:47:13: warning: unused variable 'resultd' [-Wunused-variable]
      double* resultd = (double*)malloc(sizeof(double)*3);
              ^
 arm-none-eabi-gcc.exe -mcpu=cortex-m4 -mfloat-abi=softfp -mfpu=fpv4-sp-d16 -mthumb -I. -IGenerated_Source\PSoC6 -IGenerated_Source\PSoC6\pdl\cmsis/include/ -IGenerated_Source\PSoC6\pdl\devices/psoc6/ip/ -IGenerated_Source\PSoC6\pdl\devices/psoc6/psoc63/include/ -IGenerated_Source\PSoC6\pdl\drivers/peripheral/ -IGenerated_Source\PSoC6\pdl\middleware/ -IGenerated_Source\PSoC6\pdl\rtos/FreeRTOS/9.0.0/Source/include/ -IGenerated_Source\PSoC6\pdl\rtos/FreeRTOS/9.0.0/Source/portable/GCC/CM4F/ -IGenerated_Source\PSoC6\pdl\utilities/ -Wa,-alh=.\CortexM4\ARM_GCC_541\Debug/I2CHelper.lst -g -D DEBUG -D CY_CORE_ID=0 -D CY_PSOC_CREATOR_USED=1 -D CY8C6347BZI_BLD53 -Wall -ffunction-sections -ffat-lto-objects -Og -c I2CHelper.c -o .\CortexM4\ARM_GCC_541\Debug\I2CHelper.o
@@ -71,5 +71,5 @@ E:\Cypress\PDL\3.0.1\tools\win\elf\cymcuelftool.exe --merge D:\Codes\_Projects\B
 Application checksum calculated and stored in ELF section .cychecksum
 Checksum calculated and stored in ELF section .cymeta
 E:\Cypress\PDL\3.0.1\tools\win\elf\cymcuelftool.exe -A D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\CortexM4\ARM_GCC_541\Debug\BLEServer.elf
-code:220182	sram:100972
---------------- Build Succeeded: 09/09/2020 16:07:41 ---------------
+code:220550	sram:100980
+--------------- Build Succeeded: 09/10/2020 17:36:02 ---------------

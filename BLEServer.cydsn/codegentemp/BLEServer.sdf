@@ -1,6 +1,6 @@
 (DELAYFILE
  (SDFVERSION "IEEE 1497 4.0")
- (DATE "2020-09-09T03:23:31Z")
+ (DATE "2020-09-10T03:32:39Z")
  (DESIGN "BLEServer")
  (VENDOR "Cypress Semiconductor")
  (PROGRAM "PSoC Creator")
@@ -32,6 +32,8 @@
     (INTERCONNECT \\UART\:rx\(0\)_PAD\\ \\UART\:rx\(0\)\\.pad_in (0.000:0.000:0.000))
     (INTERCONNECT \\I2C_1\:scl\(0\)_PAD\\ \\I2C_1\:scl\(0\)\\.pad_in (0.000:0.000:0.000))
     (INTERCONNECT \\I2C_1\:sda\(0\)_PAD\\ \\I2C_1\:sda\(0\)\\.pad_in (0.000:0.000:0.000))
+    (INTERCONNECT DATA_OUT\(0\)_PAD DATA_OUT\(0\).pad_in (0.000:0.000:0.000))
+    (INTERCONNECT DATA_OUT_1\(0\)_PAD DATA_OUT_1\(0\).pad_in (0.000:0.000:0.000))
    )
   )
  )

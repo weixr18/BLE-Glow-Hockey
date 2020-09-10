@@ -1,7 +1,7 @@
-D:\Codes\_Hardware\PSoC\PSOC6\Advanced_Experiments\Dual_Core_BLE.cydsn\Dual_Core_BLE.cyprj|70e6659f-70ef-4d59-bed2-b840f62f8638
-E:\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\CyAnnotationLibrary.cyprj|7b74330c-762c-4eda-afa4-8f84c5c7f7e7
-C:\Users\YYDPY\Documents\PSoC Creator\4.2\Downloads ( 4.2).cylib\Downloads ( 4.2).cyprj|2b110401-2eaa-4bf7-90ce-510bde48b6bd
-E:\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cycomponentlibraryupdates\CyComponentLibraryUpdates.cylib\CyComponentLibraryUpdates.cyprj|75291357-63c0-49b8-933c-a73f6457807d
-E:\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CyComponentLibrary.cyprj|c9377c6b-84d2-4081-a4bf-52f04bf47ce7
-E:\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\CyPrimitives.cyprj|01b9571b-2001-4754-a09c-c02cc3f3311c
-D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\BLEServer.cyprj|5462dba8-6847-4295-9007-d795d286f15e
+E:\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\default\CyAnnotationLibrary\CyAnnotationLibrary.cylib\CyAnnotationLibrary.cyprj|c9f43623-7a66-4321-adcf-b315e3de6e93
+C:\Users\YYDPY\Documents\PSoC Creator\4.2\Downloads ( 4.2).cylib\Downloads ( 4.2).cyprj|a1206676-c047-4f2f-aba8-1ab3bbba7278
+E:\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cycomponentlibraryupdates\CyComponentLibraryUpdates.cylib\CyComponentLibraryUpdates.cyprj|e76ca41f-027f-445a-850f-964bd2f21bd5
+E:\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cycomponentlibrary\CyComponentLibrary.cylib\CyComponentLibrary.cyprj|16ef98b5-2c1e-4471-9acc-5bb6ebaac175
+E:\Cypress\PSoC Creator\4.2\PSoC Creator\psoc\content\cyprimitives\CyPrimitives.cylib\CyPrimitives.cyprj|d78530fc-f0a4-4a9f-9b31-2bc672b605b0
+D:\Codes\_Hardware\PSoC\PSOC6\Advanced_Experiments\Dual_Core_BLE.cydsn\Dual_Core_BLE.cyprj|ddbb2fac-86fe-4715-a791-e1ef963d9a35
+D:\Codes\_Projects\BLE-Glow-Hockey\BLEServer.cydsn\BLEServer.cyprj|7bcd908c-de09-4c0e-9bf6-63a210ffa2e4

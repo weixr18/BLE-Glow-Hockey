@@ -18,6 +18,7 @@ double accelerateX = 0.0;
 double accelerateY = 0.0;
 
 
+
 typedef enum UartState{
     WAIT,
     LEAD_0,
@@ -35,6 +36,52 @@ void delayTime(uint16 x){
     for(uint16 i = 0; i < x; i++){
         temp = sqrt(pow(98765.234, 0.5)+pow(temp, 0.8));
     }
+}
+
+
+uint32 PIOData = 1;
+
+
+double doubleAbs(double x){
+    if(x > 0.0){
+        return x;
+    }
+    else{
+        return -x;
+    }
+}
+
+void outputPulse(int thisSound){
+    
+    static int LastSound = 6;
+    int num;
+    int i = 0;
+    
+    /*
+    if(LastSound == 6){
+        num = thisSound;
+    }
+    else{
+        
+    }
+    */
+    
+    num = (6 - LastSound + thisSound) % 6;
+    printf("OUTPUT: Last:%d, this: %d\r\n", LastSound, thisSound);
+    LastSound = thisSound;
+    
+    
+    
+    for(;i < num; i++){
+    
+        PIOData = 0;
+        delayTime(2000); 
+        Cy_GPIO_Write(GPIO_PRT9, 0, PIOData);
+        
+        PIOData = 1;
+        delayTime(3000);
+        Cy_GPIO_Write(GPIO_PRT9, 0, PIOData);
+    }   
 }
 
 void UartTask(void* arg){
@@ -391,6 +438,7 @@ void StackEventHandler(uint32 event, void *param){
             else if(gameState == WAIT_FOR_DEVICE_0){
                 bleConnectionHandle0 = *(cy_stc_ble_conn_handle_t*)param;
                 gameState = INIT_DEVICE_0;
+                INIT_SOUND
                           
                 printf("STACK: GameState: INIT_DEVICE_0\r\n");
             }
@@ -402,8 +450,9 @@ void StackEventHandler(uint32 event, void *param){
                 }
                 else{
                     bleConnectionHandle1 = *(cy_stc_ble_conn_handle_t*)param;
-
                     gameState = INIT_DEVICE_1;
+                    INIT_SOUND
+                    
                     printf("STACK: GameState: INIT_DEVICE_1\r\n");
                 }
                 
@@ -606,6 +655,8 @@ void StackEventHandler(uint32 event, void *param){
                         Cy_BLE_ProcessEvents();
                         delayTime(1000);
                         
+                        START_SOUND
+                        
                         printf("BLE: GameState: GAME_START\r\n");
                     }
                     
@@ -726,18 +777,6 @@ int main(void)
     int value3 = ADXL345_ReadRegister(0x2E);
     nap();
     ADXL345_SETUP();
-    
-    
-    value1 = ADXL345_ReadRegister(0x31);
-    nap();
-    value2 = ADXL345_ReadRegister(0x2D);
-    nap();
-    value3 = ADXL345_ReadRegister(0x2E);
-    nap();
-    
-    //printf("I2C: value1: %d, value2: %d, value3: %d",value1, value2, value3);
-    //ADXL345_SETUP();
-    
     
     
     gameState = INIT_SERVER;

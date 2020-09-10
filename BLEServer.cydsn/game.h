@@ -143,13 +143,24 @@ unsigned char playerBlue;
 double accelerateX;
 double accelerateY;
 
+uint32 PIOData;
+
 /***********************FUNCTION DECLARATIONS**************************/
 
 void GlowHockeyTask();
 void SendBleNotification(cy_ble_gatt_db_attr_handle_t charHandle, uint64* value, cy_stc_ble_conn_handle_t connHandle);
 void StackEventHandler(uint32 event, void *param);
+
 void delayTime(uint16 x);
 double doubleAbs(double x);
+void outputPulse(int thisSound);
+
+#define INIT_SOUND outputPulse(1);
+#define START_SOUND outputPulse(2);
+#define BOUNCE_SOUND outputPulse(3);
+#define GOAL_SOUND outputPulse(4);
+#define OVER_SOUND outputPulse(5);
+
 
 #endif //GAME_H
 
